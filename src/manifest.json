@@ -1,0 +1,25 @@
+{
+  "manifest_version":2,
+  "name": "NotionMathEditor_BrowserExtension",
+  "version" : "0.1",
+  "content_scripts" : [
+                        {
+                          "matches" : [ "http://*.notion.so/*", "https://*.notion.so/*"],
+                          "js" : ["content.js"]
+                        }
+                      ],
+  "background" : {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "browser_action":{
+      "default_icon" : "images/get_started128.png",
+      "default_popup" : "popup.html",
+      "default_title" : "Lookup Formulas!"
+  },
+  "permissions" :
+       [
+         "tabs",
+       "http://*/*",
+       "https://*/*"]
+}

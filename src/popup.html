@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+
+      <link rel="stylesheet" href="lib/katex.css"
+        crossorigin="anonymous">
+      <script defer src="lib/katex.js"
+        crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="popup.css"
+        crossorigin="anonymous">
+
+   </head>
+
+
+
+   <body style="width:500px;height:800px;">
+     <hr>
+     <br>
+     <form class="my-form">
+        <div class="container">
+          <ul>
+            <li>
+              <div class="grid grid-2">
+                <button type='button' class="btn-grid" id="btn_retrieve_codes" >
+                  <span class="front"> Retrieve Katex Codes</span>
+                </button>
+                <button type='button'class="btn-grid" id="btn_add_code" >
+                  <span class="front" >Create New Katex Code</span>
+                </button>
+              </div>
+            </li>
+            <li id="codes">
+                <!--<textarea></textarea>
+                <p > <hr> </p>
+
+                <textarea></textarea>-->
+            </li>
+          </ul>
+        </div>
+      </form>
+      <footer>
+        <div class="container">
+          <big>
+            Next : <br>
+              0) Possibility to use tab to indent code in the text area <br>
+              1) Automatically indent the code when loaded from Notion <br>
+              2) Store permanently katex codes in the extension <br>
+              3) Directly Inject the edited code into Notion <br>
+                  ( API needed?) <br>
+
+          </big>
+          <br>
+          <small> Extension Made  by
+              <a href="" target="_blank"> Manuel Occorso </a><br>
+              2h 17 min coding
+
+          </small>
+        </div>
+      </footer>
+   </body>
+
+
+
+
+
+   <script src="popup.js"></script>
+ </html>
