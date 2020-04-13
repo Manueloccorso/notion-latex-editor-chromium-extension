@@ -38,7 +38,14 @@ function send_request_for_codes(){
 //------------------------- LOGIC DEFINITION -------------------------------------
 
 function add_custom_katex_code() {
-  custom_codes.push("New Code");
+  let new_id = '_' + Math.random().toString(36).substr(2, 9);
+  custom_codes.push(
+        {
+          id : new_id,
+          code : "\\frac{New Code}{Click to change code}"
+
+        }
+    );
   refresh_codes_visualization();
 }
 
@@ -50,6 +57,34 @@ function sync_katex_code(id, code){
               label_area,
               { throwOnError: false}
             );
+}
+
+function add_listeners_to_text_area(text_area){
+  text_area.addEventListener(
+            'keyup',
+            (event) => {
+              clean_code = auto_de_formatting(text_area.value);
+              sync_katex_code(text_area.id,
+                clean_code
+                );
+            }
+        );
+  text_area.addEventListener(
+            'change',
+            (event) => {
+              console.log("NM.popup: COPY TO CLIPBOARD");
+              text_area.select();
+              document.execCommand('copy');
+              window.getSelection().removeAllRanges()
+            }
+  );
+  text_area.addEventListener(
+    'keydown',
+    (event) => {
+      console.log("TAB INTERCEPTED");
+      tabs_in_textarea(text_area, event);
+    }
+  );
 }
 
 
@@ -73,7 +108,6 @@ window.addEventListener(
       updateBtn.addEventListener(
                 'click',
                 function() {
-                  console.log("NM.popup: CLICKED BUTTON");
                   send_request_for_codes(); }
                 );
 

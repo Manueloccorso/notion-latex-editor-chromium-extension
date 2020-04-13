@@ -4,30 +4,7 @@ function set_text_area_with_code(code, id){
   let text_area = document.createElement("TEXTAREA");
   text_area.id = id;
   text_area.value = code;
-  text_area.addEventListener(
-            'keyup',
-            (event) => {
-              clean_code = auto_de_formatting(text_area.value);
-              sync_katex_code(text_area.id,
-                clean_code
-                );
-            }
-        );
-  text_area.addEventListener(
-            'change',
-            (event) => {
-              text_area.select();
-              document.execCommand('copy');
-              window.getSelection().removeAllRanges()
-            }
-  );
-  text_area.addEventListener(
-    'keydown',
-    (event) => {
-      console.log("TAB INTERCEPTED");
-      tabs_in_textarea(text_area, event);
-    }
-  );
+  add_listeners_to_text_area(text_area);
   return text_area;
 }
 
@@ -88,7 +65,7 @@ function append_code_block(node, code, index, custom){
 function append_code_blocks(node, codes, starting_id){
   for(let index = 0; index < codes.length; index++){
     let code = codes[index];
-    append_code_block(node, code, starting_id + index, false);
+    append_code_block(node, code.code, code.id, false);
   }
 }
 

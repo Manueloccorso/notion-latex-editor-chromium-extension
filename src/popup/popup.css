@@ -55,6 +55,22 @@ ul {
   list-style: none;
 }
 
+details{
+  cursor: pointer;
+  padding: 10px;
+}
+
+
+details:hover{
+  box-shadow: 0 0 10px rgba(0,0,0, 0.75);
+}
+
+/* Remove Arrow*/
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+
 /* SELECTION */
 select {
   appearance: none;

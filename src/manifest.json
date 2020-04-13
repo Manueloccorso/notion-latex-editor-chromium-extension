@@ -1,25 +1,36 @@
 {
   "manifest_version":2,
   "name": "NotionMathEditor_BrowserExtension",
-  "version" : "0.1",
-  "content_scripts" : [
-                        {
-                          "matches" : [ "http://*.notion.so/*", "https://*.notion.so/*"],
-                          "js" : ["content/content.js"]
-                        }
-                      ],
-  "background" : {
-    "scripts": ["background/background.js"],
-    "persistent": false
-  },
-  "browser_action":{
-      "default_icon" : "images/get_started128.png",
+  "version" : "0.2",
+  "content_scripts" :
+    [
+      {
+        "matches" : [ "http://*.notion.so/*", "https://*.notion.so/*"],
+        "js" : ["content/content.js"]
+      }
+    ],
+  "background" :
+    {
+      "scripts": ["background/background.js"],
+      "persistent": false
+    },
+  "browser_action":
+    {
+      "default_icon" : "images/action_icon.png",
       "default_popup" : "popup/popup.html",
       "default_title" : "Edit Notion Math Blocks!"
-  },
+    },
   "permissions" :
-       [
-         "tabs",
-       "http://*/*",
-       "https://*/*"]
+    [
+       "tabs",
+     "http://*/*",
+     "https://*/*"
+    ],
+
+  "icons":
+    {
+      "16": "images/action_icon.png",
+      "48": "images/action_icon.png",
+      "128": "images/action_icon.png"
+    }
 }

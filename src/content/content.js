@@ -33,14 +33,38 @@ function get_kcodes_from_annotations(annotations){
 // ---- retrieve a list of katex codes from the page,
 //        and send a message with them
 function retrieve_kcodes_from_page(){
-  codes = get_kcodes_from_annotations(get_annotations_from_page());
+  let notion_blocks = document.getElementsByClassName("notion-equation-block");
+  let msg_blocks = [];
+
+  for(let i = 0; i < notion_blocks.length ; i++){
+    nb_dom = notion_blocks[i];
+
+    nb_id = nb_dom.dataset.blockId;
+    nb_code = get_kcodes_from_annotations(
+                  nb_dom.getElementsByTagName('annotation')
+              )[0];
+
+    let msg_block = {
+      id : nb_id,
+      code : nb_code
+    };
+
+    msg_blocks.push(msg_block);
+  }
+
   let msg = {
     type : NOTION_MATH_STORE_CODES,
-    codes : codes
-  };
-  console.log("NM.content : Sent message: ");
-  console.log("NM.content : "+ NOTION_MATH_STORE_CODES);
-  console.log("NM.content : " +codes.toString());
+    codes : msg_blocks
+  }
+
+  console.log("NM.content : Sent message with blocks: ");
+  console.log("NM.content : "+ msg.type);
+  console.log("NM.content : # of Blocks " + msg.codes.length);
+  for (let i = 0; i < msg.codes.length; i++){
+    msg_block = msg.codes[i];
+    console.log("NM.content : Id : " + msg_block.id);
+    console.log("NM.content : code : " + msg_block.code);
+  }
   chrome.runtime.sendMessage(msg);
 }
 
