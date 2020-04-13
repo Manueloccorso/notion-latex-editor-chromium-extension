@@ -1,6 +1,8 @@
 <!DOCTYPE html>
  <html>
    <head>
+       <script src="popup/view.js"
+         crossorigin="anonymous"></script>
 
       <link rel="stylesheet" href="popup/lib/katex.css"
         crossorigin="anonymous">
@@ -17,8 +19,6 @@
       <script  defer src="popup/tabs_in_textarea.js"
         crossorigin="anonymous"></script>
 
-      <script  defer src="popup/view.js"
-        crossorigin="anonymous"></script>
 
       <script defer src="popup/popup.js"
           crossorigin="anonymous"></script>
@@ -43,48 +43,72 @@
                 <button type='button'class="btn-grid" id="btn_add_code" >
                   <span class="front"> <img class="small-icon"
                                             src="popup/icons/add-multi-size.ico"
-                                            alt="Refresh">
+                                            alt="Create New Code Block">
                   </span>
                 </button>
               </div>
             </li>
             <li>
-                <form class="custom-form">
+
+            <li >
+                <form class="custom-form" >
                   <div class="container" >
-                    <ul id="page_codes">
+                    <ul id="page_codes_div_id" >
                       <li>
-                        <h3>Code from Notion Page</h3>
-                          <!-- PROTOTYPE OF CODE BLOCK
-                              <li>
-                                <details>
-                                  <summary>
-                                    <p id="label_MathCodeId"> *** RENDERED FORMULA ***</p>
-                                  </summary>
-                                  <textarea id="MathCodeId">
-                                    *** FORMULA CODE ***
-                                  </textarea>
-                                </details>
-                              </li>
-                          -->
+                        <h3>Notion Page Codes</h3>
+                        <!-- PROTOTYPE OF Notion Page Code
+                            <li>
+                              <details>
+                                <summary>
+                                  <p id="notion_label_MathCodeId"> *** RENDERED FORMULA ***</p>
+                                </summary>
+                                <textarea id="notion_MathCodeId">
+                                  *** FORMULA CODE ***
+                                </textarea>
+                              </details>
+                            </li>
+                        -->
                       </li>
                     </ul>
                   </div>
                 </form>
             </li>
-
             <li >
                 <form class="custom-form" >
                   <div class="container" >
-                    <ul id="custom_codes" >
+                    <ul id="custom_codes_div_id" >
                       <li>
                         <h3>Custom code</h3>
                         <!-- PROTOTYPE OF NEW CODE BLOCK
                             <li>
                               <details>
                                 <summary>
-                                  <p id="label_MathCodeId"> *** RENDERED FORMULA ***</p>
+                                  <p id="custom_label_MathCodeId"> *** RENDERED FORMULA ***</p>
                                 </summary>
-                                <textarea id="MathCodeId">
+                                <textarea id="custom_MathCodeId">
+                                  *** FORMULA CODE ***
+                                </textarea>
+                              </details>
+                            </li>
+                        -->
+                      </li>
+                    </ul>
+                  </div>
+                </form>
+            </li>
+            <li >
+                <form class="custom-form" >
+                  <div class="container" >
+                    <ul id="saved_codes_div_id" >
+                      <li>
+                        <h3>Saved Codes </h3>
+                        <!-- PROTOTYPE OF SAVED CODE BLOCK
+                            <li>
+                              <details>
+                                <summary>
+                                  <p id="saved_label_random_seed"> *** RENDERED FORMULA ***</p>
+                                </summary>
+                                <textarea id="saved_random_seed">
                                   *** FORMULA CODE ***
                                 </textarea>
                               </details>
