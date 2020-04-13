@@ -5,22 +5,22 @@
       <link rel="stylesheet" href="lib/katex.css"
         crossorigin="anonymous">
 
-      <script defer src="lib/katex.js"
+      <script src="lib/katex.js"
         crossorigin="anonymous"></script>
 
       <link rel="stylesheet" href="popup.css"
         crossorigin="anonymous">
 
-      <script defer src="autoformatting.js"
+      <script src="autoformatting.js"
         crossorigin="anonymous"></script>
 
-      <script defer src="tabs_in_textarea.js"
+      <script  src="tabs_in_textarea.js"
         crossorigin="anonymous"></script>
 
+      <script  src="view.js"
+        crossorigin="anonymous"></script>
 
-
-
-        <script defer src="popup.js"
+      <script  src="popup.js"
           crossorigin="anonymous"></script>
 
    </head>
@@ -28,26 +28,66 @@
 
 
    <body style="width:700px;">
-     <hr>
      <br>
-     <form class="my-form">
+     <form class="main-popup-form">
         <div class="container">
-          <ul>
+          <ul class="shadowed">
             <li>
-              <div class="grid grid-2">
+              <div class="grid">
                 <button type='button' class="btn-grid" id="btn_retrieve_codes" >
-                  <span class="front"> Retrieve Katex Codes</span>
+                  <span class="front"> <img class="small-icon"
+                                            src="icons/sinchronize-multi-size.ico"
+                                            alt="Refresh">
+                  </span>
                 </button>
                 <button type='button'class="btn-grid" id="btn_add_code" >
-                  <span class="front" >Create New Katex Code</span>
+                  <span class="front"> <img class="small-icon"
+                                            src="icons/add-multi-size.ico"
+                                            alt="Refresh">
+                  </span>
                 </button>
               </div>
             </li>
-            <li id="codes">
-                <!--<textarea></textarea>
-                <p > <hr> </p>
+            <li>
+                <form class="main-popup-form">
+                  <div class="container" >
+                    <ul id="page_codes">
+                      <!-- PROTOTYPE OF CODE BLOCK
+                          <li>
+                            <details>
+                              <summary>
+                                <p id="label_MathCodeId"> *** RENDERED FORMULA ***</p>
+                              </summary>
+                              <textarea id="MathCodeId">
+                                *** FORMULA CODE ***
+                              </textarea>
+                            </details>
+                          </li>
+                      -->
+                    </ul>
+                  </div>
+                </form>
+            </li>
 
-                <textarea></textarea>-->
+            <li >
+                <form class="main-popup-form" >
+                  <div class="container" >
+                    <ul id="custom_codes" >
+                      <!-- PROTOTYPE OF NEW CODE BLOCK
+                          <li>
+                            <details>
+                              <summary>
+                                <p id="label_MathCodeId"> *** RENDERED FORMULA ***</p>
+                              </summary>
+                              <textarea id="MathCodeId">
+                                *** FORMULA CODE ***
+                              </textarea>
+                            </details>
+                          </li>
+                      -->
+                    </ul>
+                  </div>
+                </form>
             </li>
           </ul>
         </div>

@@ -1,7 +1,8 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700");
 
-/* RESET RULES
+/* COLOR THEME
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
 :root {
   --white: #afafaf;
   --red: #e31b23;
@@ -11,6 +12,8 @@
   --bgFormElsFocus: hsl(0, 7%, 20%);
 }
 
+/* BASIC ELEMENTS
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
 * {
   padding: 0;
   margin: 0;
@@ -35,25 +38,10 @@ label {
   cursor: pointer;
 }
 
-select {
-  appearance: none;
-}
-
-/* Remove native arrow on IE */
-select::-ms-expand {
-  display: none;
-}
-
-/*Remove dotted outline from selected option on Firefox*/
-/*https://stackoverflow.com/questions/3773430/remove-outline-from-select-box-in-ff/18853002#18853002*/
-/*We use !important to override the color set for the select on line 99*/
-select:-moz-focusring {
-  color: transparent !important;
-  text-shadow: 0 0 0 var(--white);
-}
 
 textarea {
   font-size: 12px;
+  width : inherit;
 }
 
 p {
@@ -67,11 +55,60 @@ ul {
   list-style: none;
 }
 
+/* SELECTION */
+select {
+  appearance: none;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+select:-moz-focusring {
+  color: transparent !important;
+  text-shadow: 0 0 0 var(--white);
+}
+
+/* SCROLLBAR DARK THEME*/
+html {
+  scrollbar-face-color: #646464;
+  scrollbar-base-color: #646464;
+  scrollbar-3dlight-color: #646464;
+  scrollbar-highlight-color: #646464;
+  scrollbar-track-color: #000;
+  scrollbar-arrow-color: #000;
+  scrollbar-shadow-color: #646464;
+  scrollbar-dark-shadow-color: #646464;
+}
+::-webkit-scrollbar { width: 8px; height: 3px;}
+::-webkit-scrollbar-button {  background-color: #666; }
+::-webkit-scrollbar-track {  background-color: #646464;}
+::-webkit-scrollbar-track-piece { background-color: #000;}
+::-webkit-scrollbar-thumb { height: 50px; background-color: #666; border-radius: 3px;}
+::-webkit-scrollbar-corner { background-color: #646464;}}
+::-webkit-resizer { background-color: #666;}
+
+/* BODY DEFAULT*/
 body {
   font: 17px/1.5 "Open Sans", sans-serif;
   background: var(--bodyColor);
   color: var(--white);
-  margin: 4.5rem 0;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+
+/* MAIN POPUP ELEMENTS
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.main-popup-form h1 {
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.small-icon {
+  height : 20px;
+  width : 20px;
 }
 
 .container {
@@ -80,72 +117,69 @@ body {
 }
 
 
-/* FORM ELEMENTS
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-.my-form h1 {
-  margin-bottom: 1.5rem;
-  margin-top: 1.5rem;
-}
-
-.my-form li,
-.my-form .grid > *:not(:last-child) {
+.main-popup-form li,
+.main-popup-form .grid > *:not(:last-child) {
   margin-bottom: 1.5rem;
 }
 
-.my-form select,
-.my-form input,
-.my-form textarea,
-.my-form button {
-  width: 100%;
+.main-popup-form li{
   line-height: 1.5;
-  padding: 15px 10px;
-  border: 1px solid var(--borderFormEls);
+  padding: 15px 15px;
+  border: 2px solid var(--borderFormEls);
+  box-shadow: 0 0 10px rgba(0,0,0, 0.75);
+  color: var(--white);
+}
+
+.main-popup-form select,
+.main-popup-form input,
+.main-popup-form textarea,
+.main-popup-form button {
+  line-height: 1.5;
+  padding: 15px 15px;
+  border: 2px solid var(--borderFormEls);
   color: var(--white);
   background: var(--bgFormEls);
   transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
     transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
 }
 
-.my-form textarea {
+.main-popup-form textarea {
   height: 170px;
+  width : 100%;
 }
 
-.my-form ::placeholder {
-  color: inherit;
-  /*Fix opacity issue on Firefox*/
-  opacity: 1;
+.main-popup-form details{
+  width : width: 100%;
 }
 
-.my-form select:focus,
-.my-form input:focus,
-.my-form textarea:focus,
-.my-form button:focus,
-.my-form input[type="checkbox"]:focus + label {
+
+.main-popup-form select:focus,
+.main-popup-form input:focus,
+.main-popup-form textarea:focus,
+.main-popup-form button:focus,
+.main-popup-form input[type="checkbox"]:focus + label {
   background: var(--bgFormElsFocus);
 }
 
-.my-form select:focus,
-.my-form input:focus,
-.my-form textarea:focus {
+.main-popup-form select:focus,
+.main-popup-form input:focus,
+.main-popup-form textarea:focus {
   transform: scale(1.02);
 }
 
-.my-form *:required,
-.my-form select {
+.main-popup-form *:required,
+.main-popup-form select {
   background-repeat: no-repeat;
   background-position: center right 12px;
   background-size: 15px 15px;
 }
 
-.my-form *:required {
-  background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/asterisk.svg);
-}
 
-.my-form select {
+.main-popup-form select {
   background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/down.svg);
 }
 
-.my-form *:disabled {
+.main-popup-form *:disabled {
   cursor: default;
   filter: blur(2px);
 }
@@ -153,69 +187,22 @@ body {
 
 /* FORM BTNS
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-.my-form .required-msg {
-  display: none;
-  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/asterisk.svg)
-    no-repeat center left / 15px 15px;
-  padding-left: 20px;
-}
 
-.my-form .btn-grid {
-  position: relative;
-  overflow: hidden;
-  transition: filter 0.2s;
-}
-
-.my-form button {
+.main-popup-form button {
   font-weight: bold;
 }
 
-.my-form button > * {
+.main-popup-form button > * {
   display: inline-block;
   width: 100%;
 }
 
+/* CODE BLOCKS RENDERED
+------------------------------------------------------*/
 
-/* CUSTOM CHECKBOX
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-.my-form input[type="checkbox"] {
-  position: absolute;
-  left: -9999px;
-}
-
-.my-form input[type="checkbox"] + label {
-  position: relative;
-  display: inline-block;
-  padding-left: 2rem;
-  transition: background 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
-}
-
-.my-form input[type="checkbox"] + label::before,
-.my-form input[type="checkbox"] + label::after {
-  content: '';
-  position: absolute;
-}
-
-.my-form input[type="checkbox"] + label::before {
-  left: 0;
-  top: 6px;
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--white);
-}
-
-.my-form input[type="checkbox"]:checked + label::before {
-  background: var(--red);
-}
-
-.my-form input[type="checkbox"]:checked + label::after {
-  left: 7px;
-  top: 7px;
-  width: 6px;
-  height: 14px;
-  border-bottom: 2px solid var(--white);
-  border-right: 2px solid var(--white);
-  transform: rotate(45deg);
+.main-popup-form .rendered-code{
+  text-align: center;
+  line-height: 170%;
 }
 
 
@@ -233,42 +220,4 @@ footer a {
 
 footer span {
   color: var(--red);
-}
-
-
-/* MQ
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-@media screen and (min-width: 600px) {
-  .my-form .grid {
-    display: grid;
-    grid-gap: 1.5rem;
-  }
-
-  .my-form .grid-2 {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .my-form .grid-3 {
-    grid-template-columns: auto auto auto;
-    align-items: center;
-  }
-
-  .my-form .grid > *:not(:last-child) {
-    margin-bottom: 0;
-  }
-
-  .my-form .required-msg {
-    display: block;
-  }
-}
-
-@media screen and (min-width: 541px) {
-  .my-form input[type="checkbox"] + label::before {
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .my-form input[type="checkbox"]:checked + label::after {
-    top: 3px;
-  }
 }
