@@ -25,7 +25,7 @@ function append_title(node, level, title, anchor){
     title_text.innerHTML = "<h"+level+">"+title+ "</h"+level+">";
   }
   else {
-    title_text.innerHTML = "<a href='"+anchor+"' > <h"+level+">"+title+ "</h"+level+"> </a>";
+    title_text.innerHTML = "<a href='"+anchor+"' id='"+anchor+"'' > <h"+level+">"+title+ "</h"+level+"> </a>";
   }
   node.append(title_text);
 }

@@ -1,4 +1,4 @@
-console.log("NM.Popup: Running");
+console.log("NM.popup : Running");
 
 //MESSAGES
   //Request the math codes from the content
@@ -27,7 +27,7 @@ function preview_id_from_code_id(id){
 
 //----- send a request for the codes in the content
 function send_request_for_codes(){
-  console.log("NM.popup: Button Clicked;");
+  console.log("NM.popup :   Button Clicked;");
   let msg = {
     type : NOTION_MATH_RETRIEVE_MATH_CODES
   };
@@ -36,6 +36,18 @@ function send_request_for_codes(){
 
 
 //------------------------- LOGIC DEFINITION -------------------------------------
+
+// Get the position of an element in the page
+function getPosition(element){
+        var e = document.getElementById(element);
+        var y = 0;
+
+        do{
+            y += e.offsetTop;
+        }while(e = e.offsetParent);
+
+        return y;
+    }
 
 function add_custom_katex_code() {
   let new_id = '_' + Math.random().toString(36).substr(2, 9);
@@ -72,7 +84,7 @@ function add_listeners_to_text_area(text_area){
   text_area.addEventListener(
             'change',
             (event) => {
-              console.log("NM.popup: COPY TO CLIPBOARD");
+              console.log("NM.popup :   COPY TO CLIPBOARD");
               text_area.select();
               document.execCommand('copy');
               window.getSelection().removeAllRanges()
@@ -81,7 +93,7 @@ function add_listeners_to_text_area(text_area){
   text_area.addEventListener(
     'keydown',
     (event) => {
-      console.log("TAB INTERCEPTED");
+      console.log("NM.popup : TAB INTERCEPTED");
       tabs_in_textarea(text_area, event);
     }
   );
@@ -90,12 +102,12 @@ function add_listeners_to_text_area(text_area){
 
 chrome.runtime.onMessage.addListener(popup_receiver);
 function popup_receiver(request, sender, sendResponse){
-  console.log("NM.popup: Message received");
+  console.log("NM.popup :   Message received");
   if(request.type === NOTION_MATH_CODES_UPDATED){
-    console.log("Message Received with Katex Codes");
+    console.log("NM.popup : Message Received with Katex Codes");
     page_codes = request.codes;
     refresh_codes_visualization();
-    console.log("NM.popup: Updating popup with new codes");
+    console.log("NM.popup :   Updating popup with new codes");
   }
 }
 
@@ -117,7 +129,10 @@ window.addEventListener(
                 'click',
                 function() {
                     add_custom_katex_code();
-                    window.location = (""+window.location).replace(/#[A-Za-z0-9_]*$/,'')+custom_codes_div_anchor;
+                    console.log("NM.popup : ANCHORING TO CUSTOM CODES");
+                    console.log(getPosition(custom_codes_div_anchor));
+                    window.scrollTo(0,
+                                    getPosition(custom_codes_div_anchor));
                   }
                 );
   }
