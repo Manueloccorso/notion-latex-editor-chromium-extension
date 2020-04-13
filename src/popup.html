@@ -2,25 +2,25 @@
  <html>
    <head>
 
-      <link rel="stylesheet" href="lib/katex.css"
+      <link rel="stylesheet" href="popup/lib/katex.css"
         crossorigin="anonymous">
 
-      <script src="lib/katex.js"
+      <script src="popup/lib/katex.js"
         crossorigin="anonymous"></script>
 
-      <link rel="stylesheet" href="popup.css"
+      <link rel="stylesheet" href="popup/popup.css"
         crossorigin="anonymous">
 
-      <script src="autoformatting.js"
+      <script src="popup/autoformatting.js"
         crossorigin="anonymous"></script>
 
-      <script  src="tabs_in_textarea.js"
+      <script  src="popup/tabs_in_textarea.js"
         crossorigin="anonymous"></script>
 
-      <script  src="view.js"
+      <script  src="popup/view.js"
         crossorigin="anonymous"></script>
 
-      <script  src="popup.js"
+      <script  src="popup/popup.js"
           crossorigin="anonymous"></script>
 
    </head>
@@ -29,27 +29,27 @@
 
    <body style="width:700px;">
      <br>
-     <form class="main-popup-form">
+     <form class="custom-form">
         <div class="container">
           <ul class="shadowed">
             <li>
               <div class="grid">
                 <button type='button' class="btn-grid" id="btn_retrieve_codes" >
                   <span class="front"> <img class="small-icon"
-                                            src="icons/sinchronize-multi-size.ico"
+                                            src="popup/icons/sinchronize-multi-size.ico"
                                             alt="Refresh">
                   </span>
                 </button>
                 <button type='button'class="btn-grid" id="btn_add_code" >
                   <span class="front"> <img class="small-icon"
-                                            src="icons/add-multi-size.ico"
+                                            src="popup/icons/add-multi-size.ico"
                                             alt="Refresh">
                   </span>
                 </button>
               </div>
             </li>
             <li>
-                <form class="main-popup-form">
+                <form class="custom-form">
                   <div class="container" >
                     <ul id="page_codes">
                       <li>
@@ -73,7 +73,7 @@
             </li>
 
             <li >
-                <form class="main-popup-form" >
+                <form class="custom-form" >
                   <div class="container" >
                     <ul id="custom_codes" >
                       <li>

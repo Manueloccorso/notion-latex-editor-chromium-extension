@@ -117,7 +117,7 @@ body {
 /* MAIN POPUP ELEMENTS
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-.main-popup-form h1 {
+.custom-form h1 {
   margin-bottom: 1.5rem;
   margin-top: 1.5rem;
 }
@@ -133,12 +133,12 @@ body {
 }
 
 
-.main-popup-form li,
-.main-popup-form .grid > *:not(:last-child) {
+.custom-form li,
+.custom-form .grid > *:not(:last-child) {
   margin-bottom: 1.5rem;
 }
 
-.main-popup-form li{
+.custom-form li{
   line-height: 1.5;
   padding: 15px 15px;
   border: 2px solid var(--borderFormEls);
@@ -146,10 +146,10 @@ body {
   color: var(--white);
 }
 
-.main-popup-form select,
-.main-popup-form input,
-.main-popup-form textarea,
-.main-popup-form button {
+.custom-form select,
+.custom-form input,
+.custom-form textarea,
+.custom-form button {
   line-height: 1.5;
   padding: 15px 15px;
   border: 2px solid var(--borderFormEls);
@@ -159,43 +159,43 @@ body {
     transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
 }
 
-.main-popup-form textarea {
+.custom-form textarea {
   height: 170px;
   width : 100%;
 }
 
-.main-popup-form details{
+.custom-form details{
   width : width: 100%;
 }
 
 
-.main-popup-form select:focus,
-.main-popup-form input:focus,
-.main-popup-form textarea:focus,
-.main-popup-form button:focus,
-.main-popup-form input[type="checkbox"]:focus + label {
+.custom-form select:focus,
+.custom-form input:focus,
+.custom-form textarea:focus,
+.custom-form button:focus,
+.custom-form input[type="checkbox"]:focus + label {
   background: var(--bgFormElsFocus);
 }
 
-.main-popup-form select:focus,
-.main-popup-form input:focus,
-.main-popup-form textarea:focus {
+.custom-form select:focus,
+.custom-form input:focus,
+.custom-form textarea:focus {
   transform: scale(1.02);
 }
 
-.main-popup-form *:required,
-.main-popup-form select {
+.custom-form *:required,
+.custom-form select {
   background-repeat: no-repeat;
   background-position: center right 12px;
   background-size: 15px 15px;
 }
 
 
-.main-popup-form select {
+.custom-form select {
   background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/down.svg);
 }
 
-.main-popup-form *:disabled {
+.custom-form *:disabled {
   cursor: default;
   filter: blur(2px);
 }
@@ -204,11 +204,11 @@ body {
 /* FORM BTNS
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-.main-popup-form button {
+.custom-form button {
   font-weight: bold;
 }
 
-.main-popup-form button > * {
+.custom-form button > * {
   display: inline-block;
   width: 100%;
 }
@@ -216,7 +216,7 @@ body {
 /* CODE BLOCKS RENDERED
 ------------------------------------------------------*/
 
-.main-popup-form .rendered-code{
+.custom-form .rendered-code{
   text-align: center;
   line-height: 170%;
 }
