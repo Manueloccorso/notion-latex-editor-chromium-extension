@@ -5,17 +5,17 @@
   "content_scripts" : [
                         {
                           "matches" : [ "http://*.notion.so/*", "https://*.notion.so/*"],
-                          "js" : ["content.js"]
+                          "js" : ["content/content.js"]
                         }
                       ],
   "background" : {
-    "scripts": ["background.js"],
+    "scripts": ["background/background.js"],
     "persistent": false
   },
   "browser_action":{
       "default_icon" : "images/get_started128.png",
-      "default_popup" : "popup.html",
-      "default_title" : "Lookup Formulas!"
+      "default_popup" : "popup/popup.html",
+      "default_title" : "Edit Notion Math Blocks!"
   },
   "permissions" :
        [

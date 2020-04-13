@@ -53,11 +53,11 @@ select:-moz-focusring {
 }
 
 textarea {
-  resize: none;
+  font-size: 12px;
 }
 
 p {
-  font-size: 17px;
+  font-size: 14px;
   margin-top: 10px;
   margin-bottom: 10px;
 
@@ -75,7 +75,6 @@ body {
 }
 
 .container {
-  max-width: 500px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }

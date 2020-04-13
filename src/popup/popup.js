@@ -29,6 +29,7 @@ function send_request_for_codes(){
   chrome.runtime.sendMessage(msg);
 }
 
+
 //----- Create a TextArea from the Katex_code
 function set_text_area_with_code(code, id){
   let text_area = document.createElement("TEXTAREA");
@@ -37,8 +38,10 @@ function set_text_area_with_code(code, id){
   text_area.addEventListener(
             'keyup',
             (event) => {
+              clean_code = auto_de_formatting(text_area.value);
               sync_katex_code(text_area.id,
-                            text_area.value);
+                clean_code
+                );
             }
         );
   text_area.addEventListener(
@@ -48,6 +51,13 @@ function set_text_area_with_code(code, id){
               document.execCommand('copy');
               window.getSelection().removeAllRanges()
             }
+  );
+  text_area.addEventListener(
+    'keydown',
+    (event) => {
+      console.log("TAB INTERCEPTED");
+      tabs_in_textarea(text_area, event);
+    }
   );
   return text_area;
 }
@@ -88,7 +98,7 @@ function append_code_block(node, code, index, custom){
     let summary = document.createElement("SUMMARY");
     summary.append(create_preview_paragraph(code, index))
     spoiler_div.append(summary);
-    let text_area = set_text_area_with_code(code, index);
+    let text_area = set_text_area_with_code(autoformatting(code), index);
     spoiler_div.append(text_area);
 
     node.append(spoiler_div);

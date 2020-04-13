@@ -23,7 +23,9 @@ function get_annotations_from_page(){
 function get_kcodes_from_annotations(annotations){
   let codes = [];
   for(let i = 0; i < annotations.length; i++){
-    codes.push(annotations[i].innerHTML);
+    let noisy_code =annotations[i].innerHTML;
+    noisy_code = noisy_code.replace(/amp;/g, "");
+    codes.push(noisy_code);
   }
   return codes;
 }
