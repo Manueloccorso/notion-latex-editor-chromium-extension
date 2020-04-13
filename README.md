@@ -15,8 +15,7 @@ Advantages for now:
 
 ## Getting Started
 
-Just download or clone the repo, then go on you browser and add the NotionMathEditor_BrowserExtension/src folder as an unpacked extension. 
-
+Nothing in particular w.r.t. any chromium unpacked extension in developer mode. 
 
 ### Prerequisites
 
@@ -24,7 +23,7 @@ Developer mode activated for the extensions, in the browser.
 
 ### Installing
 
-...
+Just clone the repo, and the add the NotionMathEditor_BrowserExtension/src folder as an unpacked extension in your browser.  
 
 ## Built With
 
