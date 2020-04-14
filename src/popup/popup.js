@@ -13,7 +13,8 @@ console.log("NM.popup : Running");
 // --------------------- VARS ----------------------------------------
 var custom_codes = [];
 var page_codes = [];
-var saved_codes = [];
+var storage_manager = StorageManager();
+storage_manager.load_storage();
 
 // --------------------- UTILITIES -----------------------------
 
@@ -91,12 +92,12 @@ function add_custom_katex_code() {
 }
 function add_saved_katex_code(code) {
   let new_id = Math.random().toString(36).substr(2, 9);
-  saved_codes.push(
-        {
-          id : new_id,
-          code : code
-        }
-    );
+  let new_code = {
+    id : new_id,
+    name : new_id,
+    code : code
+  }
+  storage_manager.save(new_code);
   refresh_codes_visualization();
 }
 
@@ -113,19 +114,39 @@ function sync_katex_code(id, code){
 
 //-------- LISTENERS
 
-function add_listeners_to_text_area(text_area){
+function add_listeners_to_text_area(text_area, stored){
+
   text_area.addEventListener(
             'keyup',
             (event) => {
               clean_code = auto_de_formatting(text_area.value);
-              sync_katex_code(text_area.id,
+              sync_katex_code(clean_id(text_area.id),
                 clean_code
                 );
             }
         );
+
+  if(stored){
+    text_area.addEventListener(
+              'change',
+              (event) => {
+                let cleaned_id = clean_id(text_area.id);
+                let name = storage_manager.get_name_from_id(cleaned_id);
+                let code = {
+                  id : cleaned_id,
+                  code : text_area.value,
+                  name : name,
+                }
+                storage_manager.save(code);
+              }
+            );
+
+  }
+
   text_area.addEventListener(
             'change',
             (event) => {
+
               text_area.select();
               document.execCommand('copy');
               window.getSelection().removeAllRanges();
@@ -144,6 +165,7 @@ function add_listeners_to_text_area(text_area){
                   code.code = text_area.value;
                 }
               }
+              let saved_codes =  storage_manager.get_codes();
               for(let i = 0; i < saved_codes.length; i++){
                 let code = saved_codes[i];
                 if(code.id == cleaned_id){

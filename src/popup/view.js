@@ -15,11 +15,11 @@ var saved_codes_div_anchor = "#saved_codes_div_anchor";
 var top_title_anchor = "#top_title";
 
 //----- Create a TextArea from the Katex_code
-function set_text_area_with_code(code, id){
+function set_text_area_with_code(code, id, stored){
   let text_area = document.createElement("TEXTAREA");
   text_area.id = textarea_id(id);
   text_area.value = code;
-  add_listeners_to_text_area(text_area);
+  add_listeners_to_text_area(text_area, stored);
   return text_area;
 }
 
@@ -103,7 +103,11 @@ function append_code_block(node, code, id, type){
       spoiler_div.append(summary);
         let preview_paragraph = create_preview_paragraph(code, id);
         summary.append(preview_paragraph);
-      let text_area = set_text_area_with_code(autoformatting(code), id);
+
+      let stored = false;
+      if(type == saved_block_type)
+        stored = true;
+      let text_area = set_text_area_with_code(autoformatting(code), id, stored);
       spoiler_div.append(text_area);
 
       append_gttop_btn(spoiler_div, id);
@@ -119,6 +123,17 @@ function append_code_blocks(node, codes, type){
     let code = codes[index];
     append_code_block(node, code.code, code.id, type);
   }
+}
+
+//----- Refresh Katex_codes textarea and preview
+function refresh_saved_codes_visualization(){
+    //insert customly created codes
+    let saved_codes_div = document.getElementById(saved_codes_div_id);
+    saved_codes_div.innerHTML = "";
+    let saved_codes = storage_manager.loaded_saved_codes;
+    console.log("ADDING :");
+    console.log(saved_codes);
+    append_code_blocks(saved_codes_div, saved_codes, saved_block_type);
 }
 
 
@@ -138,6 +153,7 @@ function refresh_codes_visualization(){
   //insert customly created codes
   let saved_codes_div = document.getElementById(saved_codes_div_id);
   saved_codes_div.innerHTML = "";
+  let saved_codes = storage_manager.loaded_saved_codes;
   append_code_blocks(saved_codes_div, saved_codes, saved_block_type);
 
 }
