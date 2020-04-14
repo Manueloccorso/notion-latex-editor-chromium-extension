@@ -62,15 +62,20 @@ function send_request_for_codes(){
 
 //------------------------- LOGIC DEFINITION -------------------------------------
 
-// Get the position of an element in the page
-function getPosition(element){
-        var e = document.getElementById(element);
-        var y = 0;
-        do{
-            y += e.offsetTop;
-        }while(e = e.offsetParent);
-        return y;
+function go_to_div(id){
+  window.scroll(0,findPos(document.getElementById(id)));
+}
+
+//Finds y value of given object
+function findPos(obj) {
+    var curtop = 0;
+    if (obj.offsetParent) {
+        do {
+            curtop += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+    return [curtop];
     }
+}
 
 
 function add_custom_katex_code() {
@@ -90,15 +95,15 @@ function add_saved_katex_code(code) {
         {
           id : new_id,
           code : code
-
         }
     );
   refresh_codes_visualization();
 }
 
 function sync_katex_code(id, code){
+  let cleaned_id = clean_id(id);
   let label_area = document.getElementById(
-                            preview_id(id)
+                            preview_id(cleaned_id)
                             );
   katex.render(code,
               label_area,
@@ -121,10 +126,30 @@ function add_listeners_to_text_area(text_area){
   text_area.addEventListener(
             'change',
             (event) => {
-              console.log("NM.popup :   COPY TO CLIPBOARD");
               text_area.select();
               document.execCommand('copy');
-              window.getSelection().removeAllRanges()
+              window.getSelection().removeAllRanges();
+
+              let cleaned_id = clean_id(text_area.id);
+
+              for(let i = 0; i < page_codes.length; i++){
+                let code = page_codes[i];
+                if(code.id == cleaned_id){
+                  code.code = text_area.value;
+                }
+              }
+              for(let i = 0; i < custom_codes.length; i++){
+                let code = custom_codes[i];
+                if(code.id == cleaned_id){
+                  code.code = text_area.value;
+                }
+              }
+              for(let i = 0; i < saved_codes.length; i++){
+                let code = saved_codes[i];
+                if(code.id == cleaned_id){
+                  code.code = text_area.value;
+                }
+              }
             }
   );
   text_area.addEventListener(
@@ -149,23 +174,27 @@ function add_listeners_to_save_btn(btn){
       let id = clean_id(btn.id);
       let code = document.getElementById(textarea_id(id)).value;
       add_saved_katex_code(code);
+      go_to_div(saved_codes_div_id);
     }
   );
 
 }
 
 function add_listeners_to_gttop_btn(btn){
-  window.scrollTo(0,0);
+  btn.addEventListener(
+    'click',
+    function()  {
+      refresh_codes_visualization();
+      go_to_div(top_title_div_id);
+    }
+  );
 }
 
 chrome.runtime.onMessage.addListener(popup_receiver);
 function popup_receiver(request, sender, sendResponse){
-  console.log("NM.popup :   Message received");
   if(request.type === NOTION_MATH_CODES_UPDATED){
-    console.log("NM.popup : Message Received with Katex Codes");
     page_codes = request.codes;
     refresh_codes_visualization();
-    console.log("NM.popup :   Updating popup with new codes");
   }
 }
 
@@ -187,10 +216,7 @@ window.addEventListener(
                 'click',
                 function() {
                     add_custom_katex_code();
-                    console.log("NM.popup : ANCHORING TO CUSTOM CODES");
-                    console.log(getPosition(custom_codes_div_anchor));
-                    window.scrollTo(0,
-                                    getPosition(custom_codes_div_anchor));
+                    go_to_div(custom_codes_div_id);
                   }
                 );
   }

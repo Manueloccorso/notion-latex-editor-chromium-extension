@@ -2,6 +2,7 @@
 var page_codes_div_id = "page_codes_div_id";
 var custom_codes_div_id = "custom_codes_div_id";
 var saved_codes_div_id = "saved_codes_div_id";
+var top_title_div_id = "top_title_div_id";
 
 
 var page_block_type = "page_block_type";
@@ -10,7 +11,8 @@ var saved_block_type = "saved_block_type";
 
 var custom_codes_div_anchor = "#custom_codes_div_anchor";
 var page_codes_div_anchor = "#page_codes_div_anchor";
-var saved_codes_div_anchor = "#page_codes_div_anchor";
+var saved_codes_div_anchor = "#saved_codes_div_anchor";
+var top_title_anchor = "#top_title";
 
 //----- Create a TextArea from the Katex_code
 function set_text_area_with_code(code, id){
@@ -32,14 +34,9 @@ function create_preview_paragraph(code, id ){
   return label_area;
 }
 
-function append_title(node, level, title, anchor){
+function append_title(node, level, title){
   let title_text = document.createElement("p");
-  if(anchor.length < 1){
-    title_text.innerHTML = "<h"+level+">"+title+ "</h"+level+">";
-  }
-  else {
-    title_text.innerHTML = "<a href='"+anchor+"' id='"+anchor+"'' > <h"+level+">"+title+ "</h"+level+"> </a>";
-  }
+  title_text.innerHTML = "<h"+level+">"+title+ "</h"+level+"> ";
   node.append(title_text);
 }
 
@@ -67,7 +64,7 @@ function append_gttop_btn(node, id){
   gttop_btn.id = gttop_btn_id(id);
   gttop_btn.innerHTML =  ' <span class="front"> <img class="small-icon" '+
                               ' src="popup/icons/up-multi-size.ico" '+
-                              ' alt="Return To Top"> </span>';
+                              ' alt="Go To Top"> </span>';
   add_listeners_to_gttop_btn(gttop_btn);
   node.append(gttop_btn);
 }
@@ -96,8 +93,9 @@ function append_delete_block_btn(node, id){
 
 
 function append_code_block(node, code, id, type){
-  id = id + type;
+  id = id;
   let li = document.createElement("LI");
+  li.class = type;
   node.append(li);
     let spoiler_div = document.createElement("DETAILS");
     li.append(spoiler_div);
@@ -110,7 +108,7 @@ function append_code_block(node, code, id, type){
 
       append_gttop_btn(spoiler_div, id);
       append_save_block_btn(spoiler_div, id);
-      if(type === custom_block_type || type === saved_block_type ){
+      if(type == custom_block_type || type == saved_block_type ){
         append_delete_block_btn(spoiler_div, id);
       }
 
@@ -130,19 +128,16 @@ function refresh_codes_visualization(){
   //insert the codes from content
   let page_codes_div = document.getElementById(page_codes_div_id);
   page_codes_div.innerHTML = "";
-  append_title(page_codes_div, "3", "Notion Page Katex Codes", page_codes_div_anchor);
-  append_code_blocks(page_codes_div,page_codes, page_block_type);
+  append_code_blocks(page_codes_div, page_codes, page_block_type);
 
   //insert customly created codes
   let custom_codes_div = document.getElementById(custom_codes_div_id);
   custom_codes_div.innerHTML = "";
-  append_title(custom_codes_div, "3", "Custom Katex Codes", custom_codes_div_anchor);
   append_code_blocks(custom_codes_div, custom_codes, custom_block_type);
 
   //insert customly created codes
   let saved_codes_div = document.getElementById(saved_codes_div_id);
   saved_codes_div.innerHTML = "";
-  append_title(saved_codes_div, "3", "Saved Katex Codes", saved_codes_div_anchor);
   append_code_blocks(saved_codes_div, saved_codes, saved_block_type);
 
 }

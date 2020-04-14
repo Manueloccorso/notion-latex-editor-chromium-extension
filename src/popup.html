@@ -30,32 +30,28 @@
    <body style="width:700px;">
      <br>
      <form class="custom-form">
-        <div class="container">
+        <div class="container" >
           <ul class="shadowed">
             <li>
-              <div class="grid">
-                <button type='button' class="btn-grid" id="btn_retrieve_codes" >
-                  <span class="front"> <img class="small-icon"
-                                            src="popup/icons/sinchronize-multi-size.ico"
-                                            alt="Refresh">
-                  </span>
-                </button>
-                <button type='button'class="btn-grid" id="btn_add_code" >
-                  <span class="front"> <img class="small-icon"
-                                            src="popup/icons/add-multi-size.ico"
-                                            alt="Create New Code Block">
-                  </span>
-                </button>
-              </div>
+                <div id="top_title_div_id">
+                  <h2>Notion Math : Quick Editor Browser Extension</h2>
+                </div>
             </li>
-            <li>
 
-            <li >
+            <li>
+              <div class="grid-commands">
+                <h3>Notion Page Codes</h3>
+                  <button type='button' class="btn-grid" id="btn_retrieve_codes" >
+                    <span class="front"> <img class="small-icon"
+                                              src="popup/icons/sinchronize-multi-size.ico"
+                                              alt="Refresh">
+                    </span>
+                  </button>
+              </div>
                 <form class="custom-form" >
                   <div class="container" >
-                    <ul id="page_codes_div_id" >
+                    <ul id="page_codes_div_id">
                       <li>
-                        <h3>Notion Page Codes</h3>
                         <!-- PROTOTYPE OF Notion Page Code
                             <li>
                               <details>
@@ -74,11 +70,19 @@
                 </form>
             </li>
             <li >
+              <div class="grid-commands">
+                <h3> Quick Codes</h3>
+                <button type='button'class="btn-grid" id="btn_add_code" >
+                  <span class="front"> <img class="small-icon"
+                                            src="popup/icons/add-multi-size.ico"
+                                            alt="Create New Code Block">
+                  </span>
+                </button>
+              </div>
                 <form class="custom-form" >
                   <div class="container" >
                     <ul id="custom_codes_div_id" >
                       <li>
-                        <h3>Custom code</h3>
                         <!-- PROTOTYPE OF NEW CODE BLOCK
                             <li>
                               <details>
@@ -97,11 +101,13 @@
                 </form>
             </li>
             <li >
+              <h3> Saved Codes </h3>
+              <div class="grid-commands">
+              </div>
                 <form class="custom-form" >
-                  <div class="container" >
-                    <ul id="saved_codes_div_id" >
+                  <div class="container"  >
+                    <ul id="saved_codes_div_id">
                       <li>
-                        <h3>Saved Codes </h3>
                         <!-- PROTOTYPE OF SAVED CODE BLOCK
                             <li>
                               <details>
