@@ -25,16 +25,16 @@
 
   "browser_action":
     {
-      "default_icon" : "images/action_icon.png",
+      "default_icon" : "images/action_icon1.png",
       "default_popup" : "popup.html",
       "default_title" : "Edit Notion Math Blocks!"
     },
 
   "icons":
     {
-      "16": "images/action_icon.png",
-      "48": "images/action_icon.png",
-      "128": "images/action_icon.png"
+      "16": "images/action_icon1.png",
+      "48": "images/action_icon1.png",
+      "128": "images/action_icon1.png"
     },
 
 
