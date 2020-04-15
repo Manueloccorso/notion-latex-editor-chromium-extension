@@ -85,7 +85,7 @@ let m = Model(null, null);
   console.log(prefix);
   console.log(prefix, "TESTING WITHOUT STORAGE");
   console.log(prefix);
-  let array = create_advanced_array(false, null );
+  let array = AdvancedArray(false, null );
     console.log(prefix,"new array : ");
       log_obj(prefix,array);
 
@@ -101,7 +101,7 @@ let m = Model(null, null);
   console.log(storage_simulator);
   console.log(prefix);
 
-  array = create_advanced_array(true, storage_simulator );
+  array = AdvancedArray(true, storage_simulator );
     console.log(prefix,"NEW ARRAY : ");
       log_obj(prefix,array);
 

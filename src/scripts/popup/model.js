@@ -4,7 +4,7 @@
   // push(code) : add code to the model and in case add it to storage
   // set(code_to_set): change the value of the code with the same id and in case update storage
   // remove(code_to_remove) : remove the code and in case delete it from storage
-function create_advanced_array(store, storage){
+function AdvancedArray(store, storage){
   return {
       codes : {},
 
@@ -62,19 +62,26 @@ function create_advanced_array(store, storage){
 };
 
 
-
-function Model(store, storage) {
+// Manage all the data needed for code blocks store
+  // get(id) : get code = { id , code, name, type }  with that id
+  // getAll() : return codes = [{c1},{c2}, ...] with all the codes
+  // push(code) : add code to the model and in case add it to storage
+  // set(code_to_set): change the value of the code with the same id and in case update storage
+  // remove(code_to_remove) : remove the code and in case delete it from storage
+function Model(controller, view, storage) {
 
   let m = {
+    controller  : controller,
+    view        : view,
+    storage     : storage,
+
 
     prefix : "Model : ",
-
     log_obj : function(obj){
       console.log(this.prefix, JSON.stringify(obj, function replacer(key, value) { return value}));
     },
 
-    // view to notify on changev
-    view: {},
+
 
     // type of codes
     type_page: "type_page",
@@ -165,7 +172,7 @@ function Model(store, storage) {
       }
       return false;
     },
-    
+
     actOnCodesWithCodes : function(codes, action){
       if(codes !== null){
         for(code of codes){
@@ -189,9 +196,9 @@ function Model(store, storage) {
 
   };
 
-  m.codes[m.type_page] = create_advanced_array(false, null);
-  m.codes[m.type_quick] = create_advanced_array(false, null);
-  m.codes[m.type_stored] = create_advanced_array(store, storage);
+  m.codes[m.type_page] = AdvancedArray(false, null);
+  m.codes[m.type_quick] = AdvancedArray(false, null);
+  m.codes[m.type_stored] = AdvancedArray(true, storage);
   m.codes[m.type_stored].syncWithStorage();
   return m;
 }
