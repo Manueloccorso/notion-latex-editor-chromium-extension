@@ -1,159 +1,349 @@
-
-var page_codes_div_id = "page_codes_div_id";
-var custom_codes_div_id = "custom_codes_div_id";
-var saved_codes_div_id = "saved_codes_div_id";
-var top_title_div_id = "top_title_div_id";
-
-
 var page_block_type = "page_block_type";
 var custom_block_type = "custom_block_type";
 var saved_block_type = "saved_block_type";
 
-var custom_codes_div_anchor = "#custom_codes_div_anchor";
-var page_codes_div_anchor = "#page_codes_div_anchor";
-var saved_codes_div_anchor = "#saved_codes_div_anchor";
-var top_title_anchor = "#top_title";
 
-//----- Create a TextArea from the Katex_code
-function set_text_area_with_code(code, id, stored){
-  let text_area = document.createElement("TEXTAREA");
-  text_area.id = textarea_id(id);
-  text_area.value = code;
-  add_listeners_to_text_area(text_area, stored);
-  return text_area;
-}
+function View(){
 
-function create_preview_paragraph(code, id ){
-  let label_area = document.createElement("p");
-  label_area.id = preview_id(id);
-  label_area.className +=  "rendered-code";
-  katex.render(code,
-              label_area,
-              { throwOnError: false}
-            );
-  return label_area;
-}
+  let view = {
 
-function append_title(node, level, title){
-  let title_text = document.createElement("p");
-  title_text.innerHTML = "<h"+level+">"+title+ "</h"+level+"> ";
-  node.append(title_text);
-}
+    page_codes_box : function(){return document.getElementById(global_view.id_html_fixed.page_codes_box_id); },
+    quick_codes_box : function(){ return document.getElementById(global_view.id_html_fixed.quick_codes_box_id);},
+    stored_codes_box : function(){ return document.getElementById(global_view.id_html_fixed.stored_codes_box_id); },
 
-function append_divider(node){
-  let divider = document.createElement("p");
-  divider.innerHTML = "<hr>";
-  node.append(divider);
-}
-function append_new_line(node){
-    let divider = document.createElement("p");
-    divider.innerHTML = "<br>";
-    node.append(divider);
-}
+    //----------------------- ID PREFIXES ------------------------
+      id_prefixes : {
+                      code_textarea   : "code_textarea_",
+                      code_preview    : "code_preview_",
 
-function append_big_divider(node){
-  append_new_line(node);
-  append_divider(node);
-  append_new_line(node);
-  append_divider(node);
-  append_new_line(node);
-}
+                      save_btn        : "save_btn_",
+                      delete_btn      : "delete_btn",
+                      scrolltop_btn   : "scroll_top_btn_",
+                    },
 
-function append_gttop_btn(node, id){
-  let gttop_btn = document.createElement("BUTTON");
-  gttop_btn.id = gttop_btn_id(id);
-  gttop_btn.innerHTML =  ' <span class="front"> <img class="small-icon" '+
-                              ' src="images/icons/up-multi-size.ico" '+
-                              ' alt="Go To Top"> </span>';
-  add_listeners_to_gttop_btn(gttop_btn);
-  node.append(gttop_btn);
-}
+      cleanId : function(dirty_id){
+        cleaned = dirty_id;
+        for (prefix of global_view.id_prefixes)
+          cleaned = cleaned.replace(prefix,"");
+        return cleaned;
+      },
 
-function append_save_block_btn(node, id){
-  let save_block_btn = document.createElement("BUTTON");
-  save_block_btn.id = save_btn_id(id);
-  save_block_btn.innerHTML =  ' <span class="front"> <img class="small-icon" '+
-                              ' src="images/icons/save-multi-size.ico" '+
-                              ' alt="Save"> </span>';
-  add_listeners_to_save_btn(save_block_btn);
-  node.append(save_block_btn);
-}
+      codeTextareaId : function (id){
+        return global_view.id_prefixes.textarea_code + id;
+      },
 
+      codePreviewId : function(id){
+        return global_view.id_prefixes.preview_code + id;
+      },
 
-function append_delete_block_btn(node, id){
-  let delete_block_btn = document.createElement("BUTTON");
-  delete_block_btn.id = delete_btn_id(id);
-  delete_block_btn.innerHTML =  ' <span class="front"> <img class="small-icon" '+
-                              ' src="images/icons/delete-multi-size.ico" '+
-                              ' alt="Delete"> </span>';
-  add_listeners_to_delete_btn(delete_block_btn);
-  node.append(delete_block_btn);
-}
+      saveBtnId : function (id){
+          return global_view.id_prefixes.save_btn + id;
+      },
+
+      deleteBtnId : function (id){
+          return global_view.id_prefixes.delete_btn + id;
+      },
+
+      scrollTopBtnId : function (id){
+          return global_view.id_prefixes.scroll_top_btn + id;
+      },
+
+    //---------------------- FIXED ID ------------------------------
+      id_html_fixed : {
+                        page_codes_box_id : "page_codes_box_id",
+                        quick_codes_box_id : "quick_codes_box_id",
+                        stored_codes_box_id : "stored_codes_box_id",
+
+                        top_title_box_id : "top_title_box_id"
+                      },
+
+    // ------------------- CLASS NAMES -----------------------------
+      css_class_names : {
+                  code_textarea   : "code-textarea",
+                  code_preview    : "code-preview",
+                  code_li         : "code-li",
+
+                  add_btn         : "add-btn",
+                  delete_btn      : "delete-btn",
+                  save_btn        : "save-btn",
+                  sync_btn        : "sync_btn",
+                  scrolltop_btn   : "scroll-top-btn",
+
+                  small_icon      : "small-icon"
 
 
+    },
 
-function append_code_block(node, code, id, type){
-  id = id;
-  let li = document.createElement("LI");
-  li.class = type;
-  node.append(li);
-    let spoiler_div = document.createElement("DETAILS");
-    li.append(spoiler_div);
-      let summary = document.createElement("SUMMARY");
-      spoiler_div.append(summary);
-        let preview_paragraph = create_preview_paragraph(code, id);
-        summary.append(preview_paragraph);
+    //------------------- RESOURCES -----------------------------------
+      resources : {
+                    add_icon        : "images/icons/add-multi-size.ico",
+                    delete_icon     : "images/icons/delete-multi-size.ico",
+                    save_icon       : "images/icons/save-multi-size.ico",
+                    sync_icon       : "images/icons/sinchronize-multi-size.ico",
+                    scrolltop_icon  : "images/icons/up-multi-size.ico",
+                  },
 
-      let stored = false;
-      if(type == saved_block_type)
-        stored = true;
-      let text_area = set_text_area_with_code(autoformatting(code), id, stored);
-      spoiler_div.append(text_area);
+    // ---------------------- INIT --------------------------------
+      init : function(){
+      },
+    //--------------------- ELEMENTS CREATION -----------------------
+      // ----------------- CODE ELEMENTS ----------------------------
+        createCodeTextArea : function(code){
+          let textarea = document.createElement("TEXTAREA");
+          textarea.id = global_view.codeTextareaId(code.id);
+          textarea.className += global_view.css_class_names.code_textarea;
+          textarea.value = code.code;
+          // TODO: Add Listeners
+          return textarea;
+        },
 
-      append_gttop_btn(spoiler_div, id);
-      append_save_block_btn(spoiler_div, id);
-      if(type == custom_block_type || type == saved_block_type ){
-        append_delete_block_btn(spoiler_div, id);
-      }
+        createCodePreview : function(code){
+          let label = document.createElement("p");
+          label.id = global_view.codePreviewId(code.id);
+          label.className +=  global_view.css_class_names.code_preview;
+          console.log(code.code);
+          katex.render(code.code,
+                      label,
+                      { throwOnError: false}
+                    );
+          // TODO: Add Listeners
+          return label;
+        },
 
-}
+      //------------------- BUTTONS -------------------------------
+        createBtn : function(id, class_name, icon, alt){
+          let btn = document.createElement("BUTTON");
+          btn.id = id;
+          btn.className = global_view.css_class_names.scrolltop_btn;
+          btn.innerHTML =  ' <span class="front"> ' +
+                                  '<img class="'  + class_name  + '" ' +
+                                      ' src="'    + icon        + '" '+
+                                      ' alt="'    + alt         + '"> ' +
+                            ' </span>';
+          return btn;
+        },
 
-function append_code_blocks(node, codes, type){
-  for(let index = 0; index < codes.length; index++){
-    let code = codes[index];
-    append_code_block(node, code.code, code.id, type);
+
+        createAddBtn : function(code){
+          let add_btn = global_view.createBtn(  global_view.scrollTopBtnId(code.id),
+                                          global_view.css_class_names.add_btn,
+                                          global_view.resources.add_icon,
+                                          "Add a new Code!");
+          // TODO: Add Listener
+          return add_btn;
+        },
+
+        createDeleteBtn : function(code){
+          let del_btn = global_view.createBtn(  global_view.scrollTopBtnId(code.id),
+                                          global_view.css_class_names.delete_btn,
+                                          global_view.resources.delete_icon,
+                                          "Delete this Code!");
+          // TODO: Add Listener
+          return del_btn;
+        },
+
+        createSaveBtn : function(code){
+            let save_btn = global_view.createBtn(  global_view.saveBtnId(code.id),
+                                            global_view.css_class_names.save_btn,
+                                            global_view.resources.save_icon,
+                                            "Store the Code!");
+            // TODO: Add Listener
+            return save_btn;
+        },
+
+        createSyncBtn : function(code){
+          let sync_btn = global_view.createBtn(  global_view.scrollTopBtnId(code.id),
+                                          global_view.css_class_names.sync_btn,
+                                          global_view.resources.sync_icon,
+                                          "Sync with the page!");
+          // TODO: Add Listener
+          return sync_btn;
+        },
+
+        createScrollTopBtn : function(code){
+          let st_btn = global_view.createBtn(  global_view.scrollTopBtnId(code.id),
+                                          global_view.css_class_names.scrolltop_btn,
+                                          global_view.resources.scrolltop_icon,
+                                          "Scroll to top!");
+          // TODO: Add Listener
+          return st_btn;
+        },
+
+      //------------------ OTHER ELEMENTS -------------------------------
+        createTitle : function(level, title) {
+        let title_box = document.createElement("P");
+        title_box.innerHTML =   "<h"  + level + ">" + title + "</h" + level + ">";
+        return title_box;
+    },
+
+        createListItem : function(){
+          let list_item = document.createElement("LI");
+          list_item.className = global_view.css_class_names.code_li;
+          return list_item;
+        },
+
+        createDetails : function(){
+          return document.createElement("DETAILS");
+        },
+
+        createSummary : function(){
+            return document.createElement("SUMMARY");
+        },
+
+
+    //---------------------- BLOCKS CREATION ---------------------------
+      // ---------------------- BUTTONS BLOCK ----------------------------
+
+        appendAddBtn : function (node, code){
+          let add_btn = createScrollTopBtn(code);
+          node.append(add_btn);
+          return node;
+        },
+
+        appendDeleteTopBtn : function (node, code){
+          let del_btn = createScrollTopBtn(code);
+          node.append(del_btn);
+          return node;
+        },
+
+        appendSaveBtn : function (node, code){
+          let save_btn = createScrollTopBtn(code);
+          node.append(gttop_btn);
+          return node;
+        },
+
+        appendSyncBtn : function (node, code){
+          let sync_btn = createScrollTopBtn(code);
+          node.append(sync_btn);
+          return node;
+        },
+
+        appendScrollTopBtn : function (node, code){
+          let st_btn = createScrollTopBtn(code);
+          node.append(st_btn);
+          return node;
+        },
+
+      //-------------------- OTHER ELEMENTS ----------------------------
+        appendTitle : function(node, level, title){
+          let title_el = createTitle(level, title);
+          node.append(title_el);
+          return node;
+      },
+
+      // ----------------- CODE BLOCKS --------------------------------
+        appendCodeBlock : function (node, code, buttonCreators ){
+          let li = global_view.createListItem();
+          node.append(li);
+              let details = global_view.createDetails();
+              li.append(details);
+                  let summary = global_view.createSummary();
+                  details.append(summary);
+                      let code_preview = global_view.createCodePreview(code);
+                      summary.append(code_preview);
+                  let code_textarea = global_view.createCodeTextArea(code);
+                  global_controller.addListenersToCodeTextArea(code_textarea)
+                  details.append(code_textarea);
+
+                  for(buttonCreator of buttonCreators)
+                    details.append(buttonCreator(code));
+          return node;
+        },
+
+        appendCodeBlocks : function(node, codes, buttons){
+          for(let i = 0; i < codes.length; i++){
+            let code = codes[i];
+            global_view.appendCodeBlock(node, code, buttons);
+          }
+          return node;
+        },
+
+      // ------------- REFRESHING VIEW PIECES
+        refreshCodePreview : function(code){
+          let code_preview_box    = document.getElementById(global_view.codePreviewId(code.id));
+          let code_preview        = createCodePreview(code);
+          let summary = code_preview_box.getElementByTagName("summary");
+          summary.innerHTML(code_preview);
+        },
+
+
+        refreshPageCodesView : function (){
+          global_view.page_codes_box().innerHTML = "";
+          let pages_codes = global_model.getCodesByType("code_page_type");
+          console.log("ADDING :");
+          console.log(pages_codes);
+          global_view.appendCodeBlocks(global_view.page_codes_box(), pages_codes, [
+                                                              global_view.createScrollTopBtn,
+                                                              global_view.createSyncBtn,
+                                                              global_view.createSaveBtn,
+                                                              global_view.createDeleteBtn,
+                                                            ]
+                          );
+        },
+
+        refreshQuickCodesView : function (){
+          global_view.quick_codes_box().innerHTML = "";
+          let quick_codes = global_model.getCodesByType(global_model.type_quick);
+          console.log("ADDING :");
+          console.log(quick_codes);
+          global_view.appendCodeBlocks(global_view.quick_codes_box(), quick_codes, [
+                                                              global_view.createScrollTopBtn,
+                                                              global_view.createSaveBtn,
+                                                              global_view.createDeleteBtn,
+                                                            ]
+                          );
+        },
+
+        refreshStoredCodesView : function (){
+          global_view.stored_codes_box().innerHTML = "";
+          let stored_codes = global_model.getCodesByType(global_model.type_stored);
+          console.log("ADDING :");
+          console.log(stored_codes);
+          global_view.appendCodeBlocks(global_view.stored_codes_box(), stored_codes, [
+                                                              global_view.createScrollTopBtn,
+                                                              global_view.createSaveBtn,
+                                                              global_view.createDeleteBtn,
+                                                            ]
+                          );
+        },
+
+        refreshView : function(){
+          global_view.refreshPageCodesView();
+          global_view.refreshQuickCodesView();
+          global_view.refreshStoredCodesView();
+        },
+
+    // ----------------------------- INTERACTIVE -------------------------
+      //Finds y value of given object
+      findPosOfElement : function (obj) {
+          var curtop = 0;
+          if (obj.offsetParent) {
+              do {
+                  curtop += obj.offsetTop;
+              } while (obj = obj.offsetParent);
+          return [curtop];
+          }
+      },
+      //scroll the view to an element given the id
+      scrollToElementById : function (id){
+        window.scroll(0,global_view.findPosOfElement(document.getElementById(id)));
+      },
+
+      scrollToTop : function(){
+        global_view.scrollToElementById(global_view.id_html_fixed.top_title_box_id);
+      },
+      scrollToPageBlocks : function(){
+        global_view.scrollToElementById(global_view.id_html_fixed.page_codes_box_id);
+      },
+      scrollToQuickBlocks : function(){
+        global_view.scrollToElementById(global_view.id_html_fixed.quick_codes_box_id);
+      },
+      scrollToStoredBlocks : function(){
+        global_view.scrollToElementById(global_view.id_html_fixed.stored_codes_box_id);
+      },
+
+
+
   }
-}
-
-//----- Refresh Katex_codes textarea and preview
-function refresh_saved_codes_visualization(){
-    //insert customly created codes
-    let saved_codes_div = document.getElementById(saved_codes_div_id);
-    saved_codes_div.innerHTML = "";
-    let saved_codes = storage_manager.loaded_saved_codes;
-    console.log("ADDING :");
-    console.log(saved_codes);
-    append_code_blocks(saved_codes_div, saved_codes, saved_block_type);
-}
-
-
-//----- Refresh Katex_codes textarea and preview
-function refresh_codes_visualization(){
-
-  //insert the codes from content
-  let page_codes_div = document.getElementById(page_codes_div_id);
-  page_codes_div.innerHTML = "";
-  append_code_blocks(page_codes_div, page_codes, page_block_type);
-
-  //insert customly created codes
-  let custom_codes_div = document.getElementById(custom_codes_div_id);
-  custom_codes_div.innerHTML = "";
-  append_code_blocks(custom_codes_div, custom_codes, custom_block_type);
-
-  //insert customly created codes
-  let saved_codes_div = document.getElementById(saved_codes_div_id);
-  saved_codes_div.innerHTML = "";
-  let saved_codes = storage_manager.loaded_saved_codes;
-  append_code_blocks(saved_codes_div, saved_codes, saved_block_type);
-
+  return view;
 }

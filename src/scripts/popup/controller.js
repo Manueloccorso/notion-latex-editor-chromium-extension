@@ -1,249 +1,214 @@
 console.log("NM.popup : Running");
 
-
 //MESSAGES
-  //Request the math codes from the content
-  var NOTION_MATH_RETRIEVE_MATH_CODES = "find_maths";
-  //Request to store the codes in background
-  var NOTION_MATH_STORE_CODES = "store_codes";
-  //Signal Updated CODES
-  var NOTION_MATH_CODES_UPDATED = "codes_updated";
+//Request the math codes from the content
+var CODES_FROM_PAGE_REQUEST = "find_maths";
+//Request to store the codes in background
+var CODES_FROM_PAGE_ANSWER = "store_codes";
 
 
-// --------------------- VARS ----------------------------------------
-var custom_codes = [];
-var page_codes = [];
-var storage_manager = StorageManager();
-storage_manager.load_storage();
+function Controller(){
+  let controller = {
+      // --------------------- VARS ----------------------------------------
 
-// --------------------- UTILITIES -----------------------------
-
-//----- translate a block id used
-//                   to the one used for the preview
-function preview_id(id){
-  return "preview_" + id.toString();
-}
-
-//----- translate a block id used
-//                   to the one used for the preview
-function textarea_id(id){
-  return "textarea_" + id.toString();
-}
-
-function save_btn_id(id){
-    return "save_btn_" + id.toString();
-}
-
-function delete_btn_id(id){
-    return "delete_btn_" + id.toString();
-}
-
-function gttop_btn_id(id){
-    return "gttop_btn_" + id.toString();
-}
-
-
-function clean_id(custom_id){
-  return custom_id.replace("label_","").replace("textarea_","")
-                  .replace("save_btn_","").replace("delete_btn_","")
-                  .replace("gttop_btn_","");
-}
+        // TODO: VARIABLE IN WHICH TO LOAD THE MESSAGES FROM A json FILE (to sync with content and background)
 
 
 
-//----- send a request for the codes in the content
-function send_request_for_codes(){
-  console.log("NM.popup :   Button Clicked;");
-  let msg = {
-    type : NOTION_MATH_RETRIEVE_MATH_CODES
-  };
-  chrome.runtime.sendMessage(msg);
-}
+      // --------------------- INIT ----------------------------------------
+        init : function(){
+          //INIT THE CONTROLLER
+          //global_controller.init_addMessageListeners();
+          global_controller.init_addListenersToStaticButtons();
+        },
+      // --------------------- COMMUNICATION with the Browser ----------------------------
 
+        //----- send a request for the codes in the content
+        requestCodesToContent : function (){
+          let msg = {
+            type : CODES_FROM_PAGE_REQUEST
+          };
+          let myself = this;
+          chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, msg, function(response) {
+              myself.onCodesReceivedFromContent(response)
+            });
+          });
+        },
 
-//------------------------- LOGIC DEFINITION -------------------------------------
-
-function go_to_div(id){
-  window.scroll(0,findPos(document.getElementById(id)));
-}
-
-//Finds y value of given object
-function findPos(obj) {
-    var curtop = 0;
-    if (obj.offsetParent) {
-        do {
-            curtop += obj.offsetTop;
-        } while (obj = obj.offsetParent);
-    return [curtop];
-    }
-}
-
-
-function add_custom_katex_code() {
-  let new_id = Math.random().toString(36).substr(2, 9);
-  custom_codes.push(
-        {
-          id : new_id,
-          code : "\\frac{New Code}{Click to change code}"
-
-        }
-    );
-  refresh_codes_visualization();
-}
-function add_saved_katex_code(code) {
-  let new_id = Math.random().toString(36).substr(2, 9);
-  let new_code = {
-    id : new_id,
-    name : new_id,
-    code : code
-  }
-  storage_manager.save(new_code);
-  refresh_codes_visualization();
-}
-
-function sync_katex_code(id, code){
-  let cleaned_id = clean_id(id);
-  let label_area = document.getElementById(
-                            preview_id(cleaned_id)
-                            );
-  katex.render(code,
-              label_area,
-              { throwOnError: false}
-            );
-}
-
-//-------- LISTENERS
-
-function add_listeners_to_text_area(text_area, stored){
-
-  text_area.addEventListener(
-            'keyup',
-            (event) => {
-              clean_code = auto_de_formatting(text_area.value);
-              sync_katex_code(clean_id(text_area.id),
-                clean_code
-                );
+        //---- when the codes from the content are received -------------
+        onCodesReceivedFromContent : function(response){
+          if(response.type === CODES_FROM_PAGE_ANSWER){
+            let page_codes = response.codes;
+            for(let i = 0; i < page_codes.length; i++){
+              code_id_text= page_codes[i];
+              let code = global_model.newCode(code_id_text.id, code_id_text.code, "Formula #" + i , global_model.code_page_type);
+              global_controller.addPageCode(code);
             }
-        );
+            global_view.refreshPageCodesView();
+          }
+        },
 
-  if(stored){
-    text_area.addEventListener(
-              'change',
-              (event) => {
-                let cleaned_id = clean_id(text_area.id);
-                let name = storage_manager.get_name_from_id(cleaned_id);
-                let code = {
-                  id : cleaned_id,
-                  code : text_area.value,
-                  name : name,
+        init_addMessageListeners : function(){
+
+        },
+
+      //------------------------- LOGIC DEFINITION -------------------------------------
+        // ----------------------- MODEL AND VIEW CONTROL ------------------------------------
+          addPageCode : function(code){
+            global_model.addCode(code);
+            global_view.refreshPageCodesView();
+          },
+
+          addQuickCode : function () {
+            global_model.addCode(global_model.newCode(global_model.getNewId(), "\\text{Quick Code!}",
+                                              "Quick Code Title : Edit or not", global_model.code_quick_type)
+                      );
+            global_view.refreshQuickCodesView();
+          },
+
+          addStoredCode : function(code) {
+            global_model.addCode(global_model.newCode(global_model.getNewId(), code.code, "Stored " + code.title, global_model.code_stored_type));
+            global_view.refreshStoredCodesView();
+          },
+
+          syncCodePreview : function(code){
+            global_model.syncCode(code);
+            global_view.refreshCodePreview(code);
+          },
+
+          commitCode : function(code){
+            global_model.setCode(code);
+            global_view.refreshCodePreview(code);
+          },
+
+        //------------------------ ADD BUTTON LOGIC ------------------------------------
+
+          // -------------------------- STATIC BUTTONS ------------------------------
+            init_addListenersToStaticButtons : function (){
+              // TODO: UPDATE!
+              let myself = this;
+              window.addEventListener(
+                'load',
+                function load(event){
+                    //---- Trigger Retrive codes from page
+                    let updateBtn = document.getElementById('btn_retrieve_codes');
+                    updateBtn.addEventListener(
+                              'click',
+                              function() {
+                                global_controller.send_request_for_codes(); }
+                              );
+
+                    // ---- Add the KCode textarea and Preview (empty)
+                    let addBtn = document.getElementById('btn_add_code');
+                    addBtn.addEventListener(
+                              'click',
+                              function() {
+                                  myself.addQuickCode();
+                                  global_view.scrollToQuickBlocks();
+                                }
+                              );
                 }
-                storage_manager.save(code);
-              }
-            );
+              );
+            },
 
-  }
+          // ------------------------DYNAMIC BUTTONS -----------------
+            addListenersToCodeTextArea : function (code_textarea){
+              // REFRESH the PREVIEW
+              let myself = this;
+              code_textarea.addEventListener(
+                        'keyup',
+                        (event) => {
+                          let id = global_view.cleanId(code_textarea.id);
+                          let cleaned_code = auto_de_formatting(text_area.value);
+                          let old_code = global_model.getCode(id);
+                          myself.syncCodePreview(global_model.newCode(id,cleaned_code, old_code.name, old_code.type));
+                        }
+                    );
+              // COMMIT CHANGES
+              code_textarea.addEventListener(
+                        'change',
+                        (event) => {
+                          code_textarea.select();
+                          document.execCommand('copy');
+                          window.getSelection().removeAllRanges();
 
-  text_area.addEventListener(
-            'change',
-            (event) => {
+                          let id = global_view.cleanId(code_textarea.id);
+                          // TODO: refactor FORMATTING as object
+                          let cleaned_code = auto_de_formatting(text_area.value);
+                          let old_code = global_model.getCode(id);
 
-              text_area.select();
-              document.execCommand('copy');
-              window.getSelection().removeAllRanges();
-
-              let cleaned_id = clean_id(text_area.id);
-
-              for(let i = 0; i < page_codes.length; i++){
-                let code = page_codes[i];
-                if(code.id == cleaned_id){
-                  code.code = text_area.value;
+                          myself.commitCode(global_model.newCode(id,cleaned_code, old_code.name, old_code.type));
+                        }
+              );
+              // KEY CAPTURING :
+              //                tabs managing,
+              //                TODO: custom katex codes
+              code_textarea.addEventListener(
+                'keydown',
+                (event) => {
+                  // TODO: REFACTOR TAB MANAGING
+                  tabs_in_textarea(text_area, event);
                 }
-              }
-              for(let i = 0; i < custom_codes.length; i++){
-                let code = custom_codes[i];
-                if(code.id == cleaned_id){
-                  code.code = text_area.value;
-                }
-              }
-              let saved_codes =  storage_manager.get_codes();
-              for(let i = 0; i < saved_codes.length; i++){
-                let code = saved_codes[i];
-                if(code.id == cleaned_id){
-                  code.code = text_area.value;
-                }
-              }
-            }
-  );
-  text_area.addEventListener(
-    'keydown',
-    (event) => {
-      console.log("NM.popup : TAB INTERCEPTED");
-      tabs_in_textarea(text_area, event);
-    }
-  );
-}
+              );
+            },
 
-function add_listeners_to_delete_btn(btn){
-
-
-}
-
-function add_listeners_to_save_btn(btn){
-  // TODO: STORE IN CHROME A NEW BLOCK WITH THE SAME ID
-  btn.addEventListener(
-    'click',
-    function()  {
-      let id = clean_id(btn.id);
-      let code = document.getElementById(textarea_id(id)).value;
-      add_saved_katex_code(code);
-      go_to_div(saved_codes_div_id);
-    }
-  );
-
-}
-
-function add_listeners_to_gttop_btn(btn){
-  btn.addEventListener(
-    'click',
-    function()  {
-      refresh_codes_visualization();
-      go_to_div(top_title_div_id);
-    }
-  );
-}
-
-chrome.runtime.onMessage.addListener(popup_receiver);
-function popup_receiver(request, sender, sendResponse){
-  if(request.type === NOTION_MATH_CODES_UPDATED){
-    page_codes = request.codes;
-    refresh_codes_visualization();
-  }
-}
-
-// ------- Load Buttons Listener :
-window.addEventListener(
-  'load',
-  function load(event){
-      //---- Trigger Retrive codes from page
-      var updateBtn = document.getElementById('btn_retrieve_codes');
-      updateBtn.addEventListener(
+            // TODO: delete
+            addListenersToDeleteBtn : function(btn){
+              btn.addEventListener(
                 'click',
-                function() {
-                  send_request_for_codes(); }
-                );
+                function()  {
+                  let code = global_model.getCode(global_view.cleanId(btn.id));
+                  global_model.remove(code);
+                  // TODO: Maybe create a method which refreshes based on type of code in the view
+                  global_view.refreshView();
+                }
+              );
+            },
 
-      // ---- Add the KCode textarea and Preview (empty)
-      var addBtn = document.getElementById('btn_add_code');
-      addBtn.addEventListener(
+            addListenersToSaveBtn : function (btn){
+              btn.addEventListener(
                 'click',
-                function() {
-                    add_custom_katex_code();
-                    go_to_div(custom_codes_div_id);
-                  }
-                );
-  }
-);
+                function()  {
+                  let code = global_model.getCode(global_view.cleanId(btn.id));
+                  myself.addStoredCode(code);
+                  global_view.scrollToStoredBlocks();
+                }
+              );
+
+            },
+
+            addListenersToScrollTopBtn : function (btn){
+              btn.addEventListener(
+                'click',
+                function()  {
+                  global_view.refreshView();
+                  global_view.scrollToTop();
+                }
+              );
+            },
+
+
+
+      //------------------ MESSAGES LOGIC
+
+    };
+
+    return controller;
+}
+
 
 // --------------------- Interface INIT ------------------------------
 
-send_request_for_codes();
+var global_controller = Controller();
+var global_storage = StorageManager();
+var global_view = View();
+var global_model = Model();
+
+
+global_storage.load();
+global_model.init();
+global_view.init();
+global_controller.init();
+
+global_controller.requestCodesToContent();
