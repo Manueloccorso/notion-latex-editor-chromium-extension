@@ -1,61 +1,63 @@
 <!DOCTYPE html>
- <html>
-   <head>
-       <script src="popup/view.js"
-         crossorigin="anonymous"></script>
+<html>
 
-      <link rel="stylesheet" href="popup/lib/katex.css"
-        crossorigin="anonymous">
+<head>
+  <!--     _____________ META! ______________      -->
+  <meta charset="utf-8">
+  <meta name="author" content="Manuel Occorso">
+  <title> Notion Math : Advanced Editor </title>
 
-      <script  defer src="popup/lib/katex.js"
-        crossorigin="anonymous"></script>
+  <!--     _____________ STYLES! ______________      -->
+  <link rel="stylesheet" href="styles/katex.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles/main_style.css" crossorigin="anonymous">
 
-      <link rel="stylesheet" href="popup/popup.css"
-        crossorigin="anonymous">
+  <!--     _____________ SCRIPTS! ______________      -->
 
-      <script defer src="popup/autoformatting.js"
-        crossorigin="anonymous"></script>
+  <!--     _____________ LIBS! ______________      -->
+  <script defer src="libs/katex.js" crossorigin="anonymous"></script>
 
-      <script  defer src="popup/tabs_in_textarea.js"
-        crossorigin="anonymous"></script>
+  <!--     _____________ UTILITIES! ______________      -->
+  <script defer src="scripts/popup/utils/autoformatting.js" crossorigin="anonymous"></script>
+  <script defer src="scripts/popup/utils/tabs_in_textarea.js" crossorigin="anonymous"></script>
+  <script defer src="scripts/popup/utils/saved_codes_manager.js" crossorigin="anonymous"></script>
 
-      <script  defer src="popup/saved_codes_manager.js"
-        crossorigin="anonymous"></script>
+  <!--     _____________ MODEL! ______________      -->
+  <script src="scripts/popup/model.js" crossorigin="anonymous"></script>
+
+  <!--     _____________ VIEW! ______________      -->
+  <script src="scripts/popup/view.js" crossorigin="anonymous"></script>
+
+  <!--     _____________ CONTROLLER! ______________      -->
+  <script defer src="scripts/popup/controller.js" crossorigin="anonymous"></script>
+</head>
 
 
-      <script defer src="popup/popup.js"
-          crossorigin="anonymous"></script>
 
-   </head>
+<body style="width:700px;">
+  <form class="custom-form">
+    <div class="container">
+      <ul class="shadowed">
+        <li>
+          <div id="top_title_div_id">
+            <h2> Notion Math : Advanced Editor </h2>
+          </div>
+        </li>
 
+        <li>
+          <div class="grid-commands">
+            <h3>Notion Page Codes</h3>
+            <button type='button' class="btn-grid" id="btn_retrieve_codes">
+              <span class="front">
+                <img class="small-icon" src="images/icons/sinchronize-multi-size.ico" alt="Refresh">
+              </span>
+            </button>
+          </div>
 
-
-   <body style="width:700px;">
-     <br>
-     <form class="custom-form">
-        <div class="container" >
-          <ul class="shadowed">
-            <li>
-                <div id="top_title_div_id">
-                  <h2>Notion Math : Quick Editor Browser Extension</h2>
-                </div>
-            </li>
-
-            <li>
-              <div class="grid-commands">
-                <h3>Notion Page Codes</h3>
-                  <button type='button' class="btn-grid" id="btn_retrieve_codes" >
-                    <span class="front"> <img class="small-icon"
-                                              src="popup/icons/sinchronize-multi-size.ico"
-                                              alt="Refresh">
-                    </span>
-                  </button>
-              </div>
-                <form class="custom-form" >
-                  <div class="container" >
-                    <ul id="page_codes_div_id">
-                      <li>
-                        <!-- PROTOTYPE OF Notion Page Code
+          <form class="custom-form">
+            <div class="container">
+              <ul id="page_codes_div_id">
+                <li>
+                  <!-- PROTOTYPE OF Notion Page Code
                             <li>
                               <details>
                                 <summary>
@@ -67,26 +69,24 @@
                               </details>
                             </li>
                         -->
-                      </li>
-                    </ul>
-                  </div>
-                </form>
-            </li>
-            <li >
-              <div class="grid-commands">
-                <h3> Quick Codes</h3>
-                <button type='button'class="btn-grid" id="btn_add_code" >
-                  <span class="front"> <img class="small-icon"
-                                            src="popup/icons/add-multi-size.ico"
-                                            alt="Create New Code Block">
-                  </span>
-                </button>
-              </div>
-                <form class="custom-form" >
-                  <div class="container" >
-                    <ul id="custom_codes_div_id" >
-                      <li>
-                        <!-- PROTOTYPE OF NEW CODE BLOCK
+                </li>
+              </ul>
+            </div>
+          </form>
+        </li>
+        <li>
+          <div class="grid-commands">
+            <h3> Quick Codes</h3>
+            <button type='button' class="btn-grid" id="btn_add_code">
+              <span class="front"> <img class="small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
+              </span>
+            </button>
+          </div>
+          <form class="custom-form">
+            <div class="container">
+              <ul id="custom_codes_div_id">
+                <li>
+                  <!-- PROTOTYPE OF NEW CODE BLOCK
                             <li>
                               <details>
                                 <summary>
@@ -98,26 +98,24 @@
                               </details>
                             </li>
                         -->
-                      </li>
-                    </ul>
-                  </div>
-                </form>
-            </li>
-            <li >
-              <div class="grid-commands">
-                <h3> Saved Codes </h3>
-                <button type='button'class="btn-grid" id="btn_add_code" >
-                  <span class="front"> <img class="small-icon"
-                                            src="popup/icons/add-multi-size.ico"
-                                            alt="Create New Code Block">
-                  </span>
-                </button>
-              </div>
-                <form class="custom-form" >
-                  <div class="container"  >
-                    <ul id="saved_codes_div_id">
-                      <li>
-                        <!-- PROTOTYPE OF SAVED CODE BLOCK
+                </li>
+              </ul>
+            </div>
+          </form>
+        </li>
+        <li>
+          <div class="grid-commands">
+            <h3> Saved Codes </h3>
+            <button type='button' class="btn-grid" id="btn_add_code">
+              <span class="front"> <img class="small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
+              </span>
+            </button>
+          </div>
+          <form class="custom-form">
+            <div class="container">
+              <ul id="saved_codes_div_id">
+                <li>
+                  <!-- PROTOTYPE OF SAVED CODE BLOCK
                             <li>
                               <details>
                                 <summary>
@@ -129,24 +127,24 @@
                               </details>
                             </li>
                         -->
-                      </li>
-                    </ul>
-                  </div>
-                </form>
-            </li>
-          </ul>
-        </div>
-      </form>
-      <footer>
-        <div class="container">
-          <small> Extension Made  by
-              <a href="https://github.com/Manueloccorso" target="_blank"> Manuel Occorso </a><br>
-          </small>
-        </div>
-      </footer>
-   </body>
+                </li>
+              </ul>
+            </div>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </form>
+  <footer>
+    <div class="container">
+      <small> Extension Made by
+        <a href="https://github.com/Manueloccorso" target="_blank"> Manuel Occorso </a><br>
+      </small>
+    </div>
+  </footer>
+</body>
 
 
 
 
- </html>
+</html>

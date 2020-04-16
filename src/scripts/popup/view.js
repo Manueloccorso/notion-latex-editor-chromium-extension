@@ -63,7 +63,7 @@ function append_gttop_btn(node, id){
   let gttop_btn = document.createElement("BUTTON");
   gttop_btn.id = gttop_btn_id(id);
   gttop_btn.innerHTML =  ' <span class="front"> <img class="small-icon" '+
-                              ' src="popup/icons/up-multi-size.ico" '+
+                              ' src="images/icons/up-multi-size.ico" '+
                               ' alt="Go To Top"> </span>';
   add_listeners_to_gttop_btn(gttop_btn);
   node.append(gttop_btn);
@@ -73,7 +73,7 @@ function append_save_block_btn(node, id){
   let save_block_btn = document.createElement("BUTTON");
   save_block_btn.id = save_btn_id(id);
   save_block_btn.innerHTML =  ' <span class="front"> <img class="small-icon" '+
-                              ' src="popup/icons/save-multi-size.ico" '+
+                              ' src="images/icons/save-multi-size.ico" '+
                               ' alt="Save"> </span>';
   add_listeners_to_save_btn(save_block_btn);
   node.append(save_block_btn);
@@ -84,7 +84,7 @@ function append_delete_block_btn(node, id){
   let delete_block_btn = document.createElement("BUTTON");
   delete_block_btn.id = delete_btn_id(id);
   delete_block_btn.innerHTML =  ' <span class="front"> <img class="small-icon" '+
-                              ' src="popup/icons/delete-multi-size.ico" '+
+                              ' src="images/icons/delete-multi-size.ico" '+
                               ' alt="Delete"> </span>';
   add_listeners_to_delete_btn(delete_block_btn);
   node.append(delete_block_btn);
