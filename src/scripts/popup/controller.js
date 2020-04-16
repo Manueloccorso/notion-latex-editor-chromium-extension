@@ -28,10 +28,9 @@ function Controller(){
           let msg = {
             type : CODES_FROM_PAGE_REQUEST
           };
-          let myself = this;
           chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
             chrome.tabs.sendMessage(tabs[0].id, msg, function(response) {
-              myself.onCodesReceivedFromContent(response)
+              global_controller.onCodesReceivedFromContent(response)
             });
           });
         },
@@ -86,8 +85,6 @@ function Controller(){
 
           // -------------------------- STATIC BUTTONS ------------------------------
             init_addListenersToStaticButtons : function (){
-              // TODO: UPDATE!
-              let myself = this;
               window.addEventListener(
                 'load',
                 function load(event){
@@ -104,7 +101,7 @@ function Controller(){
                     addBtn.addEventListener(
                               'click',
                               function() {
-                                  myself.addQuickCode();
+                                  global_controller.addQuickCode();
                                   global_view.scrollToQuickBlocks();
                                 }
                               );
@@ -115,14 +112,13 @@ function Controller(){
           // ------------------------DYNAMIC BUTTONS -----------------
             addListenersToCodeTextArea : function (code_textarea){
               // REFRESH the PREVIEW
-              let myself = this;
               code_textarea.addEventListener(
                         'keyup',
                         (event) => {
                           let id = global_view.cleanId(code_textarea.id);
-                          let cleaned_code = auto_de_formatting(text_area.value);
+                          let cleaned_code = auto_de_formatting(code_textarea.value);
                           let old_code = global_model.getCode(id);
-                          myself.syncCodePreview(global_model.newCode(id,cleaned_code, old_code.name, old_code.type));
+                          global_controller.syncCodePreview(global_model.newCode(id,cleaned_code, old_code.name, old_code.type));
                         }
                     );
               // COMMIT CHANGES
@@ -135,10 +131,10 @@ function Controller(){
 
                           let id = global_view.cleanId(code_textarea.id);
                           // TODO: refactor FORMATTING as object
-                          let cleaned_code = auto_de_formatting(text_area.value);
+                          let cleaned_code = auto_de_formatting(code_textarea.value);
                           let old_code = global_model.getCode(id);
 
-                          myself.commitCode(global_model.newCode(id,cleaned_code, old_code.name, old_code.type));
+                          global_controller.commitCode(global_model.newCode(id,cleaned_code, old_code.name, old_code.type));
                         }
               );
               // KEY CAPTURING :
@@ -148,12 +144,15 @@ function Controller(){
                 'keydown',
                 (event) => {
                   // TODO: REFACTOR TAB MANAGING
-                  tabs_in_textarea(text_area, event);
+                  tabs_in_textarea(code_textarea, event);
                 }
               );
             },
 
-            // TODO: delete
+            addListenersToAddBtn : function(){
+              // TODO:
+            },
+
             addListenersToDeleteBtn : function(btn){
               btn.addEventListener(
                 'click',
@@ -167,15 +166,20 @@ function Controller(){
             },
 
             addListenersToSaveBtn : function (btn){
+              console.log("ADDING SAVE LISTENER");
               btn.addEventListener(
                 'click',
                 function()  {
                   let code = global_model.getCode(global_view.cleanId(btn.id));
-                  myself.addStoredCode(code);
+                  global_controller.addStoredCode(code);
                   global_view.scrollToStoredBlocks();
                 }
               );
 
+            },
+
+            addListenersToSyncBtn : function(btn){
+              // TODO:
             },
 
             addListenersToScrollTopBtn : function (btn){
@@ -205,10 +209,25 @@ var global_storage = StorageManager();
 var global_view = View();
 var global_model = Model();
 
-
 global_storage.load();
 global_model.init();
 global_view.init();
 global_controller.init();
 
 global_controller.requestCodesToContent();
+
+
+function restart_popup(){
+  global_controller = Controller();
+  global_storage = StorageManager();
+  global_view = View();
+  global_model = Model();
+
+
+  global_storage.load();
+  global_model.init();
+  global_view.init();
+  global_controller.init();
+
+  global_controller.requestCodesToContent();
+}

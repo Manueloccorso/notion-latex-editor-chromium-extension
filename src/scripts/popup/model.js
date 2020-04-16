@@ -137,7 +137,20 @@ function Model() {
 
     //TESTED
     getCodesByType_internal : function(type){
+      console.log("type : ", type);
+      console.log("type !== null => ");
+      type !== null ? console.log(true) : console.log(false);
+
+      console.log("codes : ", global_model.codes[type]);
+      console.log("Wrong type result : ", global_model.codes["NOT_A_TYPE"]);
+      console.log("Codes !== wrong codes =>  ");
+      global_model.codes[type] !== global_model.codes["NOT_A_TYPE"] ? console.log(true) : console.log(false);
+
+      type !== null && global_model.codes[type] !== global_model.codes["NOT_A_TYPE"]?
+          console.log("RESULT = true") : console.log("RESULT = FALSE");
+
       if(type !== null && global_model.codes[type] !== global_model.codes["NOT_A_TYPE"]){
+        console.log("");
         return global_model.codes[type];
       }
       return false;
@@ -156,7 +169,9 @@ function Model() {
 
     //get code by id from all types
     getCode : function(id){
-      for(let type in global_model.codes) {
+      console.log("MODEL : RETRIEVING CODE with getCode : ", id);
+      for(type in global_model.codes) {
+        console.log("FOUND type :", type);
         let found_code = global_model.getCodesByType_internal(type).get(id);
         if(found_code) return found_code;
       }

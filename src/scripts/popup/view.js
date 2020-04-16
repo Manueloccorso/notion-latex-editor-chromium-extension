@@ -17,23 +17,24 @@ function View(){
                       code_preview    : "code_preview_",
 
                       save_btn        : "save_btn_",
-                      delete_btn      : "delete_btn",
+                      delete_btn      : "delete_btn_",
                       scrolltop_btn   : "scroll_top_btn_",
                     },
 
       cleanId : function(dirty_id){
         cleaned = dirty_id;
-        for (prefix of global_view.id_prefixes)
-          cleaned = cleaned.replace(prefix,"");
+        for (prefix in global_view.id_prefixes){
+          cleaned = cleaned.replace(global_view.id_prefixes[prefix],"");
+        }
         return cleaned;
       },
 
       codeTextareaId : function (id){
-        return global_view.id_prefixes.textarea_code + id;
+        return global_view.id_prefixes.code_textarea + id;
       },
 
       codePreviewId : function(id){
-        return global_view.id_prefixes.preview_code + id;
+        return global_view.id_prefixes.code_preview + id;
       },
 
       saveBtnId : function (id){
@@ -45,7 +46,7 @@ function View(){
       },
 
       scrollTopBtnId : function (id){
-          return global_view.id_prefixes.scroll_top_btn + id;
+          return global_view.id_prefixes.scrolltop_btn + id;
       },
 
     //---------------------- FIXED ID ------------------------------
@@ -63,13 +64,15 @@ function View(){
                   code_preview    : "code-preview",
                   code_li         : "code-li",
 
-                  add_btn         : "add-btn",
-                  delete_btn      : "delete-btn",
-                  save_btn        : "save-btn",
-                  sync_btn        : "sync_btn",
-                  scrolltop_btn   : "scroll-top-btn",
+                  add_btn         : "small-icon",
+                  delete_btn      : "small-icon",
+                  save_btn        : "small-icon",
+                  sync_btn        : "small-icon",
+                  scrolltop_btn   : "small-icon",
 
-                  small_icon      : "small-icon"
+                  small_icon      : "small-icon",
+
+                  small_btn : "btn-grid"
 
 
     },
@@ -114,8 +117,9 @@ function View(){
         createBtn : function(id, class_name, icon, alt){
           let btn = document.createElement("BUTTON");
           btn.id = id;
-          btn.className = global_view.css_class_names.scrolltop_btn;
-          btn.innerHTML =  ' <span class="front"> ' +
+          btn.type = "button";
+          btn.className = global_view.css_class_names.small_btn;
+          btn.innerHTML =  ' <span class="front" > ' +
                                   '<img class="'  + class_name  + '" ' +
                                       ' src="'    + icon        + '" '+
                                       ' alt="'    + alt         + '"> ' +
@@ -125,20 +129,20 @@ function View(){
 
 
         createAddBtn : function(code){
-          let add_btn = global_view.createBtn(  global_view.scrollTopBtnId(code.id),
+          let add_btn = global_view.createBtn(  global_model.getNewId(),
                                           global_view.css_class_names.add_btn,
                                           global_view.resources.add_icon,
                                           "Add a new Code!");
-          // TODO: Add Listener
+          global_controller.addListenersToAddBtn(add_btn);
           return add_btn;
         },
 
         createDeleteBtn : function(code){
-          let del_btn = global_view.createBtn(  global_view.scrollTopBtnId(code.id),
+          let del_btn = global_view.createBtn(  global_view.deleteBtnId(code.id),
                                           global_view.css_class_names.delete_btn,
                                           global_view.resources.delete_icon,
                                           "Delete this Code!");
-          // TODO: Add Listener
+          global_controller.addListenersToDeleteBtn(del_btn);
           return del_btn;
         },
 
@@ -147,16 +151,17 @@ function View(){
                                             global_view.css_class_names.save_btn,
                                             global_view.resources.save_icon,
                                             "Store the Code!");
-            // TODO: Add Listener
+            global_controller.addListenersToSaveBtn(save_btn);
+            console.log(save_btn);
             return save_btn;
         },
 
         createSyncBtn : function(code){
-          let sync_btn = global_view.createBtn(  global_view.scrollTopBtnId(code.id),
+          let sync_btn = global_view.createBtn(  global_model.getNewId(),
                                           global_view.css_class_names.sync_btn,
                                           global_view.resources.sync_icon,
                                           "Sync with the page!");
-          // TODO: Add Listener
+          global_controller.addListenersToSyncBtn(sync_btn);
           return sync_btn;
         },
 
@@ -165,7 +170,7 @@ function View(){
                                           global_view.css_class_names.scrolltop_btn,
                                           global_view.resources.scrolltop_icon,
                                           "Scroll to top!");
-          // TODO: Add Listener
+          global_controller.addListenersToScrollTopBtn(st_btn);
           return st_btn;
         },
 
@@ -200,20 +205,20 @@ function View(){
           return node;
         },
 
-        appendDeleteTopBtn : function (node, code){
-          let del_btn = createScrollTopBtn(code);
+        appendDeleteBtn : function (node, code){
+          let del_btn = createDeleteBtn(code);
           node.append(del_btn);
           return node;
         },
 
         appendSaveBtn : function (node, code){
-          let save_btn = createScrollTopBtn(code);
+          let save_btn = createSaveBtn(code);
           node.append(gttop_btn);
           return node;
         },
 
         appendSyncBtn : function (node, code){
-          let sync_btn = createScrollTopBtn(code);
+          let sync_btn = createSyncBtn(code);
           node.append(sync_btn);
           return node;
         },
@@ -245,8 +250,9 @@ function View(){
                   global_controller.addListenersToCodeTextArea(code_textarea)
                   details.append(code_textarea);
 
-                  for(buttonCreator of buttonCreators)
+                  for(buttonCreator of buttonCreators){
                     details.append(buttonCreator(code));
+                  }
           return node;
         },
 
@@ -259,19 +265,22 @@ function View(){
         },
 
       // ------------- REFRESHING VIEW PIECES
+        getSummaryFromCode : function(code){
+          return  document.getElementById(global_view.codePreviewId(code.id)).parentElement;
+        },
+
         refreshCodePreview : function(code){
-          let code_preview_box    = document.getElementById(global_view.codePreviewId(code.id));
-          let code_preview        = createCodePreview(code);
-          let summary = code_preview_box.getElementByTagName("summary");
-          summary.innerHTML(code_preview);
+          let new_code_preview        = global_view.createCodePreview(code);
+
+          let summary = global_view.getSummaryFromCode(code);
+          summary.innerHTML = "";
+          summary.append(new_code_preview);
         },
 
 
         refreshPageCodesView : function (){
           global_view.page_codes_box().innerHTML = "";
-          let pages_codes = global_model.getCodesByType("code_page_type");
-          console.log("ADDING :");
-          console.log(pages_codes);
+          let pages_codes = global_model.getCodesByType(global_model.code_page_type);
           global_view.appendCodeBlocks(global_view.page_codes_box(), pages_codes, [
                                                               global_view.createScrollTopBtn,
                                                               global_view.createSyncBtn,
@@ -283,9 +292,7 @@ function View(){
 
         refreshQuickCodesView : function (){
           global_view.quick_codes_box().innerHTML = "";
-          let quick_codes = global_model.getCodesByType(global_model.type_quick);
-          console.log("ADDING :");
-          console.log(quick_codes);
+          let quick_codes = global_model.getCodesByType(global_model.code_quick_type);
           global_view.appendCodeBlocks(global_view.quick_codes_box(), quick_codes, [
                                                               global_view.createScrollTopBtn,
                                                               global_view.createSaveBtn,
@@ -296,7 +303,7 @@ function View(){
 
         refreshStoredCodesView : function (){
           global_view.stored_codes_box().innerHTML = "";
-          let stored_codes = global_model.getCodesByType(global_model.type_stored);
+          let stored_codes = global_model.getCodesByType(global_model.code_stored_type);
           console.log("ADDING :");
           console.log(stored_codes);
           global_view.appendCodeBlocks(global_view.stored_codes_box(), stored_codes, [
