@@ -59,9 +59,10 @@ function StorageManager(){
           for(let i = 0; i < new_saved_codes.length; i++){
             if(code.id == new_saved_codes[i].id){
               new_saved_codes[i] = code;
+              found = true;
             }
           }
-          if(!found){
+          if(!!found){
             new_saved_codes.push(code);
           }
           // create the new_encoded_saved_codes
