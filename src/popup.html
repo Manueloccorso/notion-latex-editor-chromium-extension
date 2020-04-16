@@ -8,27 +8,27 @@
   <title> Notion Math : Advanced Editor </title>
 
   <!--     _____________ STYLES! ______________      -->
-  <link rel="stylesheet" href="styles/katex.css" crossorigin="anonymous">
-  <link rel="stylesheet" href="styles/main_style.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles/katex.css">
+  <link rel="stylesheet" href="styles/main_style.css">
 
   <!--     _____________ SCRIPTS! ______________      -->
 
   <!--     _____________ LIBS! ______________      -->
-  <script defer src="libs/katex.js" crossorigin="anonymous"></script>
+  <script defer src="libs/katex.js" ></script>
 
   <!--     _____________ UTILITIES! ______________      -->
-  <script defer src="scripts/popup/utils/autoformatting.js" crossorigin="anonymous"></script>
-  <script defer src="scripts/popup/utils/tabs_in_textarea.js" crossorigin="anonymous"></script>
-  <script defer src="scripts/popup/utils/saved_codes_manager.js" crossorigin="anonymous"></script>
+  <script defer src="scripts/popup/utils/autoformatting.js" ></script>
+  <script defer src="scripts/popup/utils/tabs_in_textarea.js" ></script>
+  <script defer src="scripts/popup/utils/storage_manager.js" ></script>
 
   <!--     _____________ MODEL! ______________      -->
-  <script src="scripts/popup/model.js" crossorigin="anonymous"></script>
+  <script src="scripts/popup/model.js" ></script>
 
   <!--     _____________ VIEW! ______________      -->
-  <script src="scripts/popup/view.js" crossorigin="anonymous"></script>
+  <script src="scripts/popup/new_view.js" ></script>
 
   <!--     _____________ CONTROLLER! ______________      -->
-  <script defer src="scripts/popup/controller.js" crossorigin="anonymous"></script>
+  <script defer src="scripts/popup/new_controller.js" ></script>
 </head>
 
 
@@ -38,7 +38,7 @@
     <div class="container">
       <ul class="shadowed">
         <li>
-          <div id="top_title_div_id">
+          <div id="top_title_box_id">
             <h2> Notion Math : Advanced Editor </h2>
           </div>
         </li>
@@ -55,7 +55,7 @@
 
           <form class="custom-form">
             <div class="container">
-              <ul id="page_codes_div_id">
+              <ul id="page_codes_box_id">
                 <li>
                   <!-- PROTOTYPE OF Notion Page Code
                             <li>
@@ -84,7 +84,7 @@
           </div>
           <form class="custom-form">
             <div class="container">
-              <ul id="custom_codes_div_id">
+              <ul id="quick_codes_box_id">
                 <li>
                   <!-- PROTOTYPE OF NEW CODE BLOCK
                             <li>
@@ -113,7 +113,7 @@
           </div>
           <form class="custom-form">
             <div class="container">
-              <ul id="saved_codes_div_id">
+              <ul id="stored_codes_box_id">
                 <li>
                   <!-- PROTOTYPE OF SAVED CODE BLOCK
                             <li>

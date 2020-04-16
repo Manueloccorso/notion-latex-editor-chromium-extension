@@ -7,20 +7,9 @@ function View(){
 
   let view = {
 
-    model : {},
-    attachModel : function(m){
-      this.model = m;
-      return this;
-    },
-    controller : {},
-    attachController : function(ctrl){
-      this.controller = ctrl;
-      return this;
-    },
-
-    page_codes_box : document.getElementById(this.id_html_fixed.stored_codes_box_id),
-    quick_codes_box : document.getElementById(this.id_html_fixed.quick_codes_box_id),
-    stored_codes_box : document.getElementById(this.id_html_fixed.stored_codes_box_id),
+    page_codes_box : function(){return document.getElementById(global_view.id_html_fixed.page_codes_box_id); },
+    quick_codes_box : function(){ return document.getElementById(global_view.id_html_fixed.quick_codes_box_id);},
+    stored_codes_box : function(){ return document.getElementById(global_view.id_html_fixed.stored_codes_box_id); },
 
     //----------------------- ID PREFIXES ------------------------
       id_prefixes : {
@@ -34,38 +23,38 @@ function View(){
 
       cleanId : function(dirty_id){
         cleaned = dirty_id;
-        for (prefix of this.id_prefixes)
+        for (prefix of global_view.id_prefixes)
           cleaned = cleaned.replace(prefix,"");
         return cleaned;
       },
 
       codeTextareaId : function (id){
-        return this.id_prefixes.textarea_code + id;
+        return global_view.id_prefixes.textarea_code + id;
       },
 
       codePreviewId : function(id){
-        return this.id_prefixes.preview_code + id;
+        return global_view.id_prefixes.preview_code + id;
       },
 
       saveBtnId : function (id){
-          return this.id_prefixes.save_btn + id;
+          return global_view.id_prefixes.save_btn + id;
       },
 
       deleteBtnId : function (id){
-          return this.id_prefixes.delete_btn + id;
+          return global_view.id_prefixes.delete_btn + id;
       },
 
       scrollTopBtnId : function (id){
-          return this.id_prefixes.scroll_top_btn + id;
+          return global_view.id_prefixes.scroll_top_btn + id;
       },
 
     //---------------------- FIXED ID ------------------------------
       id_html_fixed : {
-                        pages_codes_box_id : "page_codes_div_id",
-                        quick_codes_box_id : "custom_codes_div_id",
-                        stored_codes_box_id : "saved_codes_div_id",
+                        page_codes_box_id : "page_codes_box_id",
+                        quick_codes_box_id : "quick_codes_box_id",
+                        stored_codes_box_id : "stored_codes_box_id",
 
-                        top_title_div_id : "top_title_div_id"
+                        top_title_box_id : "top_title_box_id"
                       },
 
     // ------------------- CLASS NAMES -----------------------------
@@ -94,12 +83,15 @@ function View(){
                     scrolltop_icon  : "images/icons/up-multi-size.ico",
                   },
 
+    // ---------------------- INIT --------------------------------
+      init : function(){
+      },
     //--------------------- ELEMENTS CREATION -----------------------
       // ----------------- CODE ELEMENTS ----------------------------
         createCodeTextArea : function(code){
           let textarea = document.createElement("TEXTAREA");
-          textarea.id = codeTextareaId(code.id);
-          textarea.className += this.css_class_names.code_textarea;
+          textarea.id = global_view.codeTextareaId(code.id);
+          textarea.className += global_view.css_class_names.code_textarea;
           textarea.value = code.code;
           // TODO: Add Listeners
           return textarea;
@@ -107,8 +99,9 @@ function View(){
 
         createCodePreview : function(code){
           let label = document.createElement("p");
-          label.id = this.codePreviewId(id);
-          label.className += css_class_names.code_preview;
+          label.id = global_view.codePreviewId(code.id);
+          label.className +=  global_view.css_class_names.code_preview;
+          console.log(code.code);
           katex.render(code.code,
                       label,
                       { throwOnError: false}
@@ -121,7 +114,7 @@ function View(){
         createBtn : function(id, class_name, icon, alt){
           let btn = document.createElement("BUTTON");
           btn.id = id;
-          btn.className = this.css_class_names.scrolltop_btn;
+          btn.className = global_view.css_class_names.scrolltop_btn;
           btn.innerHTML =  ' <span class="front"> ' +
                                   '<img class="'  + class_name  + '" ' +
                                       ' src="'    + icon        + '" '+
@@ -132,45 +125,45 @@ function View(){
 
 
         createAddBtn : function(code){
-          let add_btn = this.createBtn(  this.scrollTopBtnId(code.id),
-                                          this.css_class_names.add_btn,
-                                          this.resources.add_icon,
+          let add_btn = global_view.createBtn(  global_view.scrollTopBtnId(code.id),
+                                          global_view.css_class_names.add_btn,
+                                          global_view.resources.add_icon,
                                           "Add a new Code!");
           // TODO: Add Listener
           return add_btn;
         },
 
         createDeleteBtn : function(code){
-          let del_btn = this.createBtn(  this.scrollTopBtnId(code.id),
-                                          this.css_class_names.delete_btn,
-                                          this.resources.delete_icon,
+          let del_btn = global_view.createBtn(  global_view.scrollTopBtnId(code.id),
+                                          global_view.css_class_names.delete_btn,
+                                          global_view.resources.delete_icon,
                                           "Delete this Code!");
           // TODO: Add Listener
           return del_btn;
         },
 
         createSaveBtn : function(code){
-            let save_btn = this.createBtn(  this.saveBtnId(code.id),
-                                            this.css_class_names.save_btn,
-                                            this.resources.save_icon,
+            let save_btn = global_view.createBtn(  global_view.saveBtnId(code.id),
+                                            global_view.css_class_names.save_btn,
+                                            global_view.resources.save_icon,
                                             "Store the Code!");
             // TODO: Add Listener
             return save_btn;
         },
 
         createSyncBtn : function(code){
-          let sync_btn = this.createBtn(  this.scrollTopBtnId(code.id),
-                                          this.css_class_names.sync_btn,
-                                          this.resources.sync_icon,
+          let sync_btn = global_view.createBtn(  global_view.scrollTopBtnId(code.id),
+                                          global_view.css_class_names.sync_btn,
+                                          global_view.resources.sync_icon,
                                           "Sync with the page!");
           // TODO: Add Listener
           return sync_btn;
         },
 
         createScrollTopBtn : function(code){
-          let st_btn = this.createBtn(  this.scrollTopBtnId(code.id),
-                                          this.css_class_names.scrolltop_btn,
-                                          this.resources.scrolltop_icon,
+          let st_btn = global_view.createBtn(  global_view.scrollTopBtnId(code.id),
+                                          global_view.css_class_names.scrolltop_btn,
+                                          global_view.resources.scrolltop_icon,
                                           "Scroll to top!");
           // TODO: Add Listener
           return st_btn;
@@ -185,7 +178,7 @@ function View(){
 
         createListItem : function(){
           let list_item = document.createElement("LI");
-          list_item.className = this.css_class_names.code_li;
+          list_item.className = global_view.css_class_names.code_li;
           return list_item;
         },
 
@@ -239,17 +232,17 @@ function View(){
       },
 
       // ----------------- CODE BLOCKS --------------------------------
-
         appendCodeBlock : function (node, code, buttonCreators ){
-          let li = createListItem();
+          let li = global_view.createListItem();
           node.append(li);
-              let details = createDetails();
+              let details = global_view.createDetails();
               li.append(details);
-                  let summary = createSummary();
+                  let summary = global_view.createSummary();
                   details.append(summary);
-                      let code_preview = createCodePreview(code);
+                      let code_preview = global_view.createCodePreview(code);
                       summary.append(code_preview);
-                  let code_textarea = createCodeTextArea(code);
+                  let code_textarea = global_view.createCodeTextArea(code);
+                  global_controller.addListenersToCodeTextArea(code_textarea)
                   details.append(code_textarea);
 
                   for(buttonCreator of buttonCreators)
@@ -260,60 +253,97 @@ function View(){
         appendCodeBlocks : function(node, codes, buttons){
           for(let i = 0; i < codes.length; i++){
             let code = codes[i];
-            appendCodeBlock(node, code, buttons);
+            global_view.appendCodeBlock(node, code, buttons);
           }
           return node;
         },
 
-    // ------------- REFRESHING VIEW PIECES
+      // ------------- REFRESHING VIEW PIECES
+        refreshCodePreview : function(code){
+          let code_preview_box    = document.getElementById(global_view.codePreviewId(code.id));
+          let code_preview        = createCodePreview(code);
+          let summary = code_preview_box.getElementByTagName("summary");
+          summary.innerHTML(code_preview);
+        },
 
-      refreshPageCodesView : function (){
-        this.pages_codes_box.innerHTML = "";
-        let pages_codes = this.model.getCodesByType(this.model.type_page);
-        console.log("ADDING :");
-        console.log(pages_codes);
-        appendCodeBlocks(this.pages_codes_box, pages_codes, [
-                                                            this.createScrollTopBtn,
-                                                            this.createSyncBtn,
-                                                            this.createSaveBtn,
-                                                            this.createDeleteBtn,
-                                                          ]
-                        );
+
+        refreshPageCodesView : function (){
+          global_view.page_codes_box().innerHTML = "";
+          let pages_codes = global_model.getCodesByType("code_page_type");
+          console.log("ADDING :");
+          console.log(pages_codes);
+          global_view.appendCodeBlocks(global_view.page_codes_box(), pages_codes, [
+                                                              global_view.createScrollTopBtn,
+                                                              global_view.createSyncBtn,
+                                                              global_view.createSaveBtn,
+                                                              global_view.createDeleteBtn,
+                                                            ]
+                          );
+        },
+
+        refreshQuickCodesView : function (){
+          global_view.quick_codes_box().innerHTML = "";
+          let quick_codes = global_model.getCodesByType(global_model.type_quick);
+          console.log("ADDING :");
+          console.log(quick_codes);
+          global_view.appendCodeBlocks(global_view.quick_codes_box(), quick_codes, [
+                                                              global_view.createScrollTopBtn,
+                                                              global_view.createSaveBtn,
+                                                              global_view.createDeleteBtn,
+                                                            ]
+                          );
+        },
+
+        refreshStoredCodesView : function (){
+          global_view.stored_codes_box().innerHTML = "";
+          let stored_codes = global_model.getCodesByType(global_model.type_stored);
+          console.log("ADDING :");
+          console.log(stored_codes);
+          global_view.appendCodeBlocks(global_view.stored_codes_box(), stored_codes, [
+                                                              global_view.createScrollTopBtn,
+                                                              global_view.createSaveBtn,
+                                                              global_view.createDeleteBtn,
+                                                            ]
+                          );
+        },
+
+        refreshView : function(){
+          global_view.refreshPageCodesView();
+          global_view.refreshQuickCodesView();
+          global_view.refreshStoredCodesView();
+        },
+
+    // ----------------------------- INTERACTIVE -------------------------
+      //Finds y value of given object
+      findPosOfElement : function (obj) {
+          var curtop = 0;
+          if (obj.offsetParent) {
+              do {
+                  curtop += obj.offsetTop;
+              } while (obj = obj.offsetParent);
+          return [curtop];
+          }
+      },
+      //scroll the view to an element given the id
+      scrollToElementById : function (id){
+        window.scroll(0,global_view.findPosOfElement(document.getElementById(id)));
       },
 
-      refreshQuickCodesView : function (){
-        this.quick_codes_box.innerHTML = "";
-        let quick_codes = this.model.getCodesByType(this.model.type_quick);
-        console.log("ADDING :");
-        console.log(quick_codes);
-        appendCodeBlocks(this.quick_codes_box, quick_codes, [
-                                                            this.createScrollTopBtn,
-                                                            this.createSaveBtn,
-                                                            this.createDeleteBtn,
-                                                          ]
-                        );
+      scrollToTop : function(){
+        global_view.scrollToElementById(global_view.id_html_fixed.top_title_box_id);
+      },
+      scrollToPageBlocks : function(){
+        global_view.scrollToElementById(global_view.id_html_fixed.page_codes_box_id);
+      },
+      scrollToQuickBlocks : function(){
+        global_view.scrollToElementById(global_view.id_html_fixed.quick_codes_box_id);
+      },
+      scrollToStoredBlocks : function(){
+        global_view.scrollToElementById(global_view.id_html_fixed.stored_codes_box_id);
       },
 
-      refreshStoredCodesView : function (){
-        this.stored_codes_box.innerHTML = "";
-        let stored_codes = this.model.getCodesByType(this.model.type_stored);
-        console.log("ADDING :");
-        console.log(stored_codes);
-        appendCodeBlocks(this.stored_codes_box, stored_codes, [
-                                                            this.createScrollTopBtn,
-                                                            this.createSaveBtn,
-                                                            this.createDeleteBtn,
-                                                          ]
-                        );
-      },
 
-      refreshView : function(){
-        refreshPageCodesView();
-        refreshQuickCodesView();
-        refreshStoredCodesView();
-      },
 
   }
-
   return view;
 }

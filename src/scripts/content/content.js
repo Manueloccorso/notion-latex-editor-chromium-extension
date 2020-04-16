@@ -1,85 +1,88 @@
 console.log("NM.content: Running");
 
 //MESSAGES
-  //Request the math codes from the content
-  var NOTION_MATH_RETRIEVE_MATH_CODES = "find_maths";
-  //Request to store the codes in background
-  var NOTION_MATH_STORE_CODES = "store_codes";
-  //Signal Updated CODES
-  var NOTION_MATH_CODES_UPDATED = "codes_updated";
-
-// --------------------- VARS ----------------------------------------
-var custom_codes = [];
-var stored_codes = [];
+//Request the math codes from the content
+var CODES_FROM_PAGE_REQUEST = "find_maths";
+//Request to store the codes in background
+var CODES_FROM_PAGE_ANSWER = "store_codes";
 
 // --------------------- UTILITIES -----------------------------
 
-// ---- Return all the annotations containing katex code
-function get_annotations_from_page(){
-  return document.getElementsByTagName("annotation");
+function getEquationBlocks(node){
+  return node.getElementsByClassName("notion-equation-block");
+}
+function getAnnotations(node){
+  return node.getElementsByTagName('annotation');
 }
 
-// --- extract the katex code from the annotations
-function get_kcodes_from_annotations(annotations){
-  let codes = [];
-  for(let i = 0; i < annotations.length; i++){
-    let noisy_code =annotations[i].innerHTML;
-    noisy_code = noisy_code.replace(/amp;/g, "");
-    codes.push(noisy_code);
-  }
+function cleanCode(code) {
+  let cleaned = code.replace(/amp;/g, "");
+  return cleaned;
+}
+
+function getCodeFromAnnotation(annotation) {
+  return cleanCode(annotation.innerHTML);;
+}
+
+function getCodesFromAnnotations(annotations){
+  let codes = []
+  for (let i = 0; i < annotations.length; i++)
+    codes.push(getCodeFromAnnotation(annotations[i]));
   return codes;
 }
 
-// ---- retrieve a list of katex codes from the page,
-//        and send a message with them
-function retrieve_kcodes_from_page(){
-  let notion_blocks = document.getElementsByClassName("notion-equation-block");
-  let msg_blocks = [];
-
-  for(let i = 0; i < notion_blocks.length ; i++){
-    nb_dom = notion_blocks[i];
-
-    nb_id = nb_dom.dataset.blockId;
-    nb_code = get_kcodes_from_annotations(
-                  nb_dom.getElementsByTagName('annotation')
-              )[0];
-
-    let msg_block = {
-      id : nb_id,
-      code : nb_code
-    };
-
-    msg_blocks.push(msg_block);
+function getCodeFromEqBlock(eq_block) {
+  let id = eq_block.dataset.blockId;
+  let code = getCodesFromAnnotations(getAnnotations(eq_block))[0];
+  return {
+    id: id,
+    code: code
   }
-
-  let msg = {
-    type : NOTION_MATH_STORE_CODES,
-    codes : msg_blocks
-  }
-
-  console.log("NM.content : Sent message with blocks: ");
-  console.log("NM.content : "+ msg.type);
-  console.log("NM.content : # of Blocks " + msg.codes.length);
-  for (let i = 0; i < msg.codes.length; i++){
-    msg_block = msg.codes[i];
-    console.log("NM.content : Id : " + msg_block.id);
-    console.log("NM.content : code : " + msg_block.code);
-  }
-  chrome.runtime.sendMessage(msg);
 }
 
+function getCodesFromEqBlocks(eq_blocks){
+  let codes = [];
+  for(let i = 0; i < eq_blocks.length; i++)
+    codes.push(getCodeFromEqBlock(eq_blocks[i]));
+  return codes;
+}
 
-// --------------------- Interface INIT ------------------------------
+function getCodesFromPage() {
+  let codes = getCodesFromEqBlocks(getEquationBlocks(document));
+  return codes;
+}
 
-retrieve_kcodes_from_page();
+function encodeCodesFromPage(){
+  let codes = getCodesFromPage();
+  return  msg = {
+    type: CODES_FROM_PAGE_ANSWER,
+    codes: codes
+  };
+}
+
+function printCodesMsg(msg){
+  console.log("NM.content : Codes Message : ");
+  console.log("NM.content : Codes Message : type    :" + msg.type);
+  console.log("NM.content : Codes Message : #codes  : " + msg.codes.length);
+  console.log("NM.content : Codes Message : codes   :  " + msg.codes.length);
+  for (let i = 0; i < msg.codes.length; i++) {
+    code = msg.codes[i];
+    console.log("NM.content :  Codes Message : codes   : id"+i+"    : " + code.id);
+    console.log("NM.content :  Codes Message : codes   : code"+i+"  : " + code.code);
+  }
+}
 
 //------------------------- LOGIC -------------------------------------
 
-chrome.runtime.onMessage.addListener(content_receiver);
-function content_receiver(request, sender, sendResponse){
-  console.log("NM.content : Received message: ");
-  console.log(request.type);
-  if(request.type === NOTION_MATH_RETRIEVE_MATH_CODES){
-    retrieve_kcodes_from_page();
-  }
-}
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    console.log("NM.NM.content : Received a message : ");
+    console.log("NM.NM.content : Received a message : ", request.type);
+    if(request.type === CODES_FROM_PAGE_REQUEST){
+      let msg = encodeCodesFromPage();
+      console.log("NM.NM.content : Received a message : preparing response");
+      printCodesMsg(msg);
+      sendResponse(msg);
+      return true;
+    }
+  });

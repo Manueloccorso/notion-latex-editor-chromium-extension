@@ -4,17 +4,22 @@
   // push(code) : add code to the model and in case add it to storage
   // set(code_to_set): change the value of the code with the same id and in case update storage
   // remove(code_to_remove) : remove the code and in case delete it from storage
-function AdvancedArray(store, storage){
+function AdvancedArray(store){
+
   return {
       codes : {},
 
       store : store,
-      storage : storage,
+
       //TESTED
       syncWithStorage : function(){
         if(store){
-          for(loaded_code of storage.load())
+          console.log("SYNC -------");
+          for(loaded_code of global_storage.getAll()){
+            console.log("MODEL SYNCING : ");
+            console.log(loaded_code);
             this.codes[loaded_code.id] = loaded_code;
+          }
         }
       },
 
@@ -25,6 +30,7 @@ function AdvancedArray(store, storage){
 
       //TESTED
       getAll : function() {
+        this.syncWithStorage();
         let cc = [];
         for(code_id in this.codes){
           cc.push(this.codes[code_id]);
@@ -36,7 +42,7 @@ function AdvancedArray(store, storage){
       push : function(code) {
         if(!this.codes[code.id]){
           this.codes[code.id] = code;
-          if(this.store) this.storage.add(code);
+          if(this.store) global_storage.save(code);
           return true;
         }
         return false;
@@ -45,14 +51,24 @@ function AdvancedArray(store, storage){
       set : function(code){
         if(this.codes[code.id]){
           this.codes[code.id] = code;
-          if(store) this.storage.edit(code);
+          if(store) global_storage.save(code);
+          return true;
         }
         else return false;
       },
+
+      setWithoutCommit : function(code){
+        if(this.codes[code.id]){
+          this.codes[code.id] = code;
+          return true;
+        }
+        else return false;
+      },
+
       //TESTED
       remove : function(id){
         if(this.codes[id]){
-          if(this.store) this.storage.delete(this.codes[id]);
+          if(this.store) global_storage.remove(this.codes[id]);
           delete this.codes[id];
           return true;
         }
@@ -68,25 +84,33 @@ function AdvancedArray(store, storage){
   // push(code) : add code to the model and in case add it to storage
   // set(code_to_set): change the value of the code with the same id and in case update storage
   // remove(code_to_remove) : remove the code and in case delete it from storage
-function Model(controller, view, storage) {
+function Model() {
 
   let m = {
-    controller  : controller,
-    view        : view,
-    storage     : storage,
 
 
     prefix : "Model : ",
     log_obj : function(obj){
-      console.log(this.prefix, JSON.stringify(obj, function replacer(key, value) { return value}));
+      console.log(global_model.prefix, JSON.stringify(obj, function replacer(key, value) { return value}));
     },
 
-
-
     // type of codes
-    type_page: "type_page",
-    type_quick: "type_quick",
-    type_stored: "type_stored",
+    code_page_type: "code_page_type",
+    code_quick_type: "code_quick_type",
+    code_stored_type: "code_stored_type",
+
+    init : function(){
+      global_model.codes[global_model.code_page_type] = AdvancedArray(false);
+      console.log(global_model.codes[global_model.code_page_type].store);
+
+      global_model.codes[global_model.code_quick_type] = AdvancedArray(false);
+      console.log(global_model.codes[global_model.code_quick_type].store);
+
+      global_model.codes[global_model.code_stored_type] = AdvancedArray(true);
+      console.log(global_model.codes[global_model.code_stored_type].store);
+
+      global_model.codes[global_model.code_stored_type].syncWithStorage();
+    },
 
     // create a new code structure
     newCode : function(id, code, name, type){
@@ -98,22 +122,23 @@ function Model(controller, view, storage) {
       }
     },
 
+    getNewId : function(){
+      return Math.random().toString(36);
+    },
+
     //dict of advanced arrays of codes by type
     codes : {
-      "type_page" : {},
-      "type_quick": {},
-      "type_stored": {},
+      "code_page_type" : {},
+      "code_quick_type": {},
+      "code_stored_type": {},
     },
 
 
 
     //TESTED
     getCodesByType_internal : function(type){
-      //console.log( this.prefix , "Getting Codes by Type");
-      //console.log( this.prefix , type, "   -    ", this.codes[type]);
-      if(type !== null && this.codes[type] !== this.codes["NOT_A_TYPE"]){
-        //console.log( this.prefix , " Returning retrived codes" );
-        return this.codes[type];
+      if(type !== null && global_model.codes[type] !== global_model.codes["NOT_A_TYPE"]){
+        return global_model.codes[type];
       }
       return false;
     },
@@ -122,7 +147,7 @@ function Model(controller, view, storage) {
     // get the codes of a given type
     //TESTED
     getCodesByType: function(type) {
-      let codes = this.getCodesByType_internal(type);
+      let codes = global_model.getCodesByType_internal(type);
       if(codes == false) return false;
       return codes.getAll();
     },
@@ -131,8 +156,8 @@ function Model(controller, view, storage) {
 
     //get code by id from all types
     getCode : function(id){
-      for(let type in this.codes) {
-        let found_code = this.getCodesByType_internal(type).get(id);
+      for(let type in global_model.codes) {
+        let found_code = global_model.getCodesByType_internal(type).get(id);
         if(found_code) return found_code;
       }
       return null;
@@ -140,32 +165,43 @@ function Model(controller, view, storage) {
 
     // add a code : TESTED
     addCode : function(code){
-      //console.log( this.prefix , "adding code ");
-      //this.log_obj( code );
-      let codes = this.getCodesByType_internal(code.type);
-      //console.log( this.prefix , " FOUND: ");
-      //this.log_obj(codes);
+      //console.log( global_model.prefix , "adding code ");
+      //global_model.log_obj( code );
+      let codes = global_model.getCodesByType_internal(code.type);
+      //console.log( global_model.prefix , " FOUND: ");
+      //global_model.log_obj(codes);
       if (codes !== false) {
         codes.push(code);
-        let codes_changed = this.getCodesByType(code.type);
-        //console.log( this.prefix , "Added code : ");
-        //this.log_obj(codes);
+        let codes_changed = global_model.getCodesByType(code.type);
+        //console.log( global_model.prefix , "Added code : ");
+        //global_model.log_obj(codes);
         return true;
       }
       return false;
     },
     //set a code: TESTED
     setCode : function(code){
-      let codes = this.getCodesByType_internal(code.type);
+      let codes = global_model.getCodesByType_internal(code.type);
       if (codes !== false) {
         codes.set(code);
         return true;
       }
       return false;
     },
+    // set a code and force not to store it yet
+    syncCode : function(code){
+      let codes = global_model.getCodesByType_internal(code.type);
+      if (codes !== false) {
+        codes.setWithoutCommit(code);
+        return true;
+      }
+      return false;
+    },
+
+
     //remove a codes: TESTED
     delCode : function(code){
-      let codes = this.getCodesByType_internal(code.type);
+      let codes = global_model.getCodesByType_internal(code.type);
       if (codes !== false) {
         codes.remove(code.id);
         return true;
@@ -175,30 +211,25 @@ function Model(controller, view, storage) {
 
     actOnCodesWithCodes : function(codes, action){
       if(codes !== null){
-        for(code of codes){
-          action(code);
+        for(let i = 0; i < codes.length; i++){
+          action(codes[i]);
         }
       }
     },
 
     // add a list of codes
     addCodes: function(codes){
-      this.actOnCodesWithCodes(codes,this.addCode);
+      global_model.actOnCodesWithCodes(codes,global_model.addCode);
     } ,
     // set a list of codes
     setCodes: function(codes){
-      this.actOnCodesWithCodes(codes, this.setCode)
+      global_model.actOnCodesWithCodes(codes, global_model.setCode)
     },
     //remove a list of codes
     delCodes : function(codes_to_del){
-      this.actOnCodesWithCodes(codes, this.delCode);
+      global_model.actOnCodesWithCodes(codes, global_model.delCode);
     }
 
   };
-
-  m.codes[m.type_page] = AdvancedArray(false, null);
-  m.codes[m.type_quick] = AdvancedArray(false, null);
-  m.codes[m.type_stored] = AdvancedArray(true, storage);
-  m.codes[m.type_stored].syncWithStorage();
   return m;
 }
