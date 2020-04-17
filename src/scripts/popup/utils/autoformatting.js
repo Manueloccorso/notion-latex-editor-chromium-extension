@@ -32,6 +32,7 @@ function af_spacing(code){
 
 function autoformatting(code){
   //code = af_spacing(code);
+
   return code;
 }
 
@@ -39,4 +40,8 @@ function auto_de_formatting(code){
   return code;
 }
 
-code = autoformatting("a\\Bigg() x\\Bigg()");
+function auto_clean_code(code){
+  var formatter = document.createElement('textarea');
+  formatter.innerHTML = code;
+  return formatter.value;
+}

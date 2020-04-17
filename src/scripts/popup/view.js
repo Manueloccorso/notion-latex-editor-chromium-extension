@@ -7,9 +7,29 @@ function View(){
 
   let view = {
 
-    page_codes_box : function(){return document.getElementById(global_view.id_html_fixed.page_codes_box_id); },
-    quick_codes_box : function(){ return document.getElementById(global_view.id_html_fixed.quick_codes_box_id);},
-    stored_codes_box : function(){ return document.getElementById(global_view.id_html_fixed.stored_codes_box_id); },
+
+    //---------------------- FIXED ID ------------------------------
+      id_html_fixed : {
+                        page_codes_box_id     : "page_codes_box_id",
+                        quick_codes_box_id    : "quick_codes_box_id",
+                        stored_codes_box_id   : "stored_codes_box_id",
+
+                        top_title_box_id      : "top_title_box_id",
+
+                        btn_sync_page_codes   : "btn_sync_page_codes",
+                        btn_add_quick_code    : "btn_add_quick_code",
+                        btn_sync_stored_code  : "btn_sync_stored_code",
+                        btn_add_stored_code   : "btn_add_stored_code"
+                      },
+      //BOXED
+      getPageCodesBox   : function(){return document.getElementById(gview.id_html_fixed.page_codes_box_id); },
+      getQuickCodesBox  : function(){ return document.getElementById(gview.id_html_fixed.quick_codes_box_id);},
+      getStoredCodesBox : function(){ return document.getElementById(gview.id_html_fixed.stored_codes_box_id); },
+
+      getPageCodesSyncBtn   : function(){ return document.getElementById(gview.id_html_fixed.btn_sync_page_codes); },
+      getQuickCodesAddBtn   : function(){ return document.getElementById(gview.id_html_fixed.btn_add_quick_code); },
+      getStoredCodesSyncBtn : function(){ return document.getElementById(gview.id_html_fixed.btn_sync_stored_code); },
+      getStoredCodesAddBtn  : function(){ return document.getElementById(gview.id_html_fixed.btn_add_stored_code); },
 
     //----------------------- ID PREFIXES ------------------------
       id_prefixes : {
@@ -23,40 +43,32 @@ function View(){
 
       cleanId : function(dirty_id){
         cleaned = dirty_id;
-        for (prefix in global_view.id_prefixes){
-          cleaned = cleaned.replace(global_view.id_prefixes[prefix],"");
+        for (prefix in gview.id_prefixes){
+          cleaned = cleaned.replace(gview.id_prefixes[prefix],"");
         }
         return cleaned;
       },
 
       codeTextareaId : function (id){
-        return global_view.id_prefixes.code_textarea + id;
+        return gview.id_prefixes.code_textarea + id;
       },
 
       codePreviewId : function(id){
-        return global_view.id_prefixes.code_preview + id;
+        return gview.id_prefixes.code_preview + id;
       },
 
       saveBtnId : function (id){
-          return global_view.id_prefixes.save_btn + id;
+          return gview.id_prefixes.save_btn + id;
       },
 
       deleteBtnId : function (id){
-          return global_view.id_prefixes.delete_btn + id;
+          return gview.id_prefixes.delete_btn + id;
       },
 
       scrollTopBtnId : function (id){
-          return global_view.id_prefixes.scrolltop_btn + id;
+          return gview.id_prefixes.scrolltop_btn + id;
       },
 
-    //---------------------- FIXED ID ------------------------------
-      id_html_fixed : {
-                        page_codes_box_id : "page_codes_box_id",
-                        quick_codes_box_id : "quick_codes_box_id",
-                        stored_codes_box_id : "stored_codes_box_id",
-
-                        top_title_box_id : "top_title_box_id"
-                      },
 
     // ------------------- CLASS NAMES -----------------------------
       css_class_names : {
@@ -93,17 +105,18 @@ function View(){
       // ----------------- CODE ELEMENTS ----------------------------
         createCodeTextArea : function(code){
           let textarea = document.createElement("TEXTAREA");
-          textarea.id = global_view.codeTextareaId(code.id);
-          textarea.className += global_view.css_class_names.code_textarea;
+          textarea.id = gview.codeTextareaId(code.id);
+          textarea.className += gview.css_class_names.code_textarea;
           textarea.value = code.code;
           // TODO: Add Listeners
+          gcontroller.addListenersToCodeTextArea(textarea);
           return textarea;
         },
 
         createCodePreview : function(code){
           let label = document.createElement("p");
-          label.id = global_view.codePreviewId(code.id);
-          label.className +=  global_view.css_class_names.code_preview;
+          label.id = gview.codePreviewId(code.id);
+          label.className +=  gview.css_class_names.code_preview;
           console.log(code.code);
           katex.render(code.code,
                       label,
@@ -118,7 +131,7 @@ function View(){
           let btn = document.createElement("BUTTON");
           btn.id = id;
           btn.type = "button";
-          btn.className = global_view.css_class_names.small_btn;
+          btn.className = gview.css_class_names.small_btn;
           btn.innerHTML =  ' <span class="front" > ' +
                                   '<img class="'  + class_name  + '" ' +
                                       ' src="'    + icon        + '" '+
@@ -129,61 +142,61 @@ function View(){
 
 
         createAddBtn : function(code){
-          let add_btn = global_view.createBtn(  global_model.getNewId(),
-                                          global_view.css_class_names.add_btn,
-                                          global_view.resources.add_icon,
+          let add_btn = gview.createBtn(  gmodel.getNewId(),
+                                          gview.css_class_names.add_btn,
+                                          gview.resources.add_icon,
                                           "Add a new Code!");
-          global_controller.addListenersToAddBtn(add_btn);
+          gcontroller.addListenersToAddBtn(add_btn);
           return add_btn;
         },
 
         createDeleteBtn : function(code){
-          let del_btn = global_view.createBtn(  global_view.deleteBtnId(code.id),
-                                          global_view.css_class_names.delete_btn,
-                                          global_view.resources.delete_icon,
+          let del_btn = gview.createBtn(  gview.deleteBtnId(code.id),
+                                          gview.css_class_names.delete_btn,
+                                          gview.resources.delete_icon,
                                           "Delete this Code!");
-          global_controller.addListenersToDeleteBtn(del_btn);
+          gcontroller.addListenersToDeleteBtn(del_btn);
           return del_btn;
         },
 
         createSaveBtn : function(code){
-            let save_btn = global_view.createBtn(  global_view.saveBtnId(code.id),
-                                            global_view.css_class_names.save_btn,
-                                            global_view.resources.save_icon,
+            let save_btn = gview.createBtn(  gview.saveBtnId(code.id),
+                                            gview.css_class_names.save_btn,
+                                            gview.resources.save_icon,
                                             "Store the Code!");
-            global_controller.addListenersToSaveBtn(save_btn);
+            gcontroller.addListenersToSaveBtn(save_btn);
             console.log(save_btn);
             return save_btn;
         },
 
         createSyncBtn : function(code){
-          let sync_btn = global_view.createBtn(  global_model.getNewId(),
-                                          global_view.css_class_names.sync_btn,
-                                          global_view.resources.sync_icon,
+          let sync_btn = gview.createBtn(  gmodel.getNewId(),
+                                          gview.css_class_names.sync_btn,
+                                          gview.resources.sync_icon,
                                           "Sync with the page!");
-          global_controller.addListenersToSyncBtn(sync_btn);
+          gcontroller.addListenersToSyncBtn(sync_btn);
           return sync_btn;
         },
 
         createScrollTopBtn : function(code){
-          let st_btn = global_view.createBtn(  global_view.scrollTopBtnId(code.id),
-                                          global_view.css_class_names.scrolltop_btn,
-                                          global_view.resources.scrolltop_icon,
+          let st_btn = gview.createBtn(  gview.scrollTopBtnId(code.id),
+                                          gview.css_class_names.scrolltop_btn,
+                                          gview.resources.scrolltop_icon,
                                           "Scroll to top!");
-          global_controller.addListenersToScrollTopBtn(st_btn);
+          gcontroller.addListenersToScrollTopBtn(st_btn);
           return st_btn;
         },
 
       //------------------ OTHER ELEMENTS -------------------------------
         createTitle : function(level, title) {
-        let title_box = document.createElement("P");
-        title_box.innerHTML =   "<h"  + level + ">" + title + "</h" + level + ">";
-        return title_box;
-    },
+          let title_box = document.createElement("P");
+          title_box.innerHTML =   "<h"  + level + ">" + title + "</h" + level + ">";
+          return title_box;
+        },
 
         createListItem : function(){
           let list_item = document.createElement("LI");
-          list_item.className = global_view.css_class_names.code_li;
+          list_item.className = gview.css_class_names.code_li;
           return list_item;
         },
 
@@ -238,16 +251,15 @@ function View(){
 
       // ----------------- CODE BLOCKS --------------------------------
         appendCodeBlock : function (node, code, buttonCreators ){
-          let li = global_view.createListItem();
+          let li = gview.createListItem();
           node.append(li);
-              let details = global_view.createDetails();
+              let details = gview.createDetails();
               li.append(details);
-                  let summary = global_view.createSummary();
+                  let summary = gview.createSummary();
                   details.append(summary);
-                      let code_preview = global_view.createCodePreview(code);
+                      let code_preview = gview.createCodePreview(code);
                       summary.append(code_preview);
-                  let code_textarea = global_view.createCodeTextArea(code);
-                  global_controller.addListenersToCodeTextArea(code_textarea)
+                  let code_textarea = gview.createCodeTextArea(code);
                   details.append(code_textarea);
 
                   for(buttonCreator of buttonCreators){
@@ -259,65 +271,65 @@ function View(){
         appendCodeBlocks : function(node, codes, buttons){
           for(let i = 0; i < codes.length; i++){
             let code = codes[i];
-            global_view.appendCodeBlock(node, code, buttons);
+            gview.appendCodeBlock(node, code, buttons);
           }
           return node;
         },
 
       // ------------- REFRESHING VIEW PIECES
         getSummaryFromCode : function(code){
-          return  document.getElementById(global_view.codePreviewId(code.id)).parentElement;
+          return  document.getElementById(gview.codePreviewId(code.id)).parentElement;
         },
 
         refreshCodePreview : function(code){
-          let new_code_preview        = global_view.createCodePreview(code);
+          let new_code_preview        = gview.createCodePreview(code);
 
-          let summary = global_view.getSummaryFromCode(code);
+          let summary = gview.getSummaryFromCode(code);
           summary.innerHTML = "";
           summary.append(new_code_preview);
         },
 
 
         refreshPageCodesView : function (){
-          global_view.page_codes_box().innerHTML = "";
-          let pages_codes = global_model.getCodesByType(global_model.code_page_type);
-          global_view.appendCodeBlocks(global_view.page_codes_box(), pages_codes, [
-                                                              global_view.createScrollTopBtn,
-                                                              global_view.createSyncBtn,
-                                                              global_view.createSaveBtn,
-                                                              global_view.createDeleteBtn,
+          gview.getPageCodesBox().innerHTML = "";
+          let pages_codes = gmodel.getCodesByType(gmodel.code_page_type);
+          gview.appendCodeBlocks(gview.getPageCodesBox(), pages_codes, [
+                                                              gview.createScrollTopBtn,
+                                                              gview.createSyncBtn,
+                                                              gview.createSaveBtn,
+                                                              gview.createDeleteBtn,
                                                             ]
                           );
         },
 
         refreshQuickCodesView : function (){
-          global_view.quick_codes_box().innerHTML = "";
-          let quick_codes = global_model.getCodesByType(global_model.code_quick_type);
-          global_view.appendCodeBlocks(global_view.quick_codes_box(), quick_codes, [
-                                                              global_view.createScrollTopBtn,
-                                                              global_view.createSaveBtn,
-                                                              global_view.createDeleteBtn,
+          gview.getQuickCodesBox().innerHTML = "";
+          let quick_codes = gmodel.getCodesByType(gmodel.code_quick_type);
+          gview.appendCodeBlocks(gview.getQuickCodesBox(), quick_codes, [
+                                                              gview.createScrollTopBtn,
+                                                              gview.createSaveBtn,
+                                                              gview.createDeleteBtn,
                                                             ]
                           );
         },
 
         refreshStoredCodesView : function (){
-          global_view.stored_codes_box().innerHTML = "";
-          let stored_codes = global_model.getCodesByType(global_model.code_stored_type);
+          gview.getStoredCodesBox().innerHTML = "";
+          let stored_codes = gmodel.getCodesByType(gmodel.code_stored_type);
           console.log("ADDING :");
           console.log(stored_codes);
-          global_view.appendCodeBlocks(global_view.stored_codes_box(), stored_codes, [
-                                                              global_view.createScrollTopBtn,
-                                                              global_view.createSaveBtn,
-                                                              global_view.createDeleteBtn,
+          gview.appendCodeBlocks(gview.getStoredCodesBox(), stored_codes, [
+                                                              gview.createScrollTopBtn,
+                                                              gview.createSaveBtn,
+                                                              gview.createDeleteBtn,
                                                             ]
                           );
         },
 
         refreshView : function(){
-          global_view.refreshPageCodesView();
-          global_view.refreshQuickCodesView();
-          global_view.refreshStoredCodesView();
+          gview.refreshPageCodesView();
+          gview.refreshQuickCodesView();
+          gview.refreshStoredCodesView();
         },
 
     // ----------------------------- INTERACTIVE -------------------------
@@ -333,20 +345,20 @@ function View(){
       },
       //scroll the view to an element given the id
       scrollToElementById : function (id){
-        window.scroll(0,global_view.findPosOfElement(document.getElementById(id)));
+        window.scroll(0,gview.findPosOfElement(document.getElementById(id)));
       },
 
       scrollToTop : function(){
-        global_view.scrollToElementById(global_view.id_html_fixed.top_title_box_id);
+        gview.scrollToElementById(gview.id_html_fixed.top_title_box_id);
       },
       scrollToPageBlocks : function(){
-        global_view.scrollToElementById(global_view.id_html_fixed.page_codes_box_id);
+        gview.scrollToElementById(gview.id_html_fixed.page_codes_box_id);
       },
       scrollToQuickBlocks : function(){
-        global_view.scrollToElementById(global_view.id_html_fixed.quick_codes_box_id);
+        gview.scrollToElementById(gview.id_html_fixed.quick_codes_box_id);
       },
       scrollToStoredBlocks : function(){
-        global_view.scrollToElementById(global_view.id_html_fixed.stored_codes_box_id);
+        gview.scrollToElementById(gview.id_html_fixed.stored_codes_box_id);
       },
 
 

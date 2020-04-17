@@ -59,6 +59,8 @@ function AdvancedArray(store){
 
       setWithoutCommit : function(code){
         if(this.codes[code.id]){
+          console.log("UPODATED CODE IN STORAGE!");
+          console.log(code);
           this.codes[code.id] = code;
           return true;
         }
@@ -91,7 +93,7 @@ function Model() {
 
     prefix : "Model : ",
     log_obj : function(obj){
-      console.log(global_model.prefix, JSON.stringify(obj, function replacer(key, value) { return value}));
+      console.log(gmodel.prefix, JSON.stringify(obj, function replacer(key, value) { return value}));
     },
 
     // type of codes
@@ -100,23 +102,23 @@ function Model() {
     code_stored_type: "code_stored_type",
 
     init : function(){
-      global_model.codes[global_model.code_page_type] = AdvancedArray(false);
-      console.log(global_model.codes[global_model.code_page_type].store);
+      gmodel.codes[gmodel.code_page_type] = AdvancedArray(false);
+      console.log(gmodel.codes[gmodel.code_page_type].store);
 
-      global_model.codes[global_model.code_quick_type] = AdvancedArray(false);
-      console.log(global_model.codes[global_model.code_quick_type].store);
+      gmodel.codes[gmodel.code_quick_type] = AdvancedArray(false);
+      console.log(gmodel.codes[gmodel.code_quick_type].store);
 
-      global_model.codes[global_model.code_stored_type] = AdvancedArray(true);
-      console.log(global_model.codes[global_model.code_stored_type].store);
+      gmodel.codes[gmodel.code_stored_type] = AdvancedArray(true);
+      console.log(gmodel.codes[gmodel.code_stored_type].store);
 
-      global_model.codes[global_model.code_stored_type].syncWithStorage();
+      gmodel.codes[gmodel.code_stored_type].syncWithStorage();
     },
 
     // create a new code structure
     newCode : function(id, code, name, type){
       return {
         id : id,
-        code : code,
+        code : auto_clean_code(code),
         name : name,
         type : type
       }
@@ -141,17 +143,17 @@ function Model() {
       console.log("type !== null => ");
       type !== null ? console.log(true) : console.log(false);
 
-      console.log("codes : ", global_model.codes[type]);
-      console.log("Wrong type result : ", global_model.codes["NOT_A_TYPE"]);
+      console.log("codes : ", gmodel.codes[type]);
+      console.log("Wrong type result : ", gmodel.codes["NOT_A_TYPE"]);
       console.log("Codes !== wrong codes =>  ");
-      global_model.codes[type] !== global_model.codes["NOT_A_TYPE"] ? console.log(true) : console.log(false);
+      gmodel.codes[type] !== gmodel.codes["NOT_A_TYPE"] ? console.log(true) : console.log(false);
 
-      type !== null && global_model.codes[type] !== global_model.codes["NOT_A_TYPE"]?
+      type !== null && gmodel.codes[type] !== gmodel.codes["NOT_A_TYPE"]?
           console.log("RESULT = true") : console.log("RESULT = FALSE");
 
-      if(type !== null && global_model.codes[type] !== global_model.codes["NOT_A_TYPE"]){
+      if(type !== null && gmodel.codes[type] !== gmodel.codes["NOT_A_TYPE"]){
         console.log("");
-        return global_model.codes[type];
+        return gmodel.codes[type];
       }
       return false;
     },
@@ -160,7 +162,7 @@ function Model() {
     // get the codes of a given type
     //TESTED
     getCodesByType: function(type) {
-      let codes = global_model.getCodesByType_internal(type);
+      let codes = gmodel.getCodesByType_internal(type);
       if(codes == false) return false;
       return codes.getAll();
     },
@@ -170,9 +172,9 @@ function Model() {
     //get code by id from all types
     getCode : function(id){
       console.log("MODEL : RETRIEVING CODE with getCode : ", id);
-      for(type in global_model.codes) {
+      for(type in gmodel.codes) {
         console.log("FOUND type :", type);
-        let found_code = global_model.getCodesByType_internal(type).get(id);
+        let found_code = gmodel.getCodesByType_internal(type).get(id);
         if(found_code) return found_code;
       }
       return null;
@@ -180,23 +182,22 @@ function Model() {
 
     // add a code : TESTED
     addCode : function(code){
-      //console.log( global_model.prefix , "adding code ");
-      //global_model.log_obj( code );
-      let codes = global_model.getCodesByType_internal(code.type);
-      //console.log( global_model.prefix , " FOUND: ");
-      //global_model.log_obj(codes);
+
+      let codes = gmodel.getCodesByType_internal(code.type);
+      //console.log( gmodel.prefix , " FOUND: ");
+      //gmodel.log_obj(codes);
       if (codes !== false) {
         codes.push(code);
-        let codes_changed = global_model.getCodesByType(code.type);
-        //console.log( global_model.prefix , "Added code : ");
-        //global_model.log_obj(codes);
+        let codes_changed = gmodel.getCodesByType(code.type);
+        //console.log( gmodel.prefix , "Added code : ");
+        //gmodel.log_obj(codes);
         return true;
       }
       return false;
     },
     //set a code: TESTED
     setCode : function(code){
-      let codes = global_model.getCodesByType_internal(code.type);
+      let codes = gmodel.getCodesByType_internal(code.type);
       if (codes !== false) {
         codes.set(code);
         return true;
@@ -205,7 +206,7 @@ function Model() {
     },
     // set a code and force not to store it yet
     syncCode : function(code){
-      let codes = global_model.getCodesByType_internal(code.type);
+      let codes = gmodel.getCodesByType_internal(code.type);
       if (codes !== false) {
         codes.setWithoutCommit(code);
         return true;
@@ -216,7 +217,7 @@ function Model() {
 
     //remove a codes: TESTED
     delCode : function(code){
-      let codes = global_model.getCodesByType_internal(code.type);
+      let codes = gmodel.getCodesByType_internal(code.type);
       if (codes !== false) {
         codes.remove(code.id);
         return true;
@@ -234,15 +235,15 @@ function Model() {
 
     // add a list of codes
     addCodes: function(codes){
-      global_model.actOnCodesWithCodes(codes,global_model.addCode);
+      gmodel.actOnCodesWithCodes(codes,gmodel.addCode);
     } ,
     // set a list of codes
     setCodes: function(codes){
-      global_model.actOnCodesWithCodes(codes, global_model.setCode)
+      gmodel.actOnCodesWithCodes(codes, gmodel.setCode)
     },
     //remove a list of codes
     delCodes : function(codes_to_del){
-      global_model.actOnCodesWithCodes(codes, global_model.delCode);
+      gmodel.actOnCodesWithCodes(codes, gmodel.delCode);
     }
 
   };
