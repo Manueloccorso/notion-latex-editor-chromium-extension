@@ -1,4 +1,4 @@
-console.log("NM.popup : Running");
+console.log("NM.Controller : Running");
 
 //MESSAGES
 //Request the math codes from the content
@@ -7,9 +7,12 @@ var CODES_FROM_PAGE_REQUEST = "find_maths";
 var CODES_FROM_PAGE_ANSWER = "store_codes";
 
 
-function Controller(){
+function Controller(content_page = true){
+  console.log("NM.Controller : Created");
   let controller = {
       // --------------------- VARS ----------------------------------------
+        content : content_page,
+
 
         // TODO: VARIABLE IN WHICH TO LOAD THE MESSAGES FROM A json FILE (to sync with content and background)
 
@@ -68,7 +71,7 @@ function Controller(){
           },
 
           addStoredCode : function(code) {
-            gmodel.addCode(gmodel.newCode(gmodel.getNewId(), code.code, "Stored " + code.title, gmodel.code_stored_type));
+            gmodel.addCode(gmodel.newCode(gmodel.getNewId(), code.code, "Stored " + code.name, gmodel.code_stored_type));
             gview.refreshStoredCodesView();
           },
 
@@ -90,11 +93,13 @@ function Controller(){
                 function load(event){
                   // Page Codes
                     //---- Retrieve Codes From Notion Page
-                    gview.getPageCodesSyncBtn().addEventListener(
-                              'click',
-                              function() {
-                                gcontroller.requestCodesToContent(); }
-                              );
+                    if(gcontroller.content === true){
+                      gview.getPageCodesSyncBtn().addEventListener(
+                                'click',
+                                function() {
+                                  gcontroller.requestCodesToContent(); }
+                                );
+                    }
                   // Quick Codes
                     //----- Add a Quick Code
                     gview.getQuickCodesAddBtn().addEventListener(
@@ -126,52 +131,20 @@ function Controller(){
             },
 
           // ------------------------DYNAMIC BUTTONS -----------------
-            addListenersToCodeTextArea : function (code_textarea){
-              // REFRESH the PREVIEW
-              code_textarea.addEventListener(
-                        'keyup',
-                        (event) => {
-                          let id = gview.cleanId(code_textarea.id);
-                          let cleaned_code = auto_clean_code(code_textarea.value);
-                          let old_code = gmodel.getCode(id);
-                          gcontroller.syncCodePreview(gmodel.newCode(id,cleaned_code, old_code.name, old_code.type));
-                        }
-                    );
+            addListenersToCodeNameTextArea : function (codename_textarea){
               // COMMIT CHANGES
-              code_textarea.addEventListener(
+              codename_textarea.addEventListener(
                         'change',
                         (event) => {
-                          code_textarea.select();
-                          document.execCommand('copy');
-                          window.getSelection().removeAllRanges();
-
-                          let id = gview.cleanId(code_textarea.id);
+                          console.log("Title changed!");
+                          let id = gview.cleanId(codename_textarea.id);
                           // TODO: refactor FORMATTING as object
-                          let cleaned_code = auto_clean_code(code_textarea.value);
+                          let name = codename_textarea.value;
                           let old_code = gmodel.getCode(id);
 
-                          gcontroller.commitCode(gmodel.newCode(id,cleaned_code, old_code.name, old_code.type));
+                          gcontroller.commitCode(gmodel.newCode(id, old_code.code, name, old_code.type));
                         }
               );
-              // KEY CAPTURING :
-              //                tabs managing,
-              //                TODO: custom katex codes
-              code_textarea.addEventListener(
-                'keydown',
-                (event) => {
-                  // TODO: REFACTOR TAB MANAGING
-                  tabs_in_textarea(code_textarea, event);
-                }
-              );
-
-              // TODO : translate stored code names into actual codes on key keydown
-
-              //TODO : autocomplete
-              //gcontroller.addAutocompleteToTextArea(code_textarea);
-
-              // TODO: beautify TextArea with mirror!
-              gcontroller.beautifyTextArea(code_textarea);
-
             },
 
             addListenersToCodeMirrorTextArea : function(code_mirror){
@@ -242,7 +215,7 @@ function Controller(){
                 function()  {
                   let code = gmodel.getCode(gview.cleanId(btn.id));
                   gmodel.delCode(code);
-                  gview.refreshView();
+                  gview.refreshViewByCode(code);
                 }
               );
             },
@@ -283,31 +256,3 @@ function Controller(){
 
 
 // --------------------- Interface INIT ------------------------------
-
-var gcontroller = Controller();
-var global_storage = StorageManager();
-var gview = View();
-var gmodel = Model();
-
-global_storage.load();
-gmodel.init();
-gview.init();
-gcontroller.init();
-
-gcontroller.requestCodesToContent();
-
-
-function restart_popup(){
-  gcontroller = Controller();
-  global_storage = StorageManager();
-  gview = View();
-  gmodel = Model();
-
-
-  global_storage.load();
-  gmodel.init();
-  gview.init();
-  gcontroller.init();
-
-  gcontroller.requestCodesToContent();
-}

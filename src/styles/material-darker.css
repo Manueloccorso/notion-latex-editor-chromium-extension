@@ -1,16 +1,17 @@
 /*
   Name:       material
   Author:     Mattia Astorino (http://github.com/equinusocio)
+  Modified by : Manuel Occorso
   Website:    https://material-theme.site/
 */
 
 .cm-s-material-darker.CodeMirror {
-  background-color: #212121;
+  background-color: hsl(0, 0%, 14%);;
   color: #EEFFFF;
 }
 
 .cm-s-material-darker .CodeMirror-gutters {
-  background: #212121;
+  background: hsl(0, 0%, 14%);;
   color: #545454;
   border: none;
 }

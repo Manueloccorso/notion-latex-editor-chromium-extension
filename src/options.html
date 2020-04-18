@@ -1,47 +1,131 @@
 <!DOCTYPE html>
- <html>
-   <head>
-     <link rel="stylesheet" href="popup/popup.css"
-       crossorigin="anonymous">
+<html>
 
-     <script defer src="options/options.js"
-         crossorigin="anonymous"></script>
-   </head>
-   <body>
+<head>
+  <!--     _____________ META! ______________      -->
+  <meta charset="utf-8">
+  <meta name="author" content="Manuel Occorso">
+  <title> Notion Math : Advanced Editor Options </title>
 
-     <form class="custom-form">
-       <div class="container" >
-         <ul>
-           <li>
-             <h1>
-                Notion Math : Quick Editor Browser Extension
-             </h1>
-           </li>
-           <li>
-             <h2>
-                Options
-             </h2>
-           </li>
+  <!--     _____________ STYLES! ______________      -->
+  <link rel="stylesheet" href="styles/main_style.css">
+  <link rel="stylesheet" href="styles/katex.css">
+  <link rel="stylesheet" href="styles/codemirror.css">
+  <link rel="stylesheet" href="styles/material-darker.css">
 
-           <li>
-             <form class="custom-form">
-               <div class="container" >
+  <!--     _____________ SCRIPTS! ______________      -->
 
-                 <ul id="options_div">
-                    <li>
-                      <p>Building... </p>
-                    </li>
-                 </ul>
+  <!--     _____________ LIBS! ______________      -->
+  <script defer src="libs/katex.js" ></script>
+  <script defer src="/libs/codemirror/codemirror.js" ></script>
+  <script defer src="/libs/codemirror/autorefresh.js" ></script>
+  <script defer src="/libs/codemirror/stex.js" ></script>
 
-               </div>
-             </form
 
-           </li>
+  <!--     _____________ UTILITIES! ______________      -->
+  <script defer src="scripts/popup/utils/autoformatting.js" ></script>
+  <script defer src="scripts/popup/utils/storage_manager.js" ></script>
 
-         </ul>
-       </div>
-     </form>
+  <!--     _____________ MODEL! ______________      -->
+  <script src="scripts/popup/model.js" ></script>
 
-   </body>
-   <script src="options.js"></script>
- </html>
+  <!--     _____________ VIEW! ______________      -->
+  <script src="scripts/popup/view.js" ></script>
+
+  <!--     _____________ CONTROLLER! ______________      -->
+  <script src="scripts/popup/controller.js" ></script>
+
+  <!--     _____________ OPTIONS! ______________      -->
+  <script defer src="scripts/options/options.js" ></script>
+</head>
+
+
+
+<body class="dark-theme">
+  <form >
+    <div class="container">
+      <ul class="shadowed">
+        <li>
+          <div id="top_title_box_id">
+            <h2> Notion Math : Advanced Editor Options </h2>
+          </div>
+        </li>
+
+        <li>
+          <div class="grid-commands">
+            <h3> Quick Codes </h3>
+            <button type='button' class="btn-grid" id="btn_add_quick_code">
+              <span class="front"> <img class="small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
+              </span>
+            </button>
+          </div>
+          <form class="dark-theme">
+            <div class="container">
+              <ul id="quick_codes_box_id">
+                <li>
+                  <!-- PROTOTYPE OF NEW CODE BLOCK
+                            <li>
+                              <details>
+                                <summary>
+                                  <p id="custom_label_MathCodeId"> *** RENDERED FORMULA ***</p>
+                                </summary>
+                                <textarea id="custom_MathCodeId">
+                                  *** FORMULA CODE ***
+                                </textarea>
+                              </details>
+                            </li>
+                        -->
+                </li>
+              </ul>
+            </div>
+          </form>
+        </li>
+        <li>
+          <div class="grid-commands">
+            <h3> Saved Codes </h3>
+            <button type='button' class="btn-grid" id="btn_sync_stored_code">
+              <span class="front"> <img class="small-icon" src="images/icons/sinchronize-multi-size.ico" alt="Create New Code Block">
+              </span>
+            </button>
+            <button type='button' class="btn-grid" id="btn_add_stored_code">
+              <span class="front"> <img class="small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
+              </span>
+            </button>
+          </div>
+          <form class="dark-theme">
+            <div class="container">
+              <ul id="stored_codes_box_id">
+                <li>
+                  <!-- PROTOTYPE OF SAVED CODE BLOCK
+                            <li>
+                              <details>
+                                <summary>
+                                  <p id="saved_label_random_seed"> *** RENDERED FORMULA ***</p>
+                                </summary>
+                                <textarea id="saved_random_seed">
+                                  *** FORMULA CODE ***
+                                </textarea>
+                              </details>
+                            </li>
+                        -->
+                </li>
+              </ul>
+            </div>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </form>
+  <footer>
+    <div class="container">
+      <small> Extension Made by
+        <a href="https://github.com/Manueloccorso" target="_blank"> Manuel Occorso </a><br>
+      </small>
+    </div>
+  </footer>
+</body>
+
+
+
+
+</html>
