@@ -79,7 +79,6 @@ function Controller(){
 
           commitCode : function(code){
             gmodel.setCode(code);
-            gview.refreshCodePreview(code);
           },
 
         //------------------------ ADD BUTTON LOGIC ------------------------------------
@@ -180,14 +179,9 @@ function Controller(){
               code_mirror.on(
                         'change',
                         (event, changeObj) => {
-
-                          console.log("new change in textarea");
-
-                          let id = gview.cleanId(code_mirror.getTextArea().id);
-
+                          let textarea = code_mirror.getTextArea();
+                          let id = gview.cleanId(textarea.id);
                           let new_code = auto_clean_code(code_mirror.getValue());
-                          console.log(id, "    -    ", new_code);
-
                           let old_code = gmodel.getCode(id);
 
                           gcontroller.syncCodePreview(gmodel.newCode(id , new_code, old_code.name, old_code.type));
@@ -197,27 +191,18 @@ function Controller(){
               code_mirror.on(
                         'blur',
                         (event) => {
-
-                          console.log("new unfocused");
-
-                          code_mirror.save();
-
                           let textarea = code_mirror.getTextArea();
-                          console.log(textarea);
                           let id = gview.cleanId(textarea.id);
-                          console.log(id);
-                          let cleaned_code = auto_clean_code(textarea.value);
-                          console.log(cleaned_code);
-
+                          let cleaned_code = auto_clean_code(code_mirror.getValue());
                           let old_code = gmodel.getCode(id);
 
-                          gcontroller.syncCodePreview(gmodel.newCode(id , cleaned_code, old_code.name, old_code.type));
-
-
+                          //COPY TO CLIPBOARD
+                          code_mirror.save();
                           textarea.select();
                           document.execCommand('copy');
                           window.getSelection().removeAllRanges();
 
+                          //COMMIT THE CHANGES TO THE MODEL
                           gcontroller.commitCode(gmodel.newCode(id,cleaned_code, old_code.name, old_code.type));
                         }
               );
@@ -239,7 +224,6 @@ function Controller(){
                   'delimiters': ':',
                   'stopSuggestionKeys': [$.asuggestKeys.RETURN]
               });
-
             },
 
             beautifyTextArea : function(){

@@ -250,14 +250,14 @@ function View(){
         createCodeMirror : function(textarea){
           let mirror_textarea = CodeMirror.fromTextArea(textarea, {
             lineNumbers: true,
-            autoRefresh:true,
+            autoRefresh: true,
             theme : "material-darker",
-            mode : {name: "sTex", inMathMode: true}
+            mode : {name: "stex"}
           });
+          mirror_textarea.getDoc().setValue(textarea.value);
           mirror_textarea.refresh();
           gcontroller.addListenersToCodeMirrorTextArea(mirror_textarea);
         },
-
 
         appendCodeBlock : function (node, code, buttonCreators ){
           let li = gview.createListItem();
