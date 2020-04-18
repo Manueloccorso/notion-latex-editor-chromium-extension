@@ -14,10 +14,7 @@ function AdvancedArray(store){
       //TESTED
       syncWithStorage : function(){
         if(store){
-          console.log("SYNC -------");
           for(loaded_code of global_storage.getAll()){
-            console.log("MODEL SYNCING : ");
-            console.log(loaded_code);
             this.codes[loaded_code.id] = loaded_code;
           }
         }
@@ -59,8 +56,6 @@ function AdvancedArray(store){
 
       setWithoutCommit : function(code){
         if(this.codes[code.id]){
-          console.log("UPODATED CODE IN STORAGE!");
-          console.log(code);
           this.codes[code.id] = code;
           return true;
         }
@@ -93,7 +88,7 @@ function Model() {
 
     prefix : "Model : ",
     log_obj : function(obj){
-      console.log(gmodel.prefix, JSON.stringify(obj, function replacer(key, value) { return value}));
+      //console.log(gmodel.prefix, JSON.stringify(obj, function replacer(key, value) { return value}));
     },
 
     // type of codes
@@ -103,14 +98,10 @@ function Model() {
 
     init : function(){
       gmodel.codes[gmodel.code_page_type] = AdvancedArray(false);
-      console.log(gmodel.codes[gmodel.code_page_type].store);
 
       gmodel.codes[gmodel.code_quick_type] = AdvancedArray(false);
-      console.log(gmodel.codes[gmodel.code_quick_type].store);
 
       gmodel.codes[gmodel.code_stored_type] = AdvancedArray(true);
-      console.log(gmodel.codes[gmodel.code_stored_type].store);
-
       gmodel.codes[gmodel.code_stored_type].syncWithStorage();
     },
 
@@ -139,20 +130,7 @@ function Model() {
 
     //TESTED
     getCodesByType_internal : function(type){
-      console.log("type : ", type);
-      console.log("type !== null => ");
-      type !== null ? console.log(true) : console.log(false);
-
-      console.log("codes : ", gmodel.codes[type]);
-      console.log("Wrong type result : ", gmodel.codes["NOT_A_TYPE"]);
-      console.log("Codes !== wrong codes =>  ");
-      gmodel.codes[type] !== gmodel.codes["NOT_A_TYPE"] ? console.log(true) : console.log(false);
-
-      type !== null && gmodel.codes[type] !== gmodel.codes["NOT_A_TYPE"]?
-          console.log("RESULT = true") : console.log("RESULT = FALSE");
-
       if(type !== null && gmodel.codes[type] !== gmodel.codes["NOT_A_TYPE"]){
-        console.log("");
         return gmodel.codes[type];
       }
       return false;
@@ -171,9 +149,7 @@ function Model() {
 
     //get code by id from all types
     getCode : function(id){
-      console.log("MODEL : RETRIEVING CODE with getCode : ", id);
       for(type in gmodel.codes) {
-        console.log("FOUND type :", type);
         let found_code = gmodel.getCodesByType_internal(type).get(id);
         if(found_code) return found_code;
       }
@@ -182,15 +158,10 @@ function Model() {
 
     // add a code : TESTED
     addCode : function(code){
-
       let codes = gmodel.getCodesByType_internal(code.type);
-      //console.log( gmodel.prefix , " FOUND: ");
-      //gmodel.log_obj(codes);
       if (codes !== false) {
         codes.push(code);
         let codes_changed = gmodel.getCodesByType(code.type);
-        //console.log( gmodel.prefix , "Added code : ");
-        //gmodel.log_obj(codes);
         return true;
       }
       return false;

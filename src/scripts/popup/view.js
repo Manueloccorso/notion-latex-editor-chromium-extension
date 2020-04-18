@@ -4,9 +4,7 @@ var saved_block_type = "saved_block_type";
 
 
 function View(){
-
   let view = {
-
 
     //---------------------- FIXED ID ------------------------------
       id_html_fixed : {
@@ -117,7 +115,6 @@ function View(){
           let label = document.createElement("p");
           label.id = gview.codePreviewId(code.id);
           label.className +=  gview.css_class_names.code_preview;
-          console.log(code.code);
           katex.render(code.code,
                       label,
                       { throwOnError: false}
@@ -165,7 +162,6 @@ function View(){
                                             gview.resources.save_icon,
                                             "Store the Code!");
             gcontroller.addListenersToSaveBtn(save_btn);
-            console.log(save_btn);
             return save_btn;
         },
 
@@ -296,8 +292,7 @@ function View(){
           gview.appendCodeBlocks(gview.getPageCodesBox(), pages_codes, [
                                                               gview.createScrollTopBtn,
                                                               gview.createSyncBtn,
-                                                              gview.createSaveBtn,
-                                                              gview.createDeleteBtn,
+                                                              gview.createSaveBtn
                                                             ]
                           );
         },
@@ -307,8 +302,7 @@ function View(){
           let quick_codes = gmodel.getCodesByType(gmodel.code_quick_type);
           gview.appendCodeBlocks(gview.getQuickCodesBox(), quick_codes, [
                                                               gview.createScrollTopBtn,
-                                                              gview.createSaveBtn,
-                                                              gview.createDeleteBtn,
+                                                              gview.createSaveBtn
                                                             ]
                           );
         },
@@ -316,12 +310,10 @@ function View(){
         refreshStoredCodesView : function (){
           gview.getStoredCodesBox().innerHTML = "";
           let stored_codes = gmodel.getCodesByType(gmodel.code_stored_type);
-          console.log("ADDING :");
-          console.log(stored_codes);
           gview.appendCodeBlocks(gview.getStoredCodesBox(), stored_codes, [
                                                               gview.createScrollTopBtn,
                                                               gview.createSaveBtn,
-                                                              gview.createDeleteBtn,
+                                                              gview.createDeleteBtn
                                                             ]
                           );
         },

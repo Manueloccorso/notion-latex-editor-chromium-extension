@@ -74,7 +74,7 @@ function StorageManager(){
     },
 
     remove : function(code){
-      for(let i =0; i < this.stored_codes; i++){
+      for(let i =0; i < this.stored_codes.length; i++){
         let stored_code = this.stored_codes[i];
         if (stored_code === code) {
             this.stored_codes.splice(i, 1);

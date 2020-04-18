@@ -201,15 +201,13 @@ function Controller(){
                 'click',
                 function()  {
                   let code = gmodel.getCode(gview.cleanId(btn.id));
-                  gmodel.remove(code);
-                  // TODO: Maybe create a method which refreshes based on type of code in the view
+                  gmodel.delCode(code);
                   gview.refreshView();
                 }
               );
             },
 
             addListenersToSaveBtn : function (btn){
-              console.log("ADDING SAVE LISTENER");
               btn.addEventListener(
                 'click',
                 function()  {
@@ -218,7 +216,6 @@ function Controller(){
                   gview.scrollToStoredBlocks();
                 }
               );
-
             },
 
             addListenersToSyncBtn : function(btn){
