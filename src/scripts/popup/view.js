@@ -1,9 +1,8 @@
-var page_block_type = "page_block_type";
-var custom_block_type = "custom_block_type";
-var saved_block_type = "saved_block_type";
+console.log("NM.View : Running");
 
 
 function View(){
+  console.log("NM.View : Created");
   let view = {
 
     //---------------------- FIXED ID ------------------------------
@@ -33,10 +32,13 @@ function View(){
       id_prefixes : {
                       code_textarea   : "code_textarea_",
                       code_preview    : "code_preview_",
+                      code_name       : "code_name_",
 
                       save_btn        : "save_btn_",
                       delete_btn      : "delete_btn_",
                       scrolltop_btn   : "scroll_top_btn_",
+
+
                     },
 
       cleanId : function(dirty_id){
@@ -53,6 +55,10 @@ function View(){
 
       codePreviewId : function(id){
         return gview.id_prefixes.code_preview + id;
+      },
+
+      codeNameId : function(id){
+        return gview.id_prefixes.code_name + id;
       },
 
       saveBtnId : function (id){
@@ -72,6 +78,7 @@ function View(){
       css_class_names : {
                   code_textarea   : "code-textarea",
                   code_preview    : "code-preview",
+                  code_name       : "code-name",
                   code_li         : "code-li",
 
                   add_btn         : "small-icon",
@@ -106,8 +113,9 @@ function View(){
           textarea.id = gview.codeTextareaId(code.id);
           textarea.className += gview.css_class_names.code_textarea;
           textarea.value = code.code;
-          // TODO: Add Listeners
-          gcontroller.addListenersToCodeTextArea(textarea);
+
+          // TODO: Add Listeners IF code mirror is taken down
+          //gcontroller.addListenersToCodeTextArea(textarea);
           return textarea;
         },
 
@@ -121,6 +129,16 @@ function View(){
                     );
           // TODO: Add Listeners
           return label;
+        },
+
+        createCodeName : function(code){
+          var code_name = document.createElement("INPUT");
+          code_name.setAttribute("type", "text");
+          code_name.id = gview.codeNameId(code.id);
+          code_name.className += gview.css_class_names.code_name;
+          code_name.value = code.name;
+          gcontroller.addListenersToCodeNameTextArea(code_name);
+          return code_name;
         },
 
       //------------------- BUTTONS -------------------------------
@@ -246,17 +264,35 @@ function View(){
       },
 
       // ----------------- CODE BLOCKS --------------------------------
+
+        createCodeMirror : function(textarea){
+          let mirror_textarea = CodeMirror.fromTextArea(textarea, {
+            lineNumbers: true,
+            autoRefresh: true,
+            theme : "material-darker",
+            mode : {name: "stex"}
+          });
+          mirror_textarea.getDoc().setValue(textarea.value);
+          mirror_textarea.refresh();
+          gcontroller.addListenersToCodeMirrorTextArea(mirror_textarea);
+        },
+
         appendCodeBlock : function (node, code, buttonCreators ){
           let li = gview.createListItem();
           node.append(li);
+              let code_name_textarea = gview.createCodeName(code);
+              li.append(code_name_textarea);
               let details = gview.createDetails();
               li.append(details);
                   let summary = gview.createSummary();
                   details.append(summary);
                       let code_preview = gview.createCodePreview(code);
                       summary.append(code_preview);
+
+
                   let code_textarea = gview.createCodeTextArea(code);
                   details.append(code_textarea);
+                  gview.createCodeMirror(code_textarea);
 
                   for(buttonCreator of buttonCreators){
                     details.append(buttonCreator(code));
@@ -287,14 +323,16 @@ function View(){
 
 
         refreshPageCodesView : function (){
-          gview.getPageCodesBox().innerHTML = "";
-          let pages_codes = gmodel.getCodesByType(gmodel.code_page_type);
-          gview.appendCodeBlocks(gview.getPageCodesBox(), pages_codes, [
-                                                              gview.createScrollTopBtn,
-                                                              gview.createSyncBtn,
-                                                              gview.createSaveBtn
-                                                            ]
-                          );
+          if(gcontroller.content){
+            gview.getPageCodesBox().innerHTML = "";
+            let pages_codes = gmodel.getCodesByType(gmodel.code_page_type);
+            gview.appendCodeBlocks(gview.getPageCodesBox(), pages_codes, [
+                                                                gview.createScrollTopBtn,
+                                                                gview.createSyncBtn,
+                                                                gview.createSaveBtn
+                                                              ]
+                            );
+          }
         },
 
         refreshQuickCodesView : function (){
@@ -322,6 +360,15 @@ function View(){
           gview.refreshPageCodesView();
           gview.refreshQuickCodesView();
           gview.refreshStoredCodesView();
+        },
+
+        refreshViewByCode : function(code){
+          if(code.type === gmodel.code_page_type)
+            gview.refreshPageCodesView();
+          if(code.type == gmodel.code_quick_type)
+            gview.refreshQuickCodesView();
+          if(code.type == gmodel.code_stored_type)
+            gview.refreshStoredCodesView();
         },
 
     // ----------------------------- INTERACTIVE -------------------------

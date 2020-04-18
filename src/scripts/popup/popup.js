@@ -1,8 +1,4 @@
-
-console.log("NM.option : RUNNING");
-
-
-var gcontroller = Controller(content_page = false);
+var gcontroller = Controller(true);
 var global_storage = StorageManager();
 var gview = View();
 var gmodel = Model();
@@ -12,10 +8,10 @@ gmodel.init();
 gview.init();
 gcontroller.init();
 
+gcontroller.requestCodesToContent();
 
-gview.refreshStoredCodesView();
 
-function restart_options(){
+function restart_popup(){
   gcontroller = Controller();
   global_storage = StorageManager();
   gview = View();
@@ -28,6 +24,4 @@ function restart_options(){
   gcontroller.init();
 
   gcontroller.requestCodesToContent();
-
-  gview.refreshStoredCodesView();
 }

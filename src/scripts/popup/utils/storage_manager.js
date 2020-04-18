@@ -31,6 +31,7 @@ function StorageManager(){
                         result.encoded_saved_codes_id.saved_codes;
                     myself.synced = true;
                     console.log("LOAD STORAGE COMPLETED!");
+                    gview.refreshStoredCodesView();
                   }
 
               }

@@ -1,3 +1,6 @@
+console.log("NM.Model : Running");
+
+
 // act as advanced arrays :
   // get(id) : get code = { id , code, name, type }  with that id
   // getAll() : return codes = [{c1},{c2}, ...] with all the codes
@@ -5,7 +8,6 @@
   // set(code_to_set): change the value of the code with the same id and in case update storage
   // remove(code_to_remove) : remove the code and in case delete it from storage
 function AdvancedArray(store){
-
   return {
       codes : {},
 
@@ -82,7 +84,7 @@ function AdvancedArray(store){
   // set(code_to_set): change the value of the code with the same id and in case update storage
   // remove(code_to_remove) : remove the code and in case delete it from storage
 function Model() {
-
+  console.log("NM.Model : Created");
   let m = {
 
 

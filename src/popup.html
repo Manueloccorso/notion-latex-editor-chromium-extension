@@ -10,17 +10,20 @@
   <!--     _____________ STYLES! ______________      -->
   <link rel="stylesheet" href="styles/katex.css">
   <link rel="stylesheet" href="styles/main_style.css">
+  <link rel="stylesheet" href="styles/codemirror.css">
+  <link rel="stylesheet" href="styles/material-darker.css">
 
   <!--     _____________ SCRIPTS! ______________      -->
 
   <!--     _____________ LIBS! ______________      -->
   <script defer src="libs/katex.js" ></script>
-  <script defer src="/libs/jquery-3.5.0.min.js" ></script>
   <script defer src="/libs/codemirror/codemirror.js" ></script>
+  <script defer src="/libs/codemirror/autorefresh.js" ></script>
+  <script defer src="/libs/codemirror/stex.js" ></script>
+
 
   <!--     _____________ UTILITIES! ______________      -->
   <script defer src="scripts/popup/utils/autoformatting.js" ></script>
-  <script defer src="scripts/popup/utils/tabs_in_textarea.js" ></script>
   <script defer src="scripts/popup/utils/storage_manager.js" ></script>
 
   <!--     _____________ MODEL! ______________      -->
@@ -30,24 +33,28 @@
   <script src="scripts/popup/view.js" ></script>
 
   <!--     _____________ CONTROLLER! ______________      -->
-  <script defer src="scripts/popup/controller.js" ></script>
+  <script src="scripts/popup/controller.js" ></script>
+
+  <!--     _____________ POPUP! ______________      -->
+  <script defer src="scripts/popup/popup.js" ></script>
 </head>
 
 
 
-<body style="width:700px;">
-  <form class="custom-form">
+<body class="dark-theme">
+  <form class="popup-form" >
     <div class="container">
       <ul class="shadowed">
+
         <li>
           <div id="top_title_box_id">
-            <h2> Notion Math : Advanced Editor </h2>
+            <h1> Notion Math : Advanced Editor </h1>
           </div>
         </li>
 
         <li>
           <div class="grid-commands">
-            <h3>Notion Page Codes</h3>
+            <h2>Notion Page Codes</h2>
             <button type='button' class="btn-grid" id="btn_sync_page_codes">
               <span class="front">
                 <img class="small-icon" src="images/icons/sinchronize-multi-size.ico" alt="Refresh">
@@ -55,7 +62,7 @@
             </button>
           </div>
 
-          <form class="custom-form">
+          <form class="dark-theme">
             <div class="container">
               <ul id="page_codes_box_id">
                 <li>
@@ -78,13 +85,13 @@
         </li>
         <li>
           <div class="grid-commands">
-            <h3> Quick Codes</h3>
+            <h2> Quick Codes</h2>
             <button type='button' class="btn-grid" id="btn_add_quick_code">
               <span class="front"> <img class="small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
               </span>
             </button>
           </div>
-          <form class="custom-form">
+          <form class="dark-theme">
             <div class="container">
               <ul id="quick_codes_box_id">
                 <li>
@@ -107,7 +114,7 @@
         </li>
         <li>
           <div class="grid-commands">
-            <h3> Saved Codes </h3>
+            <h2> Saved Codes </h2>
             <button type='button' class="btn-grid" id="btn_sync_stored_code">
               <span class="front"> <img class="small-icon" src="images/icons/sinchronize-multi-size.ico" alt="Create New Code Block">
               </span>
@@ -117,7 +124,7 @@
               </span>
             </button>
           </div>
-          <form class="custom-form">
+          <form class="dark-theme">
             <div class="container">
               <ul id="stored_codes_box_id">
                 <li>
