@@ -106,8 +106,9 @@ function View(){
           textarea.id = gview.codeTextareaId(code.id);
           textarea.className += gview.css_class_names.code_textarea;
           textarea.value = code.code;
-          // TODO: Add Listeners
-          gcontroller.addListenersToCodeTextArea(textarea);
+
+          // TODO: Add Listeners IF code mirror is taken down
+          //gcontroller.addListenersToCodeTextArea(textarea);
           return textarea;
         },
 
@@ -246,6 +247,18 @@ function View(){
       },
 
       // ----------------- CODE BLOCKS --------------------------------
+        createCodeMirror : function(textarea){
+          let mirror_textarea = CodeMirror.fromTextArea(textarea, {
+            lineNumbers: true,
+            autoRefresh:true,
+            theme : "material-darker",
+            mode : {name: "sTex", inMathMode: true}
+          });
+          mirror_textarea.refresh();
+          gcontroller.addListenersToCodeMirrorTextArea(mirror_textarea);
+        },
+
+
         appendCodeBlock : function (node, code, buttonCreators ){
           let li = gview.createListItem();
           node.append(li);
@@ -255,8 +268,10 @@ function View(){
                   details.append(summary);
                       let code_preview = gview.createCodePreview(code);
                       summary.append(code_preview);
+
                   let code_textarea = gview.createCodeTextArea(code);
                   details.append(code_textarea);
+                  gview.createCodeMirror(code_textarea);
 
                   for(buttonCreator of buttonCreators){
                     details.append(buttonCreator(code));

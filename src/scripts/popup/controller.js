@@ -175,6 +175,62 @@ function Controller(){
 
             },
 
+            addListenersToCodeMirrorTextArea : function(code_mirror){
+              // REFRESH the PREVIEW
+              code_mirror.on(
+                        'change',
+                        (event, changeObj) => {
+
+                          console.log("new change in textarea");
+
+                          let id = gview.cleanId(code_mirror.getTextArea().id);
+
+                          let new_code = auto_clean_code(code_mirror.getValue());
+                          console.log(id, "    -    ", new_code);
+
+                          let old_code = gmodel.getCode(id);
+
+                          gcontroller.syncCodePreview(gmodel.newCode(id , new_code, old_code.name, old_code.type));
+                        }
+                    );
+              // COMMIT CHANGES
+              code_mirror.on(
+                        'blur',
+                        (event) => {
+
+                          console.log("new unfocused");
+
+                          code_mirror.save();
+
+                          let textarea = code_mirror.getTextArea();
+                          console.log(textarea);
+                          let id = gview.cleanId(textarea.id);
+                          console.log(id);
+                          let cleaned_code = auto_clean_code(textarea.value);
+                          console.log(cleaned_code);
+
+                          let old_code = gmodel.getCode(id);
+
+                          gcontroller.syncCodePreview(gmodel.newCode(id , cleaned_code, old_code.name, old_code.type));
+
+
+                          textarea.select();
+                          document.execCommand('copy');
+                          window.getSelection().removeAllRanges();
+
+                          gcontroller.commitCode(gmodel.newCode(id,cleaned_code, old_code.name, old_code.type));
+                        }
+              );
+
+              // TODO : translate stored code names into actual codes on key keydown
+
+              //TODO : autocomplete
+              //gcontroller.addAutocompleteToTextArea(code_textarea);
+
+
+
+            },
+
             addAutocompleteToTextArea : function(){
               var suggests = ["head", "hello", "heart", "health"];
               $(code_textarea.id).asuggest(suggests, {
