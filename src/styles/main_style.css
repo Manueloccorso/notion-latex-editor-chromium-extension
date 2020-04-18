@@ -125,7 +125,7 @@ body {
   margin-top: 1.5rem;
 }
 
-.small-icon {
+.small-icon{
   height : 20px;
   width : 20px;
 }
@@ -138,7 +138,7 @@ body {
 
 .custom-form li,
 
-.custom-form .grid-commands{  
+.custom-form .grid-commands{
     line-height: 1.5;
     padding: 15px 15px;
     border: 2px solid var(--borderFormEls);
