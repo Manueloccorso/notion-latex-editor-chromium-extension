@@ -64,8 +64,9 @@ function Controller(content_page = true){
 
           addQuickCode : function () {
             gmodel.addCode(gmodel.newCode(
-                                                      gmodel.getNewId(), "\\text{Quick Code!}",
-                                                      "Quick Code Title : Edit or not", gmodel.code_quick_type)
+                                            gmodel.getNewId(),
+                                            "\\text{Quick Code!}",
+                                            "Quick Code Title : Edit or not", gmodel.code_quick_type)
                       );
             gview.refreshQuickCodesView();
           },
@@ -100,7 +101,7 @@ function Controller(content_page = true){
                                   gcontroller.requestCodesToContent(); }
                                 );
                     }
-                  // Quick Codes
+                    // Quick Codes
                     //----- Add a Quick Code
                     gview.getQuickCodesAddBtn().addEventListener(
                               'click',
@@ -148,16 +149,52 @@ function Controller(content_page = true){
             },
 
             addListenersToCodeMirrorTextArea : function(code_mirror){
+              //INTERCEPT CODES names
+              code_mirror.on(
+                              'beforeChange',
+                              (event, changeObj) => {
+                                // ON SPACEC DETECTED
+                                if (changeObj.origin == "+input" && changeObj.text == " "){
+
+
+                                  let token = code_mirror.getTokenAt(changeObj.from);
+                                  let replaced = gmodel.replaceStoredCodeNames(token.string);
+
+                                  // WHEN A CODE NAME IS DETECTED
+                                  if(replaced !== token.string){
+                                    //DETELE THE CODE NAME
+                                    changeObj.from.ch = token.start;
+                                    changeObj.to.ch = token.end;
+                                    changeObj.text = [""];
+
+                                    //INSERT THE CODE TO BE REPLACED
+                                    let tokens_from_code = replaced.split("\n");
+                                    code_mirror.execCommand("newlineAndIndent");
+                                    code_mirror.execCommand("goLineStart");
+                                    for(let i = 0; i < tokens_from_code.length; i++){
+                                      let pos = code_mirror.getCursor();
+                                      code_mirror.replaceRange(tokens_from_code[i], {line : pos.line , ch : pos.ch});
+                                      code_mirror.execCommand("newlineAndIndent");
+                                      code_mirror.execCommand("goLineStart");
+                                    }
+                                  }
+                                }
+                              }
+              );
+
+
+
               // REFRESH the PREVIEW
               code_mirror.on(
                         'change',
                         (event, changeObj) => {
-                          let textarea = code_mirror.getTextArea();
-                          let id = gview.cleanId(textarea.id);
-                          let new_code = auto_clean_code(code_mirror.getValue());
-                          let old_code = gmodel.getCode(id);
 
-                          gcontroller.syncCodePreview(gmodel.newCode(id , new_code, old_code.name, old_code.type));
+                          let textarea = code_mirror.getTextArea();
+                          let old_code = gmodel.getCode(
+                                                          gview.cleanId( textarea.id )
+                                                        );
+                          let new_code = auto_clean_code(code_mirror.getValue());
+                          gcontroller.syncCodePreview(gmodel.newCode(old_code.id , new_code, old_code.name, old_code.type));
                         }
                     );
               // COMMIT CHANGES
@@ -197,11 +234,6 @@ function Controller(content_page = true){
                   'delimiters': ':',
                   'stopSuggestionKeys': [$.asuggestKeys.RETURN]
               });
-            },
-
-            beautifyTextArea : function(){
-
-
             },
 
 

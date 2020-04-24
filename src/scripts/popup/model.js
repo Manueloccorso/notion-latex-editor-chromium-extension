@@ -217,6 +217,34 @@ function Model() {
     //remove a list of codes
     delCodes : function(codes_to_del){
       gmodel.actOnCodesWithCodes(codes, gmodel.delCode);
+    },
+
+
+    // HIGH LEVEL UTILITIES
+
+    replaceStoredCodeNames: function(str){
+      let stored_codes = gmodel.getCodesByType_internal(gmodel.code_stored_type).getAll();
+      for (let i = 0; i < stored_codes.length; i++ ){
+        let stored_code_coding = "\\" +  stored_codes[i].name;
+        let stored_code_code = stored_codes[i].code;
+        //console.log("CHECKING FOR STORED CODE NAME REPLACEMENT OF " + stored_code.name);
+        if(str === stored_code_coding ){
+          return stored_code_code;
+        }
+      }
+      return str;
+    },
+
+    checkStoredCodeNames: function(str){
+      let stored_codes = gmodel.getCodesByType_internal(gmodel.code_stored_type).getAll();
+      for (let i = 0; i < stored_codes.length; i++ ){
+        let stored_code = stored_codes[i];
+        //console.log("CHECKING FOR STORED CODE NAME REPLACEMENT OF " + stored_code.name);
+        if(str.indexOf("\\" + stored_code.name + " ") >= 0){
+          return true;
+        }
+      }
+      return false;
     }
 
   };
