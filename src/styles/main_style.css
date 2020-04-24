@@ -173,7 +173,11 @@
       margin-top: 0.1rem;
       font-size: 1.1rem;
     }
-
+    .dark-theme h3 {
+      margin-bottom: 0.1rem;
+      margin-top: 0.1rem;
+      font-size: 1rem;
+    }
 
   /* -------------------------------- ICONS ------------------------------------*/
     .small-icon{
@@ -258,6 +262,24 @@
         background: var(--bgFormEls);
         transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
           transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+    }
+    .dark-theme .code-tag {
+        display : inline-block;
+        line-height: 1.1;
+        padding: 0.15rem 0.15rem;
+        margin: 0.6rem 0.6rem;
+        border: 0.15rem solid var(--borderFormEls);
+        box-shadow: 0 0 0.1rem rgba(0,0,0, 0.75);
+        color: var(--white);
+        background: var(--bgFormEls);
+        transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
+          transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+    }
+
+    .dark-theme .code-basic-editor-container{
+      display : grid;
+      grid-gap : 2rem;
+      position: relative;
     }
 
 /* FOOTER
