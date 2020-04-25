@@ -16,17 +16,20 @@ function View(){
                         btn_sync_page_codes   : "btn_sync_page_codes",
                         btn_add_quick_code    : "btn_add_quick_code",
                         btn_sync_stored_code  : "btn_sync_stored_code",
-                        btn_add_stored_code   : "btn_add_stored_code"
+                        btn_add_stored_code   : "btn_add_stored_code",
+
+                        select_stored_codes_filter : "select_stored_codes_filter"
                       },
       //BOXED
       getPageCodesBox   : function(){return document.getElementById(gview.id_html_fixed.page_codes_box_id); },
       getQuickCodesBox  : function(){ return document.getElementById(gview.id_html_fixed.quick_codes_box_id);},
       getStoredCodesBox : function(){ return document.getElementById(gview.id_html_fixed.stored_codes_box_id); },
 
-      getPageCodesSyncBtn   : function(){ return document.getElementById(gview.id_html_fixed.btn_sync_page_codes); },
-      getQuickCodesAddBtn   : function(){ return document.getElementById(gview.id_html_fixed.btn_add_quick_code); },
-      getStoredCodesSyncBtn : function(){ return document.getElementById(gview.id_html_fixed.btn_sync_stored_code); },
-      getStoredCodesAddBtn  : function(){ return document.getElementById(gview.id_html_fixed.btn_add_stored_code); },
+      getPageCodesSyncBtn         : function(){ return document.getElementById(gview.id_html_fixed.btn_sync_page_codes); },
+      getQuickCodesAddBtn         : function(){ return document.getElementById(gview.id_html_fixed.btn_add_quick_code); },
+      getStoredCodesSyncBtn       : function(){ return document.getElementById(gview.id_html_fixed.btn_sync_stored_code); },
+      getStoredCodesAddBtn        : function(){ return document.getElementById(gview.id_html_fixed.btn_add_stored_code); },
+      getStoredCodesFilterSelect  : function(){ return document.getElementById(gview.id_html_fixed.select_stored_codes_filter)},
 
     //----------------------- ID PREFIXES ------------------------
       id_prefixes : {
@@ -98,8 +101,6 @@ function View(){
                   small_icon      : "small-icon",
 
                   small_btn : "btn-grid"
-
-
     },
 
     //------------------- RESOURCES -----------------------------------
@@ -114,6 +115,7 @@ function View(){
     // ---------------------- INIT --------------------------------
       init : function(){
       },
+
     //--------------------- ELEMENTS CREATION -----------------------
       // ----------------- CODE ELEMENTS ----------------------------
         createCodeTextArea : function(code){
@@ -152,17 +154,25 @@ function View(){
         },
 
         createCodeName : function(code){
+          let div = document.createElement("DIV")
+          div.class += gview.css_class_names.code_tag_container;
+          div.style = "position: relative;";
+          let label = document.createElement("H3");
+          label.innerHTML = "Name";
+          div.append(label);
           let code_name = document.createElement("INPUT");
           code_name.setAttribute("type", "text");
           code_name.id = gview.codeNameId(code.id);
           code_name.className += gview.css_class_names.code_name;
           code_name.value = code.name;
           gcontroller.addListenersToCodeNameTextArea(code_name);
-          return code_name;
+          div.append(code_name);
+          return div;
         },
 
         createCodeTag : function(code){
-            let div = document.createElement("DIV")
+            let div = document.createElement("DIV");
+            div.style = "position: relative;";
             div.class += gview.css_class_names.code_tag_container;
             let label = document.createElement("H3");
             label.innerHTML = "Tags";
@@ -190,7 +200,6 @@ function View(){
                             ' </span>';
           return btn;
         },
-
 
         createAddBtn : function(code){
           let add_btn = gview.createBtn(  gmodel.newCodeId(),
@@ -258,12 +267,18 @@ function View(){
             return document.createElement("SUMMARY");
         },
 
+        createOption : function(option_str){
+          let opt = document.createElement("option");
+          opt.value = option_str;
+          opt.text = option_str;
+          return opt;
+        },
+
 
     //---------------------- BLOCKS CREATION ---------------------------
       // ---------------------- BUTTONS BLOCK ----------------------------
-
         appendAddBtn : function (node, code){
-          let add_btn = createScrollTopBtn(code);
+          let add_btn = createAddBtn(code);
           node.append(add_btn);
           return node;
         },
@@ -304,15 +319,19 @@ function View(){
         appendCodeBlock : function (node, code, buttonCreators ){
           let li = gview.createListItem();
           node.append(li);
-              let basic_editor_div = document.createElement("DIV");
-              basic_editor_div.class = gview.css_class_names.basic_code_editor_container;
+              let basic_editor_div = document.createElement("FORM");
+              basic_editor_div.className += gview.css_class_names.basic_code_editor_container;
               li.append(basic_editor_div);
-                  let code_name_textarea = gview.createCodeName(code);
-                  basic_editor_div.append(code_name_textarea);
-                  let code_tag_textarea = gview.createCodeTag(code);
-                  basic_editor_div.append(code_tag_textarea);
+
+                  let code_name_div= gview.createCodeName(code);
+                  basic_editor_div.append(code_name_div);
+
+                  let code_tag_div = gview.createCodeTag(code);
+                  basic_editor_div.append(code_tag_div);
+
               let details = gview.createDetails();
               li.append(details);
+
                   let summary = gview.createSummary();
                   details.append(summary);
                       let code_preview = gview.createCodePreview(code);
@@ -326,6 +345,8 @@ function View(){
                   for(buttonCreator of buttonCreators){
                     details.append(buttonCreator(code));
                   }
+
+
           return node;
         },
 

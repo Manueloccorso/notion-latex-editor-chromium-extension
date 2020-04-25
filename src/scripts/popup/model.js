@@ -36,6 +36,8 @@ function Model() {
           code_stored_type  : {},
         },
 
+        filter : "All",
+
     //----------------------------- INTERNALS -------------------------------------
       getCodesByType_internal : function(type){
         if(type !== null && gmodel.codes[type] !== gmodel.codes["NOT_A_TYPE"])
@@ -111,7 +113,14 @@ function Model() {
       getCodesByType: function(type) {
         let codes = gmodel.getCodesByType_internal(type);
         if(codes == false) return false;
-        return codes.getAll();
+        if(type !== gmodel.code_stored_type )
+          return codes.getAll();
+        else{
+          console.log("RETURNING FILTERED CODES");
+          let filtered = codes.getAllByTag(gmodel.filter);
+          console.log(filtered);
+          return filtered;
+        }
       },
 
       /**
@@ -211,6 +220,38 @@ function Model() {
       delCodes : function(codes_to_del){
         gmodel.actOnCodesWithCodes_internal(codes, gmodel.delCode);
       },
+
+      addFilter : function(filter){
+        gmodel.filter = filter;
+      },
+
+      removeFilters : function(){
+        gmodel.filter = "All";
+      },
+
+      /**
+       * getAllTags - get all the tags assigned to the codes in the array
+       *
+       * @returns {Dict of Tags}  description
+       */
+      getAllTags : function(){
+        let tags = {};
+        console.log("GETTING ALL TAGS");
+        let codes = gmodel.getCodesByType_internal(gmodel.code_stored_type).getAll();
+        for(let i = 0; i < codes.length; i++){
+          let code = codes[i];
+          tags[code.tag] = code.tag;
+          let splitted_tags = code.tag.split(" ");
+          for(let j = 0; j < splitted_tags.length; j++){
+            tags[splitted_tags[j]] = splitted_tags[j];
+          }
+        }
+        console.log(tags);
+        return tags;
+      },
+
+
+
 
     //-----------------------------  HIGH LEVEL UTILITIES -------------------------------------
 

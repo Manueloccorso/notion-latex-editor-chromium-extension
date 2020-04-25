@@ -12,7 +12,9 @@ function AdvancedArray(store){
 
       store : store,
 
-      //TESTED
+      /**
+       * syncWithStorage - load the codes from the StorageManager into the array
+       */
       syncWithStorage : function(){
         if(store){
           for(loaded_code of global_storage.getAll()){
@@ -21,12 +23,21 @@ function AdvancedArray(store){
         }
       },
 
-      //TESTED
+      /**
+       * get - get a code by id
+       *
+       * @param  {String} id
+       * @returns {Code}
+       */
       get : function(id){
         return this.codes[id];
       },
 
-      //TESTED
+      /**
+       * getAll - get all codes in the array as an array
+       *
+       * @returns {Array of Code}
+       */
       getAll : function() {
         this.syncWithStorage();
         let cc = [];
@@ -36,7 +47,23 @@ function AdvancedArray(store){
         return cc;
       },
 
-      //TESTED
+      getAllByTag : function(tag){
+        if (tag == "All") return this.getAll();
+        this.syncWithStorage();
+        let cc = [];
+        for(code_id in this.codes){
+          let code = this.codes[code_id];
+          if(code.tag.indexOf(tag) >= 0)
+            cc.push(code);
+        }
+        return cc;
+      },
+
+      /**
+       * push - add a new code to the array
+       *
+       * @returns {boolean}  true if the code can be added, false if not.
+       */
       push : function(code) {
         if(!this.codes[code.id]){
           this.codes[code.id] = code;
@@ -45,7 +72,12 @@ function AdvancedArray(store){
         }
         return false;
       },
-      //TESTED
+
+      /**
+       * set - update the values of a code in the array.
+       *
+       * @returns {boolean} true if the code could be updated, false if not.
+       */
       set : function(code){
         if(this.codes[code.id]){
           this.codes[code.id] = code;
@@ -55,6 +87,12 @@ function AdvancedArray(store){
         else return false;
       },
 
+      /**
+       * setWithoutCommit - update a code in the array but force the update to not be stored.
+       *
+       * @param  {type} code the code to update
+       * @returns {type} true if the code could be updated, false if not.
+       */
       setWithoutCommit : function(code){
         if(this.codes[code.id]){
           this.codes[code.id] = code;
@@ -63,7 +101,12 @@ function AdvancedArray(store){
         else return false;
       },
 
-      //TESTED
+      /**
+       * remove - remove a code from the array by id.
+       *
+       * @param  {String} id the id of the code to remove.
+       * @returns {type} true if the code could be removed, false if not.
+       */
       remove : function(id){
         if(this.codes[id]){
           if(this.store) global_storage.remove(this.codes[id]);
@@ -71,6 +114,7 @@ function AdvancedArray(store){
           return true;
         }
         return false;
-      }
+      },
+
   }
 };

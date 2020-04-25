@@ -11,22 +11,32 @@ function Controller(content_page = true){
   console.log("NM.Controller : Created");
   let controller = {
       // --------------------- VARS ----------------------------------------
+        /**
+         * @todo : add variables in which to load the REQUEST identifiers via json file
+         */
+
+        /**
+         * Identifies if there's a content page with which to communicate
+         */
         content : content_page,
 
-
-        // TODO: VARIABLE IN WHICH TO LOAD THE MESSAGES FROM A json FILE (to sync with content and background)
-
-
-
       // --------------------- INIT ----------------------------------------
+        /**
+         * init - initialize the controller, to be called after
+         *          a gview and a gmodel are created
+         *
+         */
         init : function(){
-          //INIT THE CONTROLLER
-          //gcontroller.init_addMessageListeners();
           gcontroller.init_addListenersToStaticButtons();
         },
+
       // --------------------- COMMUNICATION with the Browser ----------------------------
 
-        //----- send a request for the codes in the content
+        /**
+         * requestCodesToContent - send a request for the codes to the content.js
+         *
+         * @returns {type}  description
+         */
         requestCodesToContent : function (){
           let msg = {
             type : CODES_FROM_PAGE_REQUEST
@@ -38,36 +48,41 @@ function Controller(content_page = true){
           });
         },
 
-        //---- when the codes from the content are received -------------
+        /**
+         * onCodesReceivedFromContent -
+         *        manage the reply from the content.js with the codes
+         *          by updating the model with the received code AND
+         *          refreshing the page codes section in the view.
+         *
+         * @param  {type, codes} response
+         */
         onCodesReceivedFromContent : function(response){
-          if(response.type === CODES_FROM_PAGE_ANSWER){
-            let page_codes = response.codes;
-            for(let i = 0; i < page_codes.length; i++){
-              code_id_text= page_codes[i];
-              let code = gmodel.newCode(
-                                          code_id_text.id,
-                                          code_id_text.code,
-                                          "Formula #" + i ,
-                                          "page",
-                                          gmodel.code_page_type);
-              gcontroller.addPageCode(code);
+          if(response){
+            if(response.type === CODES_FROM_PAGE_ANSWER){
+              let page_codes = response.codes;
+              for(let i = 0; i < page_codes.length; i++){
+                code_id_text= page_codes[i];
+                let code = gmodel.newCode(  code_id_text.id,
+                                            code_id_text.code,
+                                            "Formula #" + i ,
+                                            "page",
+                                            gmodel.code_page_type);
+                gcontroller.addPageCode(code);
+              }
+              gview.refreshPageCodesView();
             }
-            gview.refreshPageCodesView();
           }
-        },
-
-        init_addMessageListeners : function(){
-
         },
 
       //------------------------- LOGIC DEFINITION -------------------------------------
         // ----------------------- MODEL AND VIEW CONTROL ------------------------------------
+
           addPageCode : function(code){
             gmodel.addCode(code);
             gview.refreshPageCodesView();
           },
 
-          addQuickCode : function () {
+          addQuickCode : function (code) {
             gmodel.addCode(gmodel.newCode(
                                             gmodel.newCodeId(),
                                             "\\text{Quick Code!}",
@@ -83,7 +98,7 @@ function Controller(content_page = true){
                                           gmodel.newCodeId(),
                                           code.code,
                                           "Stored " + code.name,
-                                          "Stored",
+                                          "New",
                                           gmodel.code_stored_type));
             gview.refreshStoredCodesView();
           },
@@ -142,8 +157,48 @@ function Controller(content_page = true){
                                                               );
                                 }
                               );
+                    // INIT the filtering
+                    gcontroller.init_filters();
+                    let filter_select = gview.getStoredCodesFilterSelect();
+                    filter_select.addEventListener(
+                      'change',
+                      function(){
+                        let filter = filter_select.options[filter_select.selectedIndex].value;
+                        gmodel.addFilter(filter);
+                        gview.refreshStoredCodesView();
+                      }
+                    );
+                    filter_select.addEventListener(
+                      'focus',
+                      function(){
+                        gcontroller.init_filters();
+                      }
+                    );
                 }
               );
+            },
+
+            init_filters : function(){
+              let filter_select = gview.getStoredCodesFilterSelect();
+              filter_select.innerHTML = "";
+              gcontroller.addOptionStrToSelectElement(filter_select, "All");
+              let filters = gmodel.getAllTags();
+              for(tag in filters){
+                gcontroller.addOptionStrToSelectElement(filter_select, filters[tag]);
+              }
+            },
+
+            /**
+              Adds an option to a select(HTML) element.
+              @param {HTMLElement} select_element The select eletement.
+              @param {string} option_str The text of the option.
+              @param {Object} [option_attr] The options to be copied into the option element created.
+              @returns {HTMLElement} The option element created.
+            */
+            addOptionStrToSelectElement : function (select_element, option_str){
+                let opt = gview.createOption(option_str);
+                select_element.add(opt);
+                return opt;
             },
 
           // ------------------------DYNAMIC BUTTONS -----------------
@@ -288,9 +343,11 @@ function Controller(content_page = true){
               });
             },
 
-
+            /**
+             * addListenersToAddBtn -
+             *  @todo  implement
+             */
             addListenersToAddBtn : function(){
-              // TODO:
             },
 
             addListenersToDeleteBtn : function(btn){
@@ -328,10 +385,6 @@ function Controller(content_page = true){
                 }
               );
             },
-
-
-
-      //------------------ MESSAGES LOGIC
 
     };
 
