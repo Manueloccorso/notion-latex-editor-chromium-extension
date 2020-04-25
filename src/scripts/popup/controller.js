@@ -11,22 +11,32 @@ function Controller(content_page = true){
   console.log("NM.Controller : Created");
   let controller = {
       // --------------------- VARS ----------------------------------------
+        /**
+         * @todo : add variables in which to load the REQUEST identifiers via json file
+         */
+
+        /**
+         * Identifies if there's a content page with which to communicate
+         */
         content : content_page,
 
-
-        // TODO: VARIABLE IN WHICH TO LOAD THE MESSAGES FROM A json FILE (to sync with content and background)
-
-
-
       // --------------------- INIT ----------------------------------------
+        /**
+         * init - initialize the controller, to be called after
+         *          a gview and a gmodel are created
+         *
+         */
         init : function(){
-          //INIT THE CONTROLLER
-          //gcontroller.init_addMessageListeners();
-          gcontroller.init_addListenersToStaticButtons();
+          gcontroller.init_addListenersToStaticElements();
         },
+
       // --------------------- COMMUNICATION with the Browser ----------------------------
 
-        //----- send a request for the codes in the content
+        /**
+         * requestCodesToContent - send a request for the codes to the content.js
+         *
+         * @returns {type}  description
+         */
         requestCodesToContent : function (){
           let msg = {
             type : CODES_FROM_PAGE_REQUEST
@@ -38,41 +48,58 @@ function Controller(content_page = true){
           });
         },
 
-        //---- when the codes from the content are received -------------
+        /**
+         * onCodesReceivedFromContent -
+         *        manage the reply from the content.js with the codes
+         *          by updating the model with the received code AND
+         *          refreshing the page codes section in the view.
+         *
+         * @param  {type, codes} response
+         */
         onCodesReceivedFromContent : function(response){
-          if(response.type === CODES_FROM_PAGE_ANSWER){
-            let page_codes = response.codes;
-            for(let i = 0; i < page_codes.length; i++){
-              code_id_text= page_codes[i];
-              let code = gmodel.newCode(code_id_text.id, code_id_text.code, "Formula #" + i , gmodel.code_page_type);
-              gcontroller.addPageCode(code);
+          if(response){
+            if(response.type === CODES_FROM_PAGE_ANSWER){
+              let page_codes = response.codes;
+              for(let i = 0; i < page_codes.length; i++){
+                code_id_text= page_codes[i];
+                let code = gmodel.newCode(  code_id_text.id,
+                                            code_id_text.code,
+                                            "Formula #" + i ,
+                                            "page",
+                                            gmodel.code_page_type);
+                gcontroller.addPageCode(code);
+              }
+              gview.refreshPageCodesView();
             }
-            gview.refreshPageCodesView();
           }
-        },
-
-        init_addMessageListeners : function(){
-
         },
 
       //------------------------- LOGIC DEFINITION -------------------------------------
         // ----------------------- MODEL AND VIEW CONTROL ------------------------------------
+
           addPageCode : function(code){
             gmodel.addCode(code);
             gview.refreshPageCodesView();
           },
 
-          addQuickCode : function () {
+          addQuickCode : function (code) {
             gmodel.addCode(gmodel.newCode(
-                                            gmodel.getNewId(),
+                                            gmodel.newCodeId(),
                                             "\\text{Quick Code!}",
-                                            "Quick Code Title : Edit or not", gmodel.code_quick_type)
+                                            "Quick Code Title : Edit or not",
+                                            "Quick",
+                                            gmodel.code_quick_type)
                       );
             gview.refreshQuickCodesView();
           },
 
           addStoredCode : function(code) {
-            gmodel.addCode(gmodel.newCode(gmodel.getNewId(), code.code, "Stored " + code.name, gmodel.code_stored_type));
+            gmodel.addCode(gmodel.newCode(
+                                          gmodel.newCodeId(),
+                                          code.code,
+                                          "Stored " + code.name,
+                                          "New",
+                                          gmodel.code_stored_type));
             gview.refreshStoredCodesView();
           },
 
@@ -88,7 +115,7 @@ function Controller(content_page = true){
         //------------------------ ADD BUTTON LOGIC ------------------------------------
 
           // -------------------------- STATIC BUTTONS ------------------------------
-            init_addListenersToStaticButtons : function (){
+            init_addListenersToStaticElements : function (){
               window.addEventListener(
                 'load',
                 function load(event){
@@ -122,13 +149,69 @@ function Controller(content_page = true){
                               'click',
                               function() {
                                     gcontroller.addStoredCode(gmodel.newCode(
-                                                                              gmodel.getNewId(), "\\text{New Stored Code!}",
-                                                                              "Stored Code Title : better edit!", gmodel.code_stored_type)
+                                                                              gmodel.newCodeId(),
+                                                                              "\\text{New Stored Code!}",
+                                                                              "Stored Code Title : better edit!",
+                                                                              "Stored",
+                                                                              gmodel.code_stored_type)
                                                               );
                                 }
                               );
+                    //------ Filtering and searching
+                    gcontroller.init_filters();
+                    let filter_select = gview.getStoredCodesFilterSelect();
+                    filter_select.addEventListener(
+                      'focus',
+                      function(){
+                        gcontroller.init_filters();
+                      }
+                    );
+                    filter_select.addEventListener(
+                      'change',
+                      function(){
+                        let filter = filter_select.options[filter_select.selectedIndex].value;
+                        gmodel.addTagFilter(filter);
+                        gview.refreshStoredCodesView();
+                      }
+                    );
+                    let search_textarea = gview.getStoredCodesSearchTextarea();
+                    search_textarea.addEventListener(
+                      'keyup',
+                      function(event){
+                        search_textarea.value = search_textarea.value.replace(/\r\n|\r|\n/g,"");
+                        let search = search_textarea.value;
+                        if(search == "") gmodel.removeNameFilter();
+                        else gmodel.addNameFilter(search_textarea.value);
+                        gview.refreshStoredCodesView();
+                      }
+                    );
                 }
               );
+            },
+
+            init_filters : function(){
+              let filter_select = gview.getStoredCodesFilterSelect();
+              filter_select.innerHTML = "";
+              gcontroller.addOptionStrToSelectElement(filter_select, "", "All");
+              let filters = gmodel.getAllTags();
+              for(tag in filters){
+                gcontroller.addOptionStrToSelectElement(filter_select, filters[tag],filters[tag] );
+              }
+            },
+
+            /**
+              Adds an option to a select(HTML) element.
+              @param {HTMLElement} select_element The select eletement.
+              @param {string} option_str The text of the option.
+              @param {Object} [option_attr] The options to be copied into the option element created.
+              @returns {HTMLElement} The option element created.
+            */
+            addOptionStrToSelectElement : function (select_element, value, label){
+                let opt = gview.createOption();
+                opt.text = label;
+                opt.value = value;
+                select_element.add(opt);
+                return opt;
             },
 
           // ------------------------DYNAMIC BUTTONS -----------------
@@ -143,9 +226,36 @@ function Controller(content_page = true){
                           let name = codename_textarea.value;
                           let old_code = gmodel.getCode(id);
 
-                          gcontroller.commitCode(gmodel.newCode(id, old_code.code, name, old_code.type));
+                          gcontroller.commitCode(gmodel.newCode(
+                                                                id,
+                                                                old_code.code,
+                                                                name,
+                                                                old_code.tag,
+                                                                old_code.type));
                         }
               );
+            },
+
+            addListenersToCodeTagTextArea : function(codetag_textarea){
+
+              codetag_textarea.addEventListener(
+                        'change',
+                        (event) => {
+                          console.log("Title changed!");
+                          let id = gview.cleanId(codetag_textarea.id);
+                          // TODO: refactor FORMATTING as object
+                          let tag = codetag_textarea.value;
+                          let old_code = gmodel.getCode(id);
+                          gcontroller.commitCode(gmodel.newCode(
+                                                                id,
+                                                                old_code.code,
+                                                                old_code.name,
+                                                                tag,
+                                                                old_code.type));
+                        }
+              );
+
+
             },
 
             addListenersToCodeMirrorTextArea : function(code_mirror){
@@ -158,7 +268,7 @@ function Controller(content_page = true){
 
 
                                   let token = code_mirror.getTokenAt(changeObj.from);
-                                  let replaced = gmodel.replaceStoredCodeNames(token.string);
+                                  let replaced = gmodel.replaceStoredCodeNameWithCode(token.string);
 
                                   // WHEN A CODE NAME IS DETECTED
                                   if(replaced !== token.string){
@@ -194,7 +304,12 @@ function Controller(content_page = true){
                                                           gview.cleanId( textarea.id )
                                                         );
                           let new_code = auto_clean_code(code_mirror.getValue());
-                          gcontroller.syncCodePreview(gmodel.newCode(old_code.id , new_code, old_code.name, old_code.type));
+                          gcontroller.syncCodePreview(gmodel.newCode(
+                                                                      old_code.id,
+                                                                      new_code,
+                                                                      old_code.name,
+                                                                      old_code.tag,
+                                                                      old_code.type));
                         }
                     );
               // COMMIT CHANGES
@@ -213,7 +328,12 @@ function Controller(content_page = true){
                           window.getSelection().removeAllRanges();
 
                           //COMMIT THE CHANGES TO THE MODEL
-                          gcontroller.commitCode(gmodel.newCode(id,cleaned_code, old_code.name, old_code.type));
+                          gcontroller.commitCode(gmodel.newCode(
+                                                                    id,
+                                                                    cleaned_code,
+                                                                    old_code.name,
+                                                                    old_code.tag,
+                                                                    old_code.type));
                         }
               );
 
@@ -236,9 +356,11 @@ function Controller(content_page = true){
               });
             },
 
-
+            /**
+             * addListenersToAddBtn -
+             *  @todo  implement
+             */
             addListenersToAddBtn : function(){
-              // TODO:
             },
 
             addListenersToDeleteBtn : function(btn){
@@ -276,10 +398,6 @@ function Controller(content_page = true){
                 }
               );
             },
-
-
-
-      //------------------ MESSAGES LOGIC
 
     };
 

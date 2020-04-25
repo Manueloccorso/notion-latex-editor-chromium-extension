@@ -24,7 +24,7 @@
       color: var(--white);
       margin: 0 !important;
       padding: 0 !important;
-      align-content: center;
+      text-align : center;
     }
 
   /* ---------------------------------------------------------------------------*/
@@ -68,12 +68,27 @@
       list-style: none;
     }
 
+
+    select {
+      appearance: none;
+    }
+
+    /* Remove native arrow on IE */
+    select::-ms-expand {
+      display: none;
+    }
+
+    /*Remove dotted outline from selected option on Firefox*/
+    select:-moz-focusring {
+      color: transparent !important;
+      text-shadow: 0 0 0 var(--white);
+    }
+
   /* --------------------------------------------------------------------------*/
 
   /* --------------------------- DETAILS FOR CODES ----------------------------*/
 
     details{
-      align-content: center;
       width : 100%;
       cursor: pointer;
       padding: 10px;
@@ -136,13 +151,12 @@
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
   /* ------------------------------- BOXING ----------------------------------------*/
-    .popup-form {
+    .dark-theme .popup-form {
       width : 800px;
       height : 700px;
     }
 
-    .container {
-      text-align: center;
+    .dark-theme .container {
       padding: 0 0.5rem;
     }
 
@@ -173,7 +187,11 @@
       margin-top: 0.1rem;
       font-size: 1.1rem;
     }
-
+    .dark-theme h3 {
+      margin-bottom: 0.025rem;
+      margin-top: 0.025rem;
+      font-size: 1rem;
+    }
 
   /* -------------------------------- ICONS ------------------------------------*/
     .small-icon{
@@ -187,7 +205,6 @@
     .dark-theme textarea,
     .dark-theme button,
     .dark-theme input[type="checkbox"]:focus + label{
-      align-content:  center;
       line-height: 1.5;
       padding: 0.4rem 0.4rem;
       margin : 0.2rem 0.2rem;
@@ -207,12 +224,6 @@
       background: var(--bgFormElsFocus);
     }
 
-    .dark-theme select:focus,
-    .dark-theme input:focus,
-    .dark-theme textarea:focus {
-      transform: scale(1.05);
-    }
-
     .dark-theme *:required,
     .dark-theme select {
       background-repeat: no-repeat;
@@ -220,9 +231,6 @@
       background-size: 15px 15px;
     }
 
-    .dark-theme select {
-      background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/down.svg);
-    }
 
     .dark-theme *:disabled {
       cursor: default;
@@ -243,21 +251,68 @@
     .dark-theme .code-preview{
       font-family: "Courier New", Courier, monospace;
       font-size: 0.9rem;
-      text-align: center;
       line-height: 1.1;
     }
 
     .dark-theme .code-name {
-        align-self: center;
+        display : inline-block;
         line-height: 1.1;
         padding: 0.15rem 0.15rem;
-        margin: 0.6rem 0.6rem;
+        margin-top: 0.05rem;
+        margin-bottom: 0.2rem;
         border: 0.15rem solid var(--borderFormEls);
         box-shadow: 0 0 0.1rem rgba(0,0,0, 0.75);
         color: var(--white);
         background: var(--bgFormEls);
         transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
           transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+    }
+
+    .dark-theme .search-textarea{
+      resize : none;
+      display : inline-block;
+      line-height: 1.1;
+      padding: 0.15rem 0.15rem;
+      margin-top: 0.05rem;
+      margin-bottom: 0.2rem;
+      border: 0.15rem solid var(--borderFormEls);
+      box-shadow: 0 0 0.1rem rgba(0,0,0, 0.75);
+      color: var(--white);
+      background: var(--bgFormEls);
+      transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
+        transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+
+    }
+
+    .dark-theme .code-tag {
+        display : inline-block;
+        line-height: 1.1;
+        padding: 0.15rem 0.15rem;
+        margin-top: 0.05rem;
+        margin-bottom: 0.2rem;
+        border: 0.15rem solid var(--borderFormEls);
+        box-shadow: 0 0 0.1rem rgba(0,0,0, 0.75);
+        color: var(--white);
+        background: var(--bgFormEls);
+        transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
+          transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+    }
+
+    .dark-theme .code-basic-editor-container{
+      display : grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap : 2rem;
+      position: relative;
+
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    /*------------------------ FILTERING and SEARCH ---------------------------*/
+
+    .dark-theme select {
+      background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/down.svg);
+      width : 100%;
     }
 
 /* FOOTER

@@ -25,7 +25,7 @@ function getCodeFromAnnotation(annotation) {
 }
 
 function getCodesFromAnnotations(annotations){
-  let codes = []
+  let codes = [];
   for (let i = 0; i < annotations.length; i++)
     codes.push(getCodeFromAnnotation(annotations[i]));
   return codes;

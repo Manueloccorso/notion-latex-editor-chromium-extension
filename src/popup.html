@@ -22,17 +22,14 @@
   <script defer src="/libs/codemirror/stex.js" ></script>
 
   <!--     _____________ UTILITIES! ______________      -->
-  <script defer src="scripts/popup/utils/autoformatting.js" ></script>
-  <script defer src="scripts/popup/utils/storage_manager.js" ></script>
+  <script defer src="scripts/popup/utils/StorageManager.js" ></script>
+  <script defer src="scripts/popup/utils/AdvancedArray.js" ></script>
+  <script defer src="scripts/popup/utils/Autoformatter.js" ></script>
 
-  <!--     _____________ MODEL! ______________      -->
-  <script src="scripts/popup/model.js" ></script>
-
-  <!--     _____________ VIEW! ______________      -->
-  <script src="scripts/popup/view.js" ></script>
-
-  <!--     _____________ CONTROLLER! ______________      -->
-  <script src="scripts/popup/controller.js" ></script>
+  <!--     _____________ MVC! ______________      -->
+  <script src="scripts/popup/Model.js" ></script>
+  <script src="scripts/popup/View.js" ></script>
+  <script src="scripts/popup/Controller.js" ></script>
 
   <!--     _____________ POPUP! ______________      -->
   <script defer src="scripts/popup/popup.js" ></script>
@@ -123,6 +120,17 @@
               </span>
             </button>
           </div>
+          <div class="grid-commands">
+            <h3> Search by Name</h3>
+            <textarea type="text"  rows="1"  class="search-textarea" id="textarea_search_by_name" ></textarea>
+          </div>
+          <div class="grid-commands">
+            <h3> Filter by Tag </h3>
+            <select class="stored-code-filtering-select" id="select_stored_codes_filter">
+              <option value=""> Select the Tag Filter </option>
+            </select>
+          </div>
+
           <form class="dark-theme">
             <div class="container">
               <ul id="stored_codes_box_id">
