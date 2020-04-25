@@ -36,7 +36,8 @@ function Model() {
           code_stored_type  : {},
         },
 
-        filter : "All",
+        tag_filter : "",
+        name_filter : "",
 
     //----------------------------- INTERNALS -------------------------------------
       getCodesByType_internal : function(type){
@@ -116,9 +117,11 @@ function Model() {
         if(type !== gmodel.code_stored_type )
           return codes.getAll();
         else{
-          console.log("RETURNING FILTERED CODES");
-          let filtered = codes.getAllByTag(gmodel.filter);
-          console.log(filtered);
+          //FILTERING AND SEARCH
+          let filtered = codes.getAllByFilter({
+                                                name  : gmodel.name_filter,
+                                                tag   : gmodel.tag_filter}
+                                              );
           return filtered;
         }
       },
@@ -221,14 +224,15 @@ function Model() {
         gmodel.actOnCodesWithCodes_internal(codes, gmodel.delCode);
       },
 
-      addFilter : function(filter){
-        gmodel.filter = filter;
+      //---------------------- FILTERING AND SEARCH --------------------------
+
+      addTagFilter : function(filter){
+        gmodel.tag_filter = filter;
       },
 
-      removeFilters : function(){
-        gmodel.filter = "All";
+      removeTagFilter : function(){
+        gmodel.tag_filter = "";
       },
-
       /**
        * getAllTags - get all the tags assigned to the codes in the array
        *
@@ -248,6 +252,14 @@ function Model() {
         }
         console.log(tags);
         return tags;
+      },
+
+      addNameFilter : function(filter){
+          gmodel.name_filter = filter;
+      },
+
+      removeNameFilter : function(){
+        gmodel.name_filter = "";
       },
 
 

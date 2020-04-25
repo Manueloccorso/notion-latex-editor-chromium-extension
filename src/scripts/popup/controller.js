@@ -27,7 +27,7 @@ function Controller(content_page = true){
          *
          */
         init : function(){
-          gcontroller.init_addListenersToStaticButtons();
+          gcontroller.init_addListenersToStaticElements();
         },
 
       // --------------------- COMMUNICATION with the Browser ----------------------------
@@ -115,7 +115,7 @@ function Controller(content_page = true){
         //------------------------ ADD BUTTON LOGIC ------------------------------------
 
           // -------------------------- STATIC BUTTONS ------------------------------
-            init_addListenersToStaticButtons : function (){
+            init_addListenersToStaticElements : function (){
               window.addEventListener(
                 'load',
                 function load(event){
@@ -157,21 +157,32 @@ function Controller(content_page = true){
                                                               );
                                 }
                               );
-                    // INIT the filtering
+                    //------ Filtering and searching
                     gcontroller.init_filters();
                     let filter_select = gview.getStoredCodesFilterSelect();
-                    filter_select.addEventListener(
-                      'change',
-                      function(){
-                        let filter = filter_select.options[filter_select.selectedIndex].value;
-                        gmodel.addFilter(filter);
-                        gview.refreshStoredCodesView();
-                      }
-                    );
                     filter_select.addEventListener(
                       'focus',
                       function(){
                         gcontroller.init_filters();
+                      }
+                    );
+                    filter_select.addEventListener(
+                      'change',
+                      function(){
+                        let filter = filter_select.options[filter_select.selectedIndex].value;
+                        gmodel.addTagFilter(filter);
+                        gview.refreshStoredCodesView();
+                      }
+                    );
+                    let search_textarea = gview.getStoredCodesSearchTextarea();
+                    search_textarea.addEventListener(
+                      'keyup',
+                      function(event){
+                        search_textarea.value = search_textarea.value.replace(/\r\n|\r|\n/g,"");
+                        let search = search_textarea.value;
+                        if(search == "") gmodel.removeNameFilter();
+                        else gmodel.addNameFilter(search_textarea.value);
+                        gview.refreshStoredCodesView();
                       }
                     );
                 }
@@ -181,10 +192,10 @@ function Controller(content_page = true){
             init_filters : function(){
               let filter_select = gview.getStoredCodesFilterSelect();
               filter_select.innerHTML = "";
-              gcontroller.addOptionStrToSelectElement(filter_select, "All");
+              gcontroller.addOptionStrToSelectElement(filter_select, "", "All");
               let filters = gmodel.getAllTags();
               for(tag in filters){
-                gcontroller.addOptionStrToSelectElement(filter_select, filters[tag]);
+                gcontroller.addOptionStrToSelectElement(filter_select, filters[tag],filters[tag] );
               }
             },
 
@@ -195,8 +206,10 @@ function Controller(content_page = true){
               @param {Object} [option_attr] The options to be copied into the option element created.
               @returns {HTMLElement} The option element created.
             */
-            addOptionStrToSelectElement : function (select_element, option_str){
-                let opt = gview.createOption(option_str);
+            addOptionStrToSelectElement : function (select_element, value, label){
+                let opt = gview.createOption();
+                opt.text = label;
+                opt.value = value;
                 select_element.add(opt);
                 return opt;
             },

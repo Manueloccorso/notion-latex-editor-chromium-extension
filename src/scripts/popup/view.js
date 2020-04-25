@@ -18,18 +18,20 @@ function View(){
                         btn_sync_stored_code  : "btn_sync_stored_code",
                         btn_add_stored_code   : "btn_add_stored_code",
 
-                        select_stored_codes_filter : "select_stored_codes_filter"
+                        select_stored_codes_filter  : "select_stored_codes_filter",
+                        textarea_search_by_name     : "textarea_search_by_name"
                       },
       //BOXED
       getPageCodesBox   : function(){return document.getElementById(gview.id_html_fixed.page_codes_box_id); },
       getQuickCodesBox  : function(){ return document.getElementById(gview.id_html_fixed.quick_codes_box_id);},
       getStoredCodesBox : function(){ return document.getElementById(gview.id_html_fixed.stored_codes_box_id); },
 
-      getPageCodesSyncBtn         : function(){ return document.getElementById(gview.id_html_fixed.btn_sync_page_codes); },
-      getQuickCodesAddBtn         : function(){ return document.getElementById(gview.id_html_fixed.btn_add_quick_code); },
-      getStoredCodesSyncBtn       : function(){ return document.getElementById(gview.id_html_fixed.btn_sync_stored_code); },
-      getStoredCodesAddBtn        : function(){ return document.getElementById(gview.id_html_fixed.btn_add_stored_code); },
-      getStoredCodesFilterSelect  : function(){ return document.getElementById(gview.id_html_fixed.select_stored_codes_filter)},
+      getPageCodesSyncBtn           : function(){ return document.getElementById(gview.id_html_fixed.btn_sync_page_codes); },
+      getQuickCodesAddBtn           : function(){ return document.getElementById(gview.id_html_fixed.btn_add_quick_code); },
+      getStoredCodesSyncBtn         : function(){ return document.getElementById(gview.id_html_fixed.btn_sync_stored_code); },
+      getStoredCodesAddBtn          : function(){ return document.getElementById(gview.id_html_fixed.btn_add_stored_code); },
+      getStoredCodesFilterSelect    : function(){ return document.getElementById(gview.id_html_fixed.select_stored_codes_filter)},
+      getStoredCodesSearchTextarea  : function(){ return document.getElementById(gview.id_html_fixed.textarea_search_by_name)},
 
     //----------------------- ID PREFIXES ------------------------
       id_prefixes : {
@@ -98,6 +100,8 @@ function View(){
                   sync_btn        : "small-icon",
                   scrolltop_btn   : "small-icon",
 
+                  search_textarea : "search-textarea",
+
                   small_icon      : "small-icon",
 
                   small_btn : "btn-grid"
@@ -156,7 +160,6 @@ function View(){
         createCodeName : function(code){
           let div = document.createElement("DIV")
           div.class += gview.css_class_names.code_tag_container;
-          div.style = "position: relative;";
           let label = document.createElement("H3");
           label.innerHTML = "Name";
           div.append(label);
@@ -172,7 +175,6 @@ function View(){
 
         createCodeTag : function(code){
             let div = document.createElement("DIV");
-            div.style = "position: relative;";
             div.class += gview.css_class_names.code_tag_container;
             let label = document.createElement("H3");
             label.innerHTML = "Tags";
@@ -370,7 +372,6 @@ function View(){
           summary.innerHTML = "";
           summary.append(new_code_preview);
         },
-
 
         refreshPageCodesView : function (){
           if(gcontroller.content){

@@ -268,6 +268,22 @@
           transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
     }
 
+    .dark-theme .search-textarea{
+      resize : none;
+      display : inline-block;
+      line-height: 1.1;
+      padding: 0.15rem 0.15rem;
+      margin-top: 0.05rem;
+      margin-bottom: 0.2rem;
+      border: 0.15rem solid var(--borderFormEls);
+      box-shadow: 0 0 0.1rem rgba(0,0,0, 0.75);
+      color: var(--white);
+      background: var(--bgFormEls);
+      transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
+        transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+
+    }
+
     .dark-theme .code-tag {
         display : inline-block;
         line-height: 1.1;

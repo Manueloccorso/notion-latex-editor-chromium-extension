@@ -47,14 +47,21 @@ function AdvancedArray(store){
         return cc;
       },
 
-      getAllByTag : function(tag){
-        if (tag == "All") return this.getAll();
-        this.syncWithStorage();
+      getAllByFilter : function(filter){
+        console.log("Getting filtered codes");
+        console.log(filter);
         let cc = [];
         for(code_id in this.codes){
           let code = this.codes[code_id];
-          if(code.tag.indexOf(tag) >= 0)
-            cc.push(code);
+          console.log("Checking code");
+          console.log(code);
+          if(code.tag.indexOf(filter.tag) >= 0){
+            console.log(":"+filter.tag + ": is not in :" + code.tag + ":");
+            if(code.name.indexOf(filter.name) >= 0){
+              console.log(":"+filter.name + ": is not in :" + code.name + ":");
+              cc.push(code);
+            }
+          }
         }
         return cc;
       },
