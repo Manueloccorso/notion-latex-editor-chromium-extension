@@ -261,31 +261,48 @@ function Controller(content_page = true){
             addListenersToCodeMirrorTextArea : function(code_mirror){
               //INTERCEPT CODES names
               code_mirror.on(
-                              'beforeChange',
+                              'change',
                               (event, changeObj) => {
                                 // ON SPACEC DETECTED
                                 if (changeObj.origin == "+input" && changeObj.text == " "){
 
 
+                                  let pos = code_mirror.getCursor();
+                                  let starting_pos = pos;
                                   let token = code_mirror.getTokenAt(changeObj.from);
                                   let replaced = gmodel.replaceStoredCodeNameWithCode(token.string);
 
                                   // WHEN A CODE NAME IS DETECTED
                                   if(replaced !== token.string){
                                     //DETELE THE CODE NAME
+
+                                    /*
+                                    console.log(token);
                                     changeObj.from.ch = token.start;
-                                    changeObj.to.ch = token.end;
-                                    changeObj.text = [""];
+                                    changeObj.to.ch = token.end + 1 ;
+                                    changeObj.text = ["ABLACA"];
+                                    */
+                                    code_mirror.replaceRange("",
+                                    {line : starting_pos.line , ch : token.start },
+                                    {line : starting_pos.line , ch : starting_pos.ch});
+
+                                    let indent_n = token.start;
+                                    let indent = "";
+                                    for(let i = 0; i < indent_n; i++)
+                                      indent += " ";
 
                                     //INSERT THE CODE TO BE REPLACED
-                                    let tokens_from_code = replaced.split("\n");
                                     code_mirror.execCommand("newlineAndIndent");
                                     code_mirror.execCommand("goLineStart");
+                                    let tokens_from_code = replaced.split("\n");
                                     for(let i = 0; i < tokens_from_code.length; i++){
-                                      let pos = code_mirror.getCursor();
-                                      code_mirror.replaceRange(tokens_from_code[i], {line : pos.line , ch : pos.ch});
-                                      code_mirror.execCommand("newlineAndIndent");
-                                      code_mirror.execCommand("goLineStart");
+                                      pos = code_mirror.getCursor();
+                                      code_mirror.replaceRange(indent + tokens_from_code[i],
+                                                                {line : pos.line , ch : pos.ch});
+                                      if(i < tokens_from_code.length - 1){
+                                        code_mirror.execCommand("newlineAndIndent");
+                                        code_mirror.execCommand("goLineStart");
+                                      }
                                     }
                                   }
                                 }
@@ -298,7 +315,6 @@ function Controller(content_page = true){
               code_mirror.on(
                         'change',
                         (event, changeObj) => {
-
                           let textarea = code_mirror.getTextArea();
                           let old_code = gmodel.getCode(
                                                           gview.cleanId( textarea.id )
