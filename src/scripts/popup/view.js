@@ -141,6 +141,7 @@ function View(){
             mode : {name: "stex"}
           });
           mirror_textarea.getDoc().setValue(textarea.value);
+          mirror_textarea.setSize("100%", "40rem");
           mirror_textarea.refresh();
           gcontroller.addListenersToCodeMirrorTextArea(mirror_textarea);
         },
