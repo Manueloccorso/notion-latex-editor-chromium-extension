@@ -98,7 +98,7 @@ function Controller(content_page = true){
                                           gmodel.newCodeId(),
                                           code.code,
                                           "Stored " + code.name,
-                                          "New",
+                                          code.tag,
                                           gmodel.code_stored_type));
             gview.refreshStoredCodesView();
           },
@@ -152,7 +152,7 @@ function Controller(content_page = true){
                                                                               gmodel.newCodeId(),
                                                                               "\\text{New Stored Code!}",
                                                                               "Stored Code Title : better edit!",
-                                                                              "Stored",
+                                                                              gmodel.getTagFilter(),
                                                                               gmodel.code_stored_type)
                                                               );
                                 }
@@ -274,30 +274,17 @@ function Controller(content_page = true){
 
                                   // WHEN A CODE NAME IS DETECTED
                                   if(replaced !== token.string){
-                                    //DETELE THE CODE NAME
 
-                                    /*
-                                    console.log(token);
-                                    changeObj.from.ch = token.start;
-                                    changeObj.to.ch = token.end + 1 ;
-                                    changeObj.text = ["ABLACA"];
-                                    */
+                                    // Remove the code name
                                     code_mirror.replaceRange("",
                                     {line : starting_pos.line , ch : token.start },
                                     {line : starting_pos.line , ch : starting_pos.ch});
 
-                                    let indent_n = token.start;
-                                    let indent = "";
-                                    for(let i = 0; i < indent_n; i++)
-                                      indent += " ";
-
                                     //INSERT THE CODE TO BE REPLACED
-                                    code_mirror.execCommand("newlineAndIndent");
-                                    code_mirror.execCommand("goLineStart");
                                     let tokens_from_code = replaced.split("\n");
                                     for(let i = 0; i < tokens_from_code.length; i++){
                                       pos = code_mirror.getCursor();
-                                      code_mirror.replaceRange(indent + tokens_from_code[i],
+                                      code_mirror.replaceRange(tokens_from_code[i],
                                                                 {line : pos.line , ch : pos.ch});
                                       if(i < tokens_from_code.length - 1){
                                         code_mirror.execCommand("newlineAndIndent");
@@ -338,10 +325,12 @@ function Controller(content_page = true){
                           let old_code = gmodel.getCode(id);
 
                           //COPY TO CLIPBOARD
+                          /*
                           code_mirror.save();
                           textarea.select();
                           document.execCommand('copy');
                           window.getSelection().removeAllRanges();
+                          */
 
                           //COMMIT THE CHANGES TO THE MODEL
                           gcontroller.commitCode(gmodel.newCode(

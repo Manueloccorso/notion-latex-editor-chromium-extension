@@ -139,6 +139,10 @@ function Model() {
         return null;
       },
 
+      getTagFilter : function(){
+        return gmodel.tag_filter.substring(0, gmodel.tag_filter.length);
+      },
+
 
     //----------------------------- SETTER -------------------------------------
 
@@ -244,10 +248,12 @@ function Model() {
         let codes = gmodel.getCodesByType_internal(gmodel.code_stored_type).getAll();
         for(let i = 0; i < codes.length; i++){
           let code = codes[i];
-          tags[code.tag] = code.tag;
-          let splitted_tags = code.tag.split(" ");
-          for(let j = 0; j < splitted_tags.length; j++){
-            tags[splitted_tags[j]] = splitted_tags[j];
+          if(code.tag){
+            tags[code.tag] = code.tag;
+            let splitted_tags = code.tag.split(" ");
+            for(let j = 0; j < splitted_tags.length; j++){
+              tags[splitted_tags[j]] = splitted_tags[j];
+            }
           }
         }
         console.log(tags);
