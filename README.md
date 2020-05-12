@@ -2,23 +2,7 @@
 
 A chromium (tested on Chrome and the new Edge) extension for advanced Notion Math Blocks editing.
 # Main Features
-## Now in master branch:
-
-  - Open the extension popup with Alt + Shift + M
-
-  - Load automatically the Notion Math Blocks of the current page into the extension popup.
-  - Quickly create some new code (which is lost when the extension is closed, unless is saved).
-  - Store codes permanently for later use.
-
-  - Edit each type of code (from page, quick, or stored) in an advanced editor (integration with Code Mirror is coming).
-  - After the edit, the code is copied automatically to the clipboard in order to be pasted in the real Notion block manually.
-    (when the APIs will be released, it will be probably possible to automatically update the notion block).
-
-  - Possibility to give a name to the stored codes
-## Next :
-  - Possibility to search for codes
-  - Possibility to insert a stored code template in an other one by writing \CodeName
-      (useful for example for systems equation or other long and frequently used templates )
+ - See the [NotionGuide](https://www.notion.so/manueloccnotes/Notion-Math-Quick-Editor-Chrome-Extension-9bcbe1245e214030b89ee5e8104ba691)for an updated guide of the extension. 
 
 ## Getting Started
 
