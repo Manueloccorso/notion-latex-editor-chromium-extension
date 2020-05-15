@@ -15,6 +15,15 @@ gcontroller.init();
 
 gview.refreshStoredCodesView();
 
+let export_btn = document.getElementById("btn_exportdb");
+export_btn.addEventListener(
+          'click',
+          (event) => {
+            download(gmodel.getCodesByType(gmodel.code_stored_type));
+          }
+);
+
+
 function restart_options(){
   gcontroller = Controller();
   global_storage = StorageManager();

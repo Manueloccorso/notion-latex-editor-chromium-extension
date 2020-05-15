@@ -20,6 +20,8 @@
   <script defer src="/libs/codemirror/codemirror.js" ></script>
   <script defer src="/libs/codemirror/autorefresh.js" ></script>
   <script defer src="/libs/codemirror/stex.js" ></script>
+  <script defer src="/libs/jszip.min.js" ></script>
+  <script defer src="/libs/FileSaver.js" ></script>
 
 
   <!--     _____________ MVC! ______________      -->
@@ -30,6 +32,7 @@
     <script defer src="scripts/MVC/utils/StorageManager.js" ></script>
     <script defer src="scripts/MVC/utils/AdvancedArray.js" ></script>
     <script defer src="scripts/MVC/utils/Autoformatter.js" ></script>
+    <script defer src="scripts/MVC/utils/BackupManager.js" ></script>
 
   <!--     _____________ OPTIONS! ______________      -->
   <script defer src="scripts/options/options.js" ></script>
@@ -42,8 +45,14 @@
     <div class="container">
       <ul class="shadowed">
         <li>
-          <div id="top_title_box_id">
-            <h2> Notion Math : Advanced Editor Options </h2>
+          <div class="grid-commands">
+            <div id="top_title_box_id">
+              <h2> Notion Math : Advanced Editor Options </h2>
+            </div>
+            <button type='button' class="btn-grid" id="btn_exportdb">
+              <span class="front"> <img class="small-icon" src="images/icons/downloads-multi-size.ico" alt="Create New Code Block">
+              </span>
+            </button>
           </div>
         </li>
 
