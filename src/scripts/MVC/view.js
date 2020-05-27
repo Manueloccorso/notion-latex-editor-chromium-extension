@@ -137,7 +137,7 @@ function View(){
           let mirror_textarea = CodeMirror.fromTextArea(textarea, {
             lineNumbers: true,
             autoRefresh: true,
-            theme : "material-darker",
+            theme : gview.cmThemeByTheme[gview.theme],
             mode : {name: "stex"}
           });
           mirror_textarea.getDoc().setValue(textarea.value);
@@ -462,7 +462,16 @@ function View(){
         gview.scrollToElementById(gview.id_html_fixed.stored_codes_box_id);
       },
 
-
+    // ------------------------ ADD STYLES MANAGEMENT ------------------------------------
+      setTheme: function (th){
+        gview.theme = th;
+        document.getElementById('theme').setAttribute("href", "styles/themes/"+gview.theme+".css");
+      },
+      cmThemeByTheme : {
+        'dark' : "material-darker",
+        'light' : 'base16-light'
+      },
+      theme : 'dark'
 
   }
   return view;

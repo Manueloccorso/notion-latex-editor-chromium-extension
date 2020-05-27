@@ -406,6 +406,8 @@ function Controller(content_page = true){
 
     };
 
+
+
     return controller;
 }
 
