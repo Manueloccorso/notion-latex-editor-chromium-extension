@@ -343,7 +343,17 @@ function View(){
 
                   let code_textarea = gview.createCodeTextArea(code);
                   details.append(code_textarea);
-                  gview.createCodeMirror(code_textarea);
+                  //Increase Perfomernace:
+                  // Ony crate the codeMirror Obj
+                  // when first clicked
+                  details.addEventListener(
+                    "click",
+                    function(event){
+                      gview.createCodeMirror(code_textarea);
+                      this.removeEventListener('click',arguments.callee,false);
+                    }
+                  );
+
 
                   for(buttonCreator of buttonCreators){
                     details.append(buttonCreator(code));
