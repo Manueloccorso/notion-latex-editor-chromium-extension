@@ -192,27 +192,14 @@ function Controller(content_page = true){
             init_filters : function(){
               let filter_select = gview.getStoredCodesFilterSelect();
               filter_select.innerHTML = "";
-              gcontroller.addOptionStrToSelectElement(filter_select, "", "All");
+              gview.addOptionStrToSelectElement(filter_select, "", "All");
               let filters = gmodel.getAllTags();
               for(tag in filters){
-                gcontroller.addOptionStrToSelectElement(filter_select, filters[tag],filters[tag] );
+                gview.addOptionStrToSelectElement(filter_select, filters[tag],filters[tag] );
               }
             },
 
-            /**
-              Adds an option to a select(HTML) element.
-              @param {HTMLElement} select_element The select eletement.
-              @param {string} option_str The text of the option.
-              @param {Object} [option_attr] The options to be copied into the option element created.
-              @returns {HTMLElement} The option element created.
-            */
-            addOptionStrToSelectElement : function (select_element, value, label){
-                let opt = gview.createOption();
-                opt.text = label;
-                opt.value = value;
-                select_element.add(opt);
-                return opt;
-            },
+
 
           // ------------------------DYNAMIC BUTTONS -----------------
             addListenersToCodeNameTextArea : function (codename_textarea){
@@ -405,6 +392,8 @@ function Controller(content_page = true){
             },
 
     };
+
+
 
     return controller;
 }

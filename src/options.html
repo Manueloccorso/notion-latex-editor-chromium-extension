@@ -8,28 +8,33 @@
   <title> Notion Math : Advanced Editor Options </title>
 
   <!--     _____________ STYLES! ______________      -->
-  <link rel="stylesheet" href="styles/main_style.css">
+  <link rel="stylesheet" id="theme" href="styles/themes/dark.css">
   <link rel="stylesheet" href="styles/katex.css">
-  <link rel="stylesheet" href="styles/codemirror.css">
-  <link rel="stylesheet" href="styles/material-darker.css">
+  <link rel="stylesheet" href="styles/codemirror/codemirror.css">
+  <link rel="stylesheet" href="styles/codemirror/material-darker.css">
+  <link rel="stylesheet" href="styles/codemirror/elegant.css">
 
   <!--     _____________ SCRIPTS! ______________      -->
 
   <!--     _____________ LIBS! ______________      -->
-  <script defer src="libs/katex.js" ></script>
-  <script defer src="/libs/codemirror/codemirror.js" ></script>
-  <script defer src="/libs/codemirror/autorefresh.js" ></script>
-  <script defer src="/libs/codemirror/stex.js" ></script>
+  <script  src="libs/katex.js" ></script>
+  <script  src="/libs/codemirror/codemirror.js" ></script>
+  <script  src="/libs/codemirror/autorefresh.js" ></script>
+  <script  src="/libs/codemirror/stex.js" ></script>
+  <script  src="/libs/jszip.min.js" ></script>
+  <script  src="/libs/FileSaver.js" ></script>
 
 
   <!--     _____________ MVC! ______________      -->
-  <script defer src="scripts/MVC/Model.js" ></script>
-  <script defer src="scripts/MVC/Controller.js" ></script>
-  <script defer src="scripts/MVC/View.js" ></script>
+  <script  src="scripts/MVC/Model.js" ></script>
+  <script  src="scripts/MVC/Controller.js" ></script>
+  <script  src="scripts/MVC/View.js" ></script>
     <!--     _____________ UTILITIES! ______________      -->
-    <script defer src="scripts/MVC/utils/StorageManager.js" ></script>
-    <script defer src="scripts/MVC/utils/AdvancedArray.js" ></script>
-    <script defer src="scripts/MVC/utils/Autoformatter.js" ></script>
+    <script  src="scripts/MVC/utils/StorageManager.js" ></script>
+    <script  src="scripts/MVC/utils/OptionsManager.js" ></script>
+    <script  src="scripts/MVC/utils/AdvancedArray.js" ></script>
+    <script  src="scripts/MVC/utils/Autoformatter.js" ></script>
+    <script  src="scripts/MVC/utils/BackupManager.js" ></script>
 
   <!--     _____________ OPTIONS! ______________      -->
   <script defer src="scripts/options/options.js" ></script>
@@ -37,17 +42,27 @@
 
 
 
-<body class="dark-theme">
+<body class="color-theme">
   <form >
     <div class="container">
       <ul class="shadowed">
         <li>
-          <div id="top_title_box_id">
-            <h2> Notion Math : Advanced Editor Options </h2>
+          <div class="grid-commands">
+            <div id="top_title_box_id">
+              <h2> Notion Math : Advanced Editor Options </h2>
+            </div>
+            <button type='button' class="btn-grid" id="btn_exportdb">
+              <span class="front"> <img class="small-icon" src="images/icons/downloads-multi-size.ico" alt="Create New Code Block">
+              </span>
+            </button>
+            <p>Theme</p>
+            <select class="stored-code-filtering-select" id="theme_selector">
+              <option value=""> Select the Tag Filter </option>
+            </select>
           </div>
         </li>
 
-        <li>
+        <li style="display:none">
           <div class="grid-commands">
             <h3> Quick Codes </h3>
             <button type='button' class="btn-grid" id="btn_add_quick_code">
@@ -55,7 +70,7 @@
               </span>
             </button>
           </div>
-          <form class="dark-theme">
+          <form class="color-theme">
             <div class="container">
               <ul id="quick_codes_box_id">
                 <li>
@@ -97,7 +112,7 @@
               <option value="All"> Select the Filter </option>
             </select>
           </div>
-          <form class="dark-theme">
+          <form class="color-theme">
             <div class="container">
               <ul id="stored_codes_box_id">
                 <li>

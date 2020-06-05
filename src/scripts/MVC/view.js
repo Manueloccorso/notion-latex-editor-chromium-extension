@@ -118,6 +118,7 @@ function View(){
 
     // ---------------------- INIT --------------------------------
       init : function(){
+        gview.setTheme(goptions.options.theme);
       },
 
     //--------------------- ELEMENTS CREATION -----------------------
@@ -137,7 +138,7 @@ function View(){
           let mirror_textarea = CodeMirror.fromTextArea(textarea, {
             lineNumbers: true,
             autoRefresh: true,
-            theme : "material-darker",
+            theme : gview.cmThemeByTheme[gview.theme],
             mode : {name: "stex"}
           });
           mirror_textarea.getDoc().setValue(textarea.value);
@@ -343,7 +344,17 @@ function View(){
 
                   let code_textarea = gview.createCodeTextArea(code);
                   details.append(code_textarea);
-                  gview.createCodeMirror(code_textarea);
+                  //Increase Perfomernace:
+                  // Ony crate the codeMirror Obj
+                  // when first clicked
+                  details.addEventListener(
+                    "click",
+                    function(event){
+                      gview.createCodeMirror(code_textarea);
+                      this.removeEventListener('click',arguments.callee,false);
+                    }
+                  );
+
 
                   for(buttonCreator of buttonCreators){
                     details.append(buttonCreator(code));
@@ -452,7 +463,32 @@ function View(){
         gview.scrollToElementById(gview.id_html_fixed.stored_codes_box_id);
       },
 
+      /**
+        Adds an option to a select(HTML) element.
+        @param {HTMLElement} select_element The select eletement.
+        @param {string} option_str The text of the option.
+        @param {Object} [option_attr] The options to be copied into the option element created.
+        @returns {HTMLElement} The option element created.
+      */
+      addOptionStrToSelectElement : function (select_element, value, label){
+          let opt = gview.createOption();
+          opt.text = label;
+          opt.value = value;
+          select_element.add(opt);
+          return opt;
+      },
 
+    // ------------------------ ADD STYLES MANAGEMENT ------------------------------------
+      setTheme: function (th){
+        gview.theme = th;
+        document.getElementById('theme').setAttribute("href", "styles/themes/"+gview.theme+".css");
+      },
+      cmThemeByTheme : {
+        'dark' : "material-darker",
+        'light' : 'base16-light'
+      },
+      theme : 'dark',
+      themes : ['dark', 'light']
 
   }
   return view;
