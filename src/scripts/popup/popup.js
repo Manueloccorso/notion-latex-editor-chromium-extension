@@ -1,24 +1,32 @@
 var gcontroller = Controller(true);
-var global_storage = StorageManager();
+var gstorage = StorageManager();
 var gview = View();
 var gmodel = Model();
+var goptions = OptionsManager();
 
-global_storage.load();
-gmodel.init();
-gview.init();
-gcontroller.init();
+function waitForStorage(){
+    if(goptions.synced && gstorage.synced){
+      gmodel.init();
+      gview.init();
+      gcontroller.init();
 
-gcontroller.requestCodesToContent();
-
+      gcontroller.requestCodesToContent();
+    }
+    else{
+        console.log("Waiting Storage!");
+        setTimeout(waitForStorage, 5);
+    }
+}
+waitForStorage();
 
 function restart_popup(){
   gcontroller = Controller();
-  global_storage = StorageManager();
+  gstorage = StorageManager();
   gview = View();
   gmodel = Model();
 
 
-  global_storage.load();
+  gstorage.load();
   gmodel.init();
   gview.init();
   gcontroller.init();

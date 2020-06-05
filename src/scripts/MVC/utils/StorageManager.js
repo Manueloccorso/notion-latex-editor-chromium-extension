@@ -22,16 +22,15 @@ function StorageManager(){
 
     load : function(){
       let loaded_result = "";
-      myself = this;
       chrome.storage.local.get(
             [this.encoded_saved_codes_id],
             function(result) {
                   if(result.encoded_saved_codes_id){
-                    myself.stored_codes =
+                    gstorage.stored_codes =
                         result.encoded_saved_codes_id.saved_codes;
-                    myself.synced = true;
+                    gstorage.synced = true;
                     console.log("LOAD STORAGE COMPLETED!");
-                    gview.refreshStoredCodesView();
+                    gstorage.synced = true;
                   }
 
               }

@@ -17,7 +17,7 @@ function AdvancedArray(store){
        */
       syncWithStorage : function(){
         if(store){
-          for(loaded_code of global_storage.getAll()){
+          for(loaded_code of gstorage.getAll()){
             this.codes[loaded_code.id] = loaded_code;
           }
         }
@@ -74,7 +74,7 @@ function AdvancedArray(store){
       push : function(code) {
         if(!this.codes[code.id]){
           this.codes[code.id] = code;
-          if(this.store) global_storage.save(code);
+          if(this.store) gstorage.save(code);
           return true;
         }
         return false;
@@ -88,7 +88,7 @@ function AdvancedArray(store){
       set : function(code){
         if(this.codes[code.id]){
           this.codes[code.id] = code;
-          if(store) global_storage.save(code);
+          if(store) gstorage.save(code);
           return true;
         }
         else return false;
@@ -116,7 +116,7 @@ function AdvancedArray(store){
        */
       remove : function(id){
         if(this.codes[id]){
-          if(this.store) global_storage.remove(this.codes[id]);
+          if(this.store) gstorage.remove(this.codes[id]);
           delete this.codes[id];
           return true;
         }

@@ -118,6 +118,7 @@ function View(){
 
     // ---------------------- INIT --------------------------------
       init : function(){
+        gview.setTheme(goptions.options.theme);
       },
 
     //--------------------- ELEMENTS CREATION -----------------------
@@ -462,6 +463,21 @@ function View(){
         gview.scrollToElementById(gview.id_html_fixed.stored_codes_box_id);
       },
 
+      /**
+        Adds an option to a select(HTML) element.
+        @param {HTMLElement} select_element The select eletement.
+        @param {string} option_str The text of the option.
+        @param {Object} [option_attr] The options to be copied into the option element created.
+        @returns {HTMLElement} The option element created.
+      */
+      addOptionStrToSelectElement : function (select_element, value, label){
+          let opt = gview.createOption();
+          opt.text = label;
+          opt.value = value;
+          select_element.add(opt);
+          return opt;
+      },
+
     // ------------------------ ADD STYLES MANAGEMENT ------------------------------------
       setTheme: function (th){
         gview.theme = th;
@@ -471,7 +487,8 @@ function View(){
         'dark' : "material-darker",
         'light' : 'base16-light'
       },
-      theme : 'dark'
+      theme : 'dark',
+      themes : ['dark', 'light']
 
   }
   return view;
