@@ -17,8 +17,11 @@ function StorageManager(){
     },
 
     synced : false,
+    inpage_synced : false,
 
     stored_codes : [],
+
+    inpage_codes : {},
 
     load : function(){
       let loaded_result = "";
@@ -30,7 +33,18 @@ function StorageManager(){
                         result.encoded_saved_codes_id.saved_codes;
                     gstorage.synced = true;
                     console.log("LOAD STORAGE COMPLETED!");
-                    gstorage.synced = true;
+                  }
+
+              }
+            );
+      chrome.storage.local.get(
+            "inpage_code_id",
+            function(result) {
+                  if(result["inpage_code_id"]){
+                    gstorage.inpage_code =
+                        result["inpage_code_id"];
+                    gstorage.inpage_synced = true;
+                    console.log("IN PAGE CODE LOADED!");
                   }
 
               }
@@ -39,6 +53,10 @@ function StorageManager(){
 
     getAll : function(){
       return this.stored_codes;
+    },
+
+    getInPageCode: function(){
+      return gstorage.inpage_code;
     },
 
     internal_storeInChrome : function(){

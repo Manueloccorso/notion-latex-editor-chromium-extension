@@ -16,7 +16,7 @@
 
   "content_scripts": [{
     "matches": ["http://*.notion.so/*", "https://*.notion.so/*"],
-    "js": ["scripts/content/content.js"]
+    "js": ["scripts/content/content.js", "scripts/MVC/utils/OptionsManager.js"]
   }],
 
   "browser_action": {
@@ -47,6 +47,8 @@
     "tabs",
     "storage",
     "alarms"
-  ]
+  ],
+
+  "web_accessible_resources": ["inpage_popup.html"]
 
 }
