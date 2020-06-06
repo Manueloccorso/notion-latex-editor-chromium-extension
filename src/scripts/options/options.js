@@ -4,9 +4,9 @@ console.log("NM.option : RUNNING");
 
 var gcontroller = Controller(content_page = false);
 var gstorage = StorageManager();
+var goptions = OptionsManager();
 var gview = View();
 var gmodel = Model();
-var goptions = OptionsManager();
 
 function waitForStorage(){
     if(goptions.synced && gstorage.synced){

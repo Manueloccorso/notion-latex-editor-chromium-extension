@@ -6,9 +6,10 @@ var goptions = OptionsManager();
 
 function waitForStorage(){
     if(goptions.synced && gstorage.synced){
+      console.log("Options and Storage loaded!");
       gmodel.init();
-      gview.init();
       gcontroller.init();
+      gview.init();
 
       gcontroller.requestCodesToContent();
     }
