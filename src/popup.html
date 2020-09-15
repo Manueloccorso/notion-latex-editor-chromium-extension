@@ -17,6 +17,7 @@
   <!--     _____________ SCRIPTS! ______________      -->
 
   <!--     _____________ LIBS! ______________      -->
+  <script  src="/libs/jquery-3.5.1.js" ></script>
   <script  src="libs/katex.js" ></script>
   <script  src="/libs/codemirror/codemirror.js" ></script>
   <script  src="/libs/codemirror/autorefresh.js" ></script>
@@ -85,35 +86,7 @@
             </div>
           </form>
         </li>
-        <li>
-          <div class="grid-commands">
-            <h2> Quick Codes</h2>
-            <button type='button' class="btn-grid" id="btn_add_quick_code">
-              <span class="front"> <img class="small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
-              </span>
-            </button>
-          </div>
-          <form class="color-theme">
-            <div class="container">
-              <ul id="quick_codes_box_id">
-                <li>
-                  <!-- PROTOTYPE OF NEW CODE BLOCK
-                            <li>
-                              <details>
-                                <summary>
-                                  <p id="custom_label_MathCodeId"> *** RENDERED FORMULA ***</p>
-                                </summary>
-                                <textarea id="custom_MathCodeId">
-                                  *** FORMULA CODE ***
-                                </textarea>
-                              </details>
-                            </li>
-                        -->
-                </li>
-              </ul>
-            </div>
-          </form>
-        </li>
+
         <li>
           <div class="grid-commands">
             <h2> Saved Codes </h2>
@@ -148,6 +121,35 @@
                                   <p id="saved_label_random_seed"> *** RENDERED FORMULA ***</p>
                                 </summary>
                                 <textarea id="saved_random_seed">
+                                  *** FORMULA CODE ***
+                                </textarea>
+                              </details>
+                            </li>
+                        -->
+                </li>
+              </ul>
+            </div>
+          </form>
+        </li>
+        <li>
+          <div class="grid-commands">
+            <h2> Quick Codes</h2>
+            <button type='button' class="btn-grid" id="btn_add_quick_code">
+              <span class="front"> <img class="small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
+              </span>
+            </button>
+          </div>
+          <form class="color-theme">
+            <div class="container">
+              <ul id="quick_codes_box_id">
+                <li>
+                  <!-- PROTOTYPE OF NEW CODE BLOCK
+                            <li>
+                              <details>
+                                <summary>
+                                  <p id="custom_label_MathCodeId"> *** RENDERED FORMULA ***</p>
+                                </summary>
+                                <textarea id="custom_MathCodeId">
                                   *** FORMULA CODE ***
                                 </textarea>
                               </details>

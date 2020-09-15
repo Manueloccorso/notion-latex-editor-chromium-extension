@@ -1,6 +1,4 @@
 
-
-
 function StorageManager(){
 
   let sm = {
@@ -28,11 +26,9 @@ function StorageManager(){
                   if(result.encoded_saved_codes_id){
                     gstorage.stored_codes =
                         result.encoded_saved_codes_id.saved_codes;
-                    gstorage.synced = true;
                     console.log("LOAD STORAGE COMPLETED!");
-                    gstorage.synced = true;
                   }
-
+                  gstorage.synced = true;
               }
             );
     },

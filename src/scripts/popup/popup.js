@@ -25,7 +25,6 @@ function restart_popup(){
   gview = View();
   gmodel = Model();
 
-
   gstorage.load();
   gmodel.init();
   gview.init();

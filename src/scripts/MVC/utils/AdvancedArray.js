@@ -6,10 +6,12 @@
  * @param  {type} store description
  * @returns {type}       description
  */
-function AdvancedArray(store){
-  return {
-      codes : {},
 
+function AdvancedArray(store){
+
+  return {
+
+      codes : {},
       store : store,
 
       /**

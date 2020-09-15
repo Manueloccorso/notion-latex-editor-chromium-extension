@@ -23,8 +23,14 @@ function OptionsManager(){
                     goptions.synced = true;
                     console.log("LOAD OPTIONS COMPLETED!");
                     console.log(goptions.options);
-                    goptions.synced = true;
                   }
+                  else {
+                    goptions.options = {
+                      theme: "dark",
+                      mode: "",
+                    }
+                  }
+                  goptions.synced = true;
               }
             );
     },
