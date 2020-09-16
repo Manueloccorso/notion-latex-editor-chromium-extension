@@ -94,6 +94,7 @@ function Controller(content_page = true){
           },
 
           addStoredCode : function(code) {
+            console.log(code);
             gmodel.addCode(gmodel.newCode(
                                           gmodel.newCodeId(),
                                           code.code,
@@ -122,31 +123,27 @@ function Controller(content_page = true){
                   // Page Codes
                     //---- Retrieve Codes From Notion Page
                     if(gcontroller.content === true){
-                      gview.getElement.page_codes_container.sync_btn().addEventListener(
-                                'click',
+                      gview.getElement.page_codes_container.sync_btn().click(
                                 function() {
                                   gcontroller.requestCodesToContent(); }
                                 );
                     }
                     // Quick Codes
                     //----- Add a Quick Code
-                    gview.getElement.quick_codes_container.add_btn().addEventListener(
-                              'click',
+                    gview.getElement.quick_codes_container.add_btn().click(
                               function() {
                                   gcontroller.addQuickCode();
                                 }
                               );
                   // Stored Codes
                     //------ Sync with Stored Codes
-                    gview.getElement.stored_codes_container.sync_btn().addEventListener(
-                              'click',
+                    gview.getElement.stored_codes_container.sync_btn().click(
                               function() {
                                   gview.refresh.stored_codes_view();
                                 }
                               );
                     //------ Add a new Stored Code
-                    gview.getElement.stored_codes_container.add_btn().addEventListener(
-                              'click',
+                    gview.getElement.stored_codes_container.add_btn().click(
                               function() {
                                     gcontroller.addStoredCode(gmodel.newCode(
                                                                               gmodel.newCodeId(),
@@ -160,28 +157,25 @@ function Controller(content_page = true){
                     //------ Filtering and searching
                     gcontroller.init_filters();
                     let filter_select = gview.getElement.stored_codes_container.filter_select();
-                    filter_select.addEventListener(
-                      'focus',
+                    filter_select.focus(
                       function(){
                         gcontroller.init_filters();
                       }
                     );
-                    filter_select.addEventListener(
-                      'change',
+                    filter_select.change(
                       function(){
-                        let filter = filter_select.options[filter_select.selectedIndex].value;
+                        let filter = filter_select.get(0).options[filter_select.selectedIndex].value;
                         gmodel.addTagFilter(filter);
                         gview.refresh.stored_codes_view();
                       }
                     );
                     let search_textarea = gview.getElement.stored_codes_container.search_textarea();
-                    search_textarea.addEventListener(
-                      'keyup',
+                    search_textarea.keyup(
                       function(event){
-                        search_textarea.value = search_textarea.value.replace(/\r\n|\r|\n/g,"");
-                        let search = search_textarea.value;
+                        search_textarea.get(0).value = search_textarea.get(0).value.replace(/\r\n|\r|\n/g,"");
+                        let search = search_textarea.get(0).value;
                         if(search == "") gmodel.removeNameFilter();
-                        else gmodel.addNameFilter(search_textarea.value);
+                        else gmodel.addNameFilter(search_textarea.get(0).value);
                         gview.refresh.stored_codes_view();
                       }
                     );
@@ -199,13 +193,12 @@ function Controller(content_page = true){
 
               addListenersToCodeNameTextArea : function (codename_textarea){
                 // COMMIT CHANGES
-                codename_textarea.addEventListener(
-                          'change',
+                codename_textarea.change(
                           (event) => {
                             console.log("Title changed!");
-                            let id = gview.manageId.clean(codename_textarea.id);
+                            let id = gview.manageId.clean(codename_textarea.attr("id"));
                             // TODO: refactor FORMATTING as object
-                            let name = codename_textarea.value;
+                            let name = codename_textarea.get(0).value;
                             let old_code = gmodel.getCode(id);
 
                             gcontroller.commitCode(gmodel.newCode(
@@ -220,13 +213,12 @@ function Controller(content_page = true){
 
               addListenersToCodeTagTextArea : function(codetag_textarea){
 
-                codetag_textarea.addEventListener(
-                          'change',
+                codetag_textarea.change(
                           (event) => {
                             console.log("Title changed!");
-                            let id = gview.manageId.clean(codetag_textarea.id);
+                            let id = gview.manageId.clean(codetag_textarea.attr("id"));
                             // TODO: refactor FORMATTING as object
-                            let tag = codetag_textarea.value;
+                            let tag = codetag_textarea.get(0).value;
                             let old_code = gmodel.getCode(id);
                             gcontroller.commitCode(gmodel.newCode(
                                                                   id,
@@ -243,82 +235,79 @@ function Controller(content_page = true){
               addListenersToCodeMirrorTextArea : function(code_mirror){
                 //INTERCEPT CODES names
                 code_mirror.on(
-                                'change',
-                                (event, changeObj) => {
-                                  // ON SPACEC DETECTED
-                                  if (changeObj.origin == "+input" && changeObj.text == " "){
+                    (event, changeObj) => {
+                      // ON SPACEC DETECTED
+                      if (changeObj.origin == "+input" && changeObj.text == " "){
 
 
-                                    let pos = code_mirror.getCursor();
-                                    let starting_pos = pos;
-                                    let token = code_mirror.getTokenAt(changeObj.from);
-                                    let replaced = gmodel.replaceStoredCodeNameWithCode(token.string);
+                        let pos = code_mirror.getCursor();
+                        let starting_pos = pos;
+                        let token = code_mirror.getTokenAt(changeObj.from);
+                        let replaced = gmodel.replaceStoredCodeNameWithCode(token.string);
 
-                                    // WHEN A CODE NAME IS DETECTED
-                                    if(replaced !== token.string){
+                        // WHEN A CODE NAME IS DETECTED
+                        if(replaced !== token.string){
 
-                                      // Remove the code name
-                                      code_mirror.replaceRange("",
-                                      {line : starting_pos.line , ch : token.start },
-                                      {line : starting_pos.line , ch : starting_pos.ch});
+                          // Remove the code name
+                          code_mirror.replaceRange("",
+                          {line : starting_pos.line , ch : token.start },
+                          {line : starting_pos.line , ch : starting_pos.ch});
 
-                                      //INSERT THE CODE TO BE REPLACED
-                                      let tokens_from_code = replaced.split("\n");
-                                      for(let i = 0; i < tokens_from_code.length; i++){
-                                        pos = code_mirror.getCursor();
-                                        code_mirror.replaceRange(tokens_from_code[i],
-                                                                  {line : pos.line , ch : pos.ch});
-                                        if(i < tokens_from_code.length - 1){
-                                          code_mirror.execCommand("newlineAndIndent");
-                                          code_mirror.execCommand("goLineStart");
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
+                          //INSERT THE CODE TO BE REPLACED
+                          let tokens_from_code = replaced.split("\n");
+                          for(let i = 0; i < tokens_from_code.length; i++){
+                            pos = code_mirror.getCursor();
+                            code_mirror.replaceRange(tokens_from_code[i],
+                                                      {line : pos.line , ch : pos.ch});
+                            if(i < tokens_from_code.length - 1){
+                              code_mirror.execCommand("newlineAndIndent");
+                              code_mirror.execCommand("goLineStart");
+                            }
+                          }
+                        }
+                      }
+                    }
                 );
                 // REFRESH the PREVIEW
                 code_mirror.on(
-                          'change',
-                          (event, changeObj) => {
-                            let textarea = code_mirror.getTextArea();
-                            let old_code = gmodel.getCode(
-                                                            gview.manageId.clean( textarea.id )
-                                                          );
-                            let new_code = auto_clean_code(code_mirror.getValue());
-                            gcontroller.syncCodePreview(gmodel.newCode(
-                                                                        old_code.id,
-                                                                        new_code,
-                                                                        old_code.name,
-                                                                        old_code.tag,
-                                                                        old_code.type));
-                          }
-                      );
+                  (event, changeObj) => {
+                    let textarea = code_mirror.getTextArea();
+                    let old_code = gmodel.getCode(
+                                                    gview.manageId.clean( textarea.attr("id") )
+                                                  );
+                    let new_code = auto_clean_code(code_mirror.getValue());
+                    gcontroller.syncCodePreview(gmodel.newCode(
+                                                                old_code.id,
+                                                                new_code,
+                                                                old_code.name,
+                                                                old_code.tag,
+                                                                old_code.type));
+                  }
+              );
                 // COMMIT CHANGES
-                code_mirror.on(
-                          'blur',
-                          (event) => {
-                            let textarea = code_mirror.getTextArea();
-                            let id = gview.manageId.clean(textarea.id);
-                            let cleaned_code = auto_clean_code(code_mirror.getValue());
-                            let old_code = gmodel.getCode(id);
+                code_mirror.blur(
+                  (event) => {
+                    let textarea = code_mirror.getTextArea();
+                    let id = gview.manageId.clean(textarea.attr("id"));
+                    let cleaned_code = auto_clean_code(code_mirror.getValue());
+                    let old_code = gmodel.getCode(id);
 
-                            //COPY TO CLIPBOARD
-                            /*
-                            code_mirror.save();
-                            textarea.select();
-                            document.execCommand('copy');
-                            window.getSelection().removeAllRanges();
-                            */
+                    //COPY TO CLIPBOARD
+                    /*
+                    code_mirror.save();
+                    textarea.select();
+                    document.execCommand('copy');
+                    window.getSelection().removeAllRanges();
+                    */
 
-                            //COMMIT THE CHANGES TO THE MODEL
-                            gcontroller.commitCode(gmodel.newCode(
-                                                                      id,
-                                                                      cleaned_code,
-                                                                      old_code.name,
-                                                                      old_code.tag,
-                                                                      old_code.type));
-                          }
+                    //COMMIT THE CHANGES TO THE MODEL
+                    gcontroller.commitCode(gmodel.newCode(
+                                                              id,
+                                                              cleaned_code,
+                                                              old_code.name,
+                                                              old_code.tag,
+                                                              old_code.type));
+                  }
                 );
 
                 // TODO : translate stored code names into actual codes on key keydown
@@ -329,7 +318,7 @@ function Controller(content_page = true){
 
               addAutocompleteToTextArea : function(){
                 var suggests = ["head", "hello", "heart", "health"];
-                $(code_textarea.id).asuggest(suggests, {
+                $(code_textarea.attr("id")).asuggest(suggests, {
                     'endingSymbols': ', ',
                     'minChunkSize': 3,
                     'delimiters': ':',
@@ -352,8 +341,7 @@ function Controller(content_page = true){
               setBtn : function(btn, type){
                 switch (type) {
                   case this.types.btn_scrollTop:
-                    btn.addEventListener(
-                      'click',
+                    btn.click(
                       function()  {
                         gview.refresh.view();
                         gview.interact.scroll_to_top();
@@ -363,20 +351,20 @@ function Controller(content_page = true){
                   case this.types.btn_sync:
                     break;
                   case this.types.btn_save:
-                    btn.addEventListener(
-                      'click',
+                    btn.click(
                       function()  {
-                        let code = gmodel.getCode(gview.manageId.clean(btn.id));
+                        let code = gmodel.getCode(gview.manageId.clean(btn.attr("id")));
                         gcontroller.addStoredCode(code);
                         gview.interact.scroll_to_stored_codes();
                       }
                     );
                     break;
                   case this.types.btn_delete:
-                    btn.addEventListener(
-                      'click',
+                    btn.click(
                       function()  {
-                        let code = gmodel.getCode(gview.manageId.clean(btn.id));
+                        let dirty_id = btn.attr("id");
+                        let id = gview.manageId.clean(dirty_id);
+                        let code = gmodel.getCode(id);
                         gmodel.delCode(code);
                         gview.refresh.view_by_code(code);
                       }

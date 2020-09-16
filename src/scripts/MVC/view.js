@@ -52,7 +52,7 @@
       //------------------------ DYNAMIC STRINGS -------------------------------------------------
         manageId : {
           clean : function(dirty_id){
-            cleaned = dirty_id;
+            let cleaned = dirty_id;
             for (prefix in gview.id_prefixes){
               cleaned = cleaned.replace(gview.id_prefixes[prefix],"");
             }
@@ -86,23 +86,23 @@
         getElement : {
           static : {},
           page_codes_container : {
-            container               : function(){return document.getElementById(gview.id_html_fixed.page_codes_box_id); },
-            sync_btn                 : function(){ return document.getElementById(gview.id_html_fixed.btn_sync_page_codes); }
+            container               : function(){return $("#"+gview.id_html_fixed.page_codes_box_id); },
+            sync_btn                : function(){ return $("#"+gview.id_html_fixed.btn_sync_page_codes); }
           },
           quick_codes_container : {
-            container               : function(){ return document.getElementById(gview.id_html_fixed.quick_codes_box_id);},
-            add_btn                  : function(){ return document.getElementById(gview.id_html_fixed.btn_add_quick_code); },
+            container               : function(){ return $("#"+gview.id_html_fixed.quick_codes_box_id);},
+            add_btn                  : function(){ return $("#"+gview.id_html_fixed.btn_add_quick_code); },
           },
           stored_codes_container : {
-            container                : function(){ return document.getElementById(gview.id_html_fixed.stored_codes_box_id); },
-            add_btn                  : function(){ return document.getElementById(gview.id_html_fixed.btn_add_stored_code); },
-            sync_btn                 : function(){ return document.getElementById(gview.id_html_fixed.btn_sync_stored_code); },
-            filter_select            : function(){ return document.getElementById(gview.id_html_fixed.select_stored_codes_filter)},
-            search_textarea          : function(){ return document.getElementById(gview.id_html_fixed.textarea_search_by_name)},
+            container                : function(){ return $("#"+gview.id_html_fixed.stored_codes_box_id); },
+            add_btn                  : function(){ return $("#"+gview.id_html_fixed.btn_add_stored_code); },
+            sync_btn                 : function(){ return $("#"+gview.id_html_fixed.btn_sync_stored_code); },
+            filter_select            : function(){ return $("#"+gview.id_html_fixed.select_stored_codes_filter)},
+            search_textarea          : function(){ return $("#"+gview.id_html_fixed.textarea_search_by_name)},
           },
           dynamic : {
             summary_from_code : function(code){
-              return  document.getElementById(gview.codePreviewId(code.id)).parentElement;
+              return  $("#"+gview.codePreviewId(code.id)).parentElement;
             },
           }
         },
@@ -114,106 +114,106 @@
         createHTML : {
           general : {
             list_item : function(){
-              let list_item = document.createElement("LI");
-              list_item.className = gview.css_class_names.code_li;
+              let list_item = $(document.createElement("LI"))
+              list_item.addClass(gview.css_class_names.code_li);
               return list_item;
             },
             form      : function(){
-              form = document.createElement("FORM");
-              form.className = gview.css_class_names.basic_code_editor_container;
+              form = $(document.createElement("FORM"));
+              form.addClass(gview.css_class_names.basic_code_editor_container);
               return form;
             },
             btn_small : function(id, class_name, icon, alt){
-              let btn = document.createElement("BUTTON");
-              btn.id = id;
-              btn.type = "button";
-              btn.className = gview.css_class_names.small_btn;
-              btn.innerHTML =  ' <span class="front" > ' +
+              let btn = $(document.createElement("BUTTON"));
+              btn.attr("id", id);
+              btn.attr("type", "button");
+              btn.addClass(gview.css_class_names.small_btn);
+              btn.html(' <span class="front" > ' +
                                       '<img class="'  + class_name  + '" ' +
                                           ' src="'    + icon        + '" '+
                                           ' alt="'    + alt         + '"> ' +
-                                ' </span>';
+                                ' </span>');
               return btn;
             },
             title     : function(level, title) {
-              let title_box = document.createElement("P");
-              title_box.innerHTML =   "<h"  + level + ">" + title + "</h" + level + ">";
+              let title_box = $(document.createElement("P"));
+              title_box.html("<h"  + level + ">" + title + "</h" + level + ">");
               return title_box;
             },
             details   : function(){
-              return document.createElement("DETAILS");
+              return $(document.createElement("DETAILS"));
             },
             summary   : function(){
-                return document.createElement("SUMMARY");
+                return $(document.createElement("SUMMARY"));
             },
             option    : function(str){
-              let opt = document.createElement("option");
-              opt.value = str;
-              opt.text = str;
+              let opt = $(document.createElement("option"));
+              opt.get(0).value = str;
+              opt.get(0).text = str;
               return opt;
             }
           },
           code : {
             name : function(code){
-              let div = document.createElement("DIV")
-              div.class += gview.css_class_names.code_tag_container;
-              let label = document.createElement("H3");
-              label.innerHTML = "Name";
+              let div = $(document.createElement("DIV"));
+              div.addClass(gview.css_class_names.code_tag_container);
+              let label = $(document.createElement("H3"));
+              label.html("Name");
               div.append(label);
-              let code_name = document.createElement("INPUT");
-              code_name.setAttribute("type", "text");
-              code_name.id = gview.manageId.code_block.name(code.id);
-              code_name.className += gview.css_class_names.code_name;
-              code_name.value = code.name;
+              let code_name = $(document.createElement("INPUT"));
+              code_name.attr("type", "text");
+              code_name.attr("id", gview.manageId.code_block.name(code.id));
+              code_name.addClass(gview.css_class_names.code_name);
+              code_name.get(0).value = code.name;
               gcontroller.addListenersToCodeNameTextArea(code_name);
               div.append(code_name);
               return div;
             },
             tag : function(code){
-                let div = document.createElement("DIV");
-                div.class += gview.css_class_names.code_tag_container;
-                let label = document.createElement("H3");
-                label.innerHTML = "Tags";
+                let div = $(document.createElement("DIV"));
+                div.addClass(gview.css_class_names.code_tag_container);
+                let label = $(document.createElement("H3"));
+                label.html("Tags");
                 div.append(label);
-                let code_tag = document.createElement("INPUT");
-                code_tag.setAttribute("type", "text");
-                code_tag.id = gview.manageId.code_block.tag(code.id);
-                code_tag.className += gview.css_class_names.code_tag;
-                code_tag.value = code.tag;
+                let code_tag = $(document.createElement("INPUT"));
+                code_tag.attr("type", "text");
+                code_tag.attr("id",gview.manageId.code_block.tag(code.id));
+                code_tag.addClass(gview.css_class_names.code_tag);
+                code_tag.get(0).value = code.tag;
                 gcontroller.addListenersToCodeTagTextArea(code_tag);
                 div.append(code_tag);
                 return div;
             },
             preview : function(code){
-              let label = document.createElement("p");
-              label.id = gview.manageId.code_block.preview(code.id);
-              label.className +=  gview.css_class_names.code_preview;
+              let label = $(document.createElement("p"));
+              label.attr("id", gview.manageId.code_block.preview(code.id))
+              label.addClass(gview.css_class_names.code_preview);
               katex.render(code.code,
-                          label,
+                          label.get(0),
                           { throwOnError: false}
                         );
               // TODO: Add Listeners
               return label;
             },
             textarea : function(code){
-              let textarea = document.createElement("TEXTAREA");
-              textarea.id = gview.manageId.code_block.textarea(code.id);
-              textarea.className += gview.css_class_names.code_textarea;
-              textarea.value = code.code;
+              let textarea = $(document.createElement("TEXTAREA"));
+              textarea.attr(gview.manageId.code_block.textarea(code.id));
+              textarea.addClass(gview.css_class_names.code_textarea);
+              textarea.get(0).value = code.code;
 
               // TODO: Add Listeners IF code mirror is taken down
               //gcontroller.addListenersToCodeTextArea(textarea);
               return textarea;
             },
             codemirror : function(textarea){
-              let mirror_textarea = CodeMirror.fromTextArea(textarea, {
+              let mirror_textarea = CodeMirror.fromTextArea(textarea.get(0), {
                 lineNumbers: true,
                 autoRefresh: true,
                 theme : gview.manageTheme.cmThemeByTheme[gview.manageTheme.theme],
                 mode : {name: "stex"}
               });
-              mirror_textarea.getDoc().setValue(textarea.value);
-              mirror_textarea.setSize("100%", "40rem");
+              mirror_textarea.getDoc().setValue(textarea.get(0).value);
+              mirror_textarea.setSize("100%", "20rem");
               mirror_textarea.refresh();
               gcontroller.addListenersToCodeMirrorTextArea(mirror_textarea);
             },
@@ -283,13 +283,12 @@
                   details.append(button(code));
                 }
             //Add some logic
-            details.addEventListener(
+            details.one(
               "click",
-              function(event){
+              function() {
                 gview.createHTML.code.codemirror(code_textarea);
-                this.removeEventListener('click',arguments.callee,false);
-              }
-            );
+              });
+
             return node;
           },
           code_blocks : function(node, codes, buttons){
@@ -302,7 +301,7 @@
       // ------------- REFRESHING VIEW PIECES
         refresh : {
           reset_append : function(parent, child){
-            parent.innerHTML = "";
+            parent.html("");
             parent.append(child);
           },
           code_preview : function(code){
@@ -310,7 +309,8 @@
                                 gview.createHTML.code.preview(code) );
           },
           codes_container : function(container, codes, buttons){
-            container.innerHTML = "";
+            container.html("");
+            console.log(codes);
             gview.compose.code_blocks(container, codes, buttons);
           },
           page_codes_view : function (){
@@ -333,6 +333,7 @@
             );
           },
           stored_codes_view : function (){
+            console.log(gmodel.getCodesByType(gmodel.code_stored_type));
             this.codes_container(
                 gview.getElement.stored_codes_container.container(),
                 gmodel.getCodesByType(gmodel.code_stored_type),
@@ -356,7 +357,7 @@
           },
           stored_codes_tags : function (filters){
             let select = gview.getElement.stored_codes_container.filter_select();
-            select.innerHTML = "";
+            select.html("");
 
             let base_opt = gview.createHTML.general.option();
             base_opt.text = "All";
@@ -386,7 +387,7 @@
             }
           },
           scroll_to_element_by_id : function (id){
-            window.scroll(0, this.find_element_position(document.getElementById(id)));
+            window.scroll(0, this.find_element_position($("#"+id)));
           },
           scroll_to_top : function(){
             this.scroll_to_element_by_id(gview.id_html_fixed.top_title_box_id);
@@ -412,7 +413,7 @@
           },
           set : function (theme){
             gview.manageTheme.theme = theme;
-            document.getElementById('theme').setAttribute(
+            $("#"+'theme').attr(
                                                 "href",
                                                 "styles/themes/" + gview.manageTheme.theme +".css");
           }
