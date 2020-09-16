@@ -44,19 +44,17 @@
 
 
 
-<body class="color-theme">
-  <form class="popup-form" >
-    <div class="container">
-      <ul class="shadowed">
-
-        <li>
-          <div id="top_title_box_id">
-            <h1> Notion Math : Advanced Editor </h1>
-          </div>
-        </li>
-
-        <li>
-          <div class="grid-commands">
+<body class="theme-body">
+  <div class="theme-container">
+    <ul>
+      <li class="theme-container">
+        <div id="top_title_box_id">
+          <h1> Notion Math : Advanced Editor </h1>
+        </div>
+      </li>
+      <li class="theme-container">
+        <div class="theme-container">
+          <div class="theme-block-header">
             <h2>Notion Page Codes</h2>
             <button type='button' class="btn-grid" id="btn_sync_page_codes">
               <span class="front">
@@ -64,114 +62,110 @@
               </span>
             </button>
           </div>
-
-          <form class="color-theme">
-            <div class="container">
-              <ul id="page_codes_box_id">
-                <li>
-                  <!-- PROTOTYPE OF Notion Page Code
-                            <li>
-                              <details>
-                                <summary>
-                                  <p id="notion_label_MathCodeId"> *** RENDERED FORMULA ***</p>
-                                </summary>
-                                <textarea id="notion_MathCodeId">
-                                  *** FORMULA CODE ***
-                                </textarea>
-                              </details>
-                            </li>
-                        -->
-                </li>
-              </ul>
-            </div>
-          </form>
-        </li>
-
-        <li>
-          <div class="grid-commands">
-            <h2> Saved Codes </h2>
-            <button type='button' class="btn-grid" id="btn_sync_stored_code">
-              <span class="front"> <img class="small-icon" src="images/icons/sinchronize-multi-size.ico" alt="Create New Code Block">
-              </span>
-            </button>
-            <button type='button' class="btn-grid" id="btn_add_stored_code">
-              <span class="front"> <img class="small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
-              </span>
-            </button>
+        </div>
+        <div class="theme-container">
+          <ul id="page_codes_box_id">
+            <li>
+              <!-- PROTOTYPE OF Notion Page Code
+                        <li>
+                          <details>
+                            <summary>
+                              <p id="notion_label_MathCodeId"> *** RENDERED FORMULA ***</p>
+                            </summary>
+                            <textarea id="notion_MathCodeId">
+                              *** FORMULA CODE ***
+                            </textarea>
+                          </details>
+                        </li>
+                    -->
+            </li>
+          </ul>
           </div>
-          <div class="grid-commands">
-            <h3> Search by Name</h3>
-            <textarea type="text"  rows="1"  class="search-textarea" id="textarea_search_by_name" ></textarea>
-          </div>
-          <div class="grid-commands">
-            <h3> Filter by Tag </h3>
-            <select class="stored-code-filtering-select" id="select_stored_codes_filter">
-              <option value=""> Select the Tag Filter </option>
-            </select>
-          </div>
-
-          <form class="color-theme">
-            <div class="container">
-              <ul id="stored_codes_box_id">
-                <li>
-                  <!-- PROTOTYPE OF SAVED CODE BLOCK
-                            <li>
-                              <details>
-                                <summary>
-                                  <p id="saved_label_random_seed"> *** RENDERED FORMULA ***</p>
-                                </summary>
-                                <textarea id="saved_random_seed">
-                                  *** FORMULA CODE ***
-                                </textarea>
-                              </details>
-                            </li>
-                        -->
-                </li>
-              </ul>
+        </form>
+      </li>
+      <li>
+        <form class="grid-commands">
+            <div class="code-tag-theme-container">
+              <h2> Saved Codes </h2>
+              <button type='button' class="btn-grid" id="btn_sync_stored_code">
+                <span class="front"> <img class="small-icon" src="images/icons/sinchronize-multi-size.ico" alt="Create New Code Block">
+                </span>
+              </button>
+              <button type='button' class="btn-grid" id="btn_add_stored_code">
+                <span class="front"> <img class="small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
+                </span>
+              </button>
             </div>
-          </form>
-        </li>
-        <li>
-          <div class="grid-commands">
-            <h2> Quick Codes</h2>
-            <button type='button' class="btn-grid" id="btn_add_quick_code">
-              <span class="front"> <img class="small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
-              </span>
-            </button>
+            <div class="code-tag-theme-container">
+              <h3> Search by Name</h3>
+              <textarea type="text"  rows="1"  class="search-textarea" id="textarea_search_by_name" ></textarea>
+            </div>
+            <div class="code-tag-theme-container">
+              <h3> Filter by Tag </h3>
+              <select class="stored-code-filtering-select" id="select_stored_codes_filter">
+                <option value=""> Select the Tag Filter </option>
+              </select>
+            </div>
+        </form>
+        <div class="theme-container">
+          <ul id="stored_codes_box_id">
+            <li>
+              <!-- PROTOTYPE OF SAVED CODE BLOCK
+                        <li>
+                          <details>
+                            <summary>
+                              <p id="saved_label_random_seed"> *** RENDERED FORMULA ***</p>
+                            </summary>
+                            <textarea id="saved_random_seed">
+                              *** FORMULA CODE ***
+                            </textarea>
+                          </details>
+                        </li>
+                    -->
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <div class="grid-commands">
+          <h2> Quick Codes</h2>
+          <button type='button' class="btn-grid" id="btn_add_quick_code">
+            <span class="front"> <img class="small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
+            </span>
+          </button>
+        </div>
+        <form class="theme-container">
+          <div class="theme-container">
+            <ul id="quick_codes_box_id">
+              <li>
+                <!-- PROTOTYPE OF NEW CODE BLOCK
+                          <li>
+                            <details>
+                              <summary>
+                                <p id="custom_label_MathCodeId"> *** RENDERED FORMULA ***</p>
+                              </summary>
+                              <textarea id="custom_MathCodeId">
+                                *** FORMULA CODE ***
+                              </textarea>
+                            </details>
+                          </li>
+                      -->
+              </li>
+            </ul>
           </div>
-          <form class="color-theme">
-            <div class="container">
-              <ul id="quick_codes_box_id">
-                <li>
-                  <!-- PROTOTYPE OF NEW CODE BLOCK
-                            <li>
-                              <details>
-                                <summary>
-                                  <p id="custom_label_MathCodeId"> *** RENDERED FORMULA ***</p>
-                                </summary>
-                                <textarea id="custom_MathCodeId">
-                                  *** FORMULA CODE ***
-                                </textarea>
-                              </details>
-                            </li>
-                        -->
-                </li>
-              </ul>
-            </div>
-          </form>
-        </li>
-        <li>
-          <footer>
-            <div class="container">
-              <small> Extension Made by
-                <a href="https://github.com/Manueloccorso" target="_blank"> Manuel Occorso </a><br>
-              </small>
-            </div>
-          </footer>
-        </li>
-      </ul>
-    </div>
-  </form>
+        </form>
+      </li>
+      <li>
+        <footer>
+          <div class="theme-container">
+            <small> Extension Made by
+              <a href="https://github.com/Manueloccorso" target="_blank"> Manuel Occorso </a><br>
+            </small>
+          </div>
+        </footer>
+      </li>
+    </ul>
+  </div>
 </body>
 
 

@@ -275,13 +275,13 @@
               li.append(basic_editor_div);
                 basic_editor_div.append(code_name);
                 basic_editor_div.append(code_tag);
+                for(button of buttons){
+                  basic_editor_div.append(button(code));
+                }
               li.append(details);
                 details.append(summary);
                   summary.append(code_preview);
                 details.append(code_textarea);
-                for(button of buttons){
-                  details.append(button(code));
-                }
             //Add some logic
             details.one(
               "click",
