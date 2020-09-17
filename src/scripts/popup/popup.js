@@ -13,7 +13,7 @@ function waitForStorage(){
       gcontroller.requestCodesToContent();
     }
     else{
-        console.log("Waiting Storage!");
+
         setTimeout(waitForStorage, 5);
     }
 }

@@ -21,8 +21,8 @@ function OptionsManager(){
                     goptions.options =
                         result.encoded_saved_options_id;
                     goptions.synced = true;
-                    console.log("LOAD OPTIONS COMPLETED!");
-                    console.log(goptions.options);
+                    
+
                   }
                   else {
                     goptions.options = {

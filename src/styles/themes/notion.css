@@ -7,9 +7,9 @@
 :root {
   --white: #afafaf;
   --red: #e31b23;
-  --bodyColor: #292a2b;
-  --borderFormEls: hsl(0, 0%, 10%);
-  --bgFormEls: hsl(0, 0%, 14%);
-  --bgFormElsFocus: hsl(0, 7%, 20%);
-  --bgSelection :  hsl(0%, 15%, 20%);
+  --bodyColor: #303437;
+  --borderFormEls: #323437;
+  --bgFormEls: #323437;
+  --bgFormElsFocus: #484C50;
+  --bgSelection : #425663;
 }

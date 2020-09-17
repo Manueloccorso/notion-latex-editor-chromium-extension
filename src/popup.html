@@ -54,28 +54,47 @@
       </li>
       <li class="theme-container">
         <div class="theme-container">
-          <div class="theme-block-header">
-            <h2>Notion Page Codes</h2>
-            <button type='button' class="btn-grid" id="btn_sync_page_codes">
-              <span class="front">
-                <img class="small-icon" src="images/icons/sinchronize-multi-size.ico" alt="Refresh">
-              </span>
-            </button>
+          <div class="theme-grid-header">
+            <div></div><div><h2>Notion Page Codes</h2></div> <div></div>
+            <div>
+              <button type='button' class="theme-small-btn" id="btn_sync_page_codes">
+                <span class="front">
+                  <img class="theme-small-icon" src="images/icons/sinchronize-multi-size.ico" alt="Refresh">
+                </span>
+              </button>
+            </div>
+            <div></div>
+            <div></div>
           </div>
         </div>
         <div class="theme-container">
           <ul id="page_codes_box_id">
             <li>
               <!-- PROTOTYPE OF Notion Page Code
-                        <li>
-                          <details>
-                            <summary>
-                              <p id="notion_label_MathCodeId"> *** RENDERED FORMULA ***</p>
-                            </summary>
-                            <textarea id="notion_MathCodeId">
-                              *** FORMULA CODE ***
-                            </textarea>
-                          </details>
+              let li                    = gview.createHTML.general.list_item();
+                let basic_editor_div    = gview.createHTML.general.form();
+                  let code_name         = gview.createHTML.code.name(code);
+                  let code_tag          = gview.createHTML.code.tag(code);
+                let details           = gview.createHTML.general.details();
+                  let summary         = gview.createHTML.general.summary();
+                    let code_preview  = gview.createHTML.code.preview(code);
+                  let code_textarea   = gview.createHTML.code.textarea(code);
+                        <li class="theme-container">
+                          <div class="theme-grid-code-block">
+                            <div> BUTTONS </div>
+                            <div> NAME </div>
+                            <div> TAGS </div>
+                            <div>
+                              <details>
+                                <summary>
+                                  <p id="notion_label_MathCodeId"> *** RENDERED FORMULA ***</p>
+                                </summary>
+                                <textarea id="notion_MathCodeId">
+                                  *** FORMULA CODE ***
+                                </textarea>
+                              </details>
+                            </div>
+                          </div>
                         </li>
                     -->
             </li>
@@ -83,78 +102,69 @@
           </div>
         </form>
       </li>
-      <li>
-        <form class="grid-commands">
-            <div class="code-tag-theme-container">
-              <h2> Saved Codes </h2>
-              <button type='button' class="btn-grid" id="btn_sync_stored_code">
-                <span class="front"> <img class="small-icon" src="images/icons/sinchronize-multi-size.ico" alt="Create New Code Block">
+      <li class="theme-container">
+        <div class="theme-container">
+          <div class="theme-grid-header">
+            <div></div> <div><h2> Saved Codes </h2></div> <div></div>
+            <div>
+              <button type='button' class="theme-small-btn" id="btn_sync_stored_code">
+                <span class="front"> <img class="theme-small-icon" src="images/icons/sinchronize-multi-size.ico" alt="Create New Code Block">
                 </span>
               </button>
-              <button type='button' class="btn-grid" id="btn_add_stored_code">
-                <span class="front"> <img class="small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
+              <button type='button' class="theme-small-btn" id="btn_add_stored_code">
+                <span class="front"> <img class="theme-small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
                 </span>
               </button>
             </div>
-            <div class="code-tag-theme-container">
+            <div>
               <h3> Search by Name</h3>
               <textarea type="text"  rows="1"  class="search-textarea" id="textarea_search_by_name" ></textarea>
             </div>
-            <div class="code-tag-theme-container">
+            <div>
               <h3> Filter by Tag </h3>
               <select class="stored-code-filtering-select" id="select_stored_codes_filter">
                 <option value=""> Select the Tag Filter </option>
               </select>
             </div>
-        </form>
+          </div>
+        </div>
         <div class="theme-container">
           <ul id="stored_codes_box_id">
             <li>
-              <!-- PROTOTYPE OF SAVED CODE BLOCK
-                        <li>
-                          <details>
-                            <summary>
-                              <p id="saved_label_random_seed"> *** RENDERED FORMULA ***</p>
-                            </summary>
-                            <textarea id="saved_random_seed">
-                              *** FORMULA CODE ***
-                            </textarea>
-                          </details>
-                        </li>
-                    -->
+
             </li>
           </ul>
-        </div>
-      </li>
-      <li>
-        <div class="grid-commands">
-          <h2> Quick Codes</h2>
-          <button type='button' class="btn-grid" id="btn_add_quick_code">
-            <span class="front"> <img class="small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
-            </span>
-          </button>
-        </div>
-        <form class="theme-container">
-          <div class="theme-container">
-            <ul id="quick_codes_box_id">
-              <li>
-                <!-- PROTOTYPE OF NEW CODE BLOCK
-                          <li>
-                            <details>
-                              <summary>
-                                <p id="custom_label_MathCodeId"> *** RENDERED FORMULA ***</p>
-                              </summary>
-                              <textarea id="custom_MathCodeId">
-                                *** FORMULA CODE ***
-                              </textarea>
-                            </details>
-                          </li>
-                      -->
-              </li>
-            </ul>
           </div>
         </form>
       </li>
+      <li class="theme-container">
+        <div class="theme-container">
+          <div class="theme-grid-header">
+            <div></div> <div><h2> Quick Codes </h2></div> <div></div>
+            <div>
+              <button type='button' class="theme-small-btn" id="btn_add_quick_code">
+                <span class="front"> <img class="theme-small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
+                </span>
+              </button>
+            </div>
+            <div>
+
+            </div>
+            <div>
+
+            </div>
+          </div>
+        </div>
+        <div class="theme-container">
+          <ul id="quick_codes_box_id">
+            <li>
+
+            </li>
+          </ul>
+          </div>
+        </form>
+      </li>
+
       <li>
         <footer>
           <div class="theme-container">

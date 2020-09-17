@@ -1,4 +1,4 @@
-console.log("BackupManager ONLINE");
+
 
 function internal_download(zip) {
   zip.generateAsync({type: "blob"}).then(function(content) {

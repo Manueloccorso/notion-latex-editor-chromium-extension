@@ -1,5 +1,5 @@
 
-console.log("NM.option : RUNNING");
+
 
 
 var gcontroller = Controller(content_page = false);
@@ -10,18 +10,17 @@ var goptions = OptionsManager();
 
 function waitForStorage(){
     if(goptions.synced && gstorage.synced){
-        console.log(goptions.options);
+
 
         gmodel.init();
         gview.init();
         gcontroller.init();
 
 
-        gview.refreshStoredCodesView();
+        gview.refresh.stored_codes_view();
 
-        let export_btn = document.getElementById("btn_exportdb");
-        export_btn.addEventListener(
-                  'click',
+        let export_btn = $("#btn_exportdb");
+        export_btn.click(
                   (event) => {
                     download(gmodel.getCodesByType(gmodel.code_stored_type));
                   }
@@ -29,31 +28,33 @@ function waitForStorage(){
 
 
 
-        let theme_selector = document.getElementById("theme_selector");
-        theme_selector.innerHTML = "";
-        for(th in gview.themes){
-          console.log(gview.themes[th]);
-          gview.addOptionStrToSelectElement(theme_selector, gview.themes[th], gview.themes[th] );
+        let theme_selector = $("#theme_selector");
+        theme_selector.html("");
+        for(th in gview.manageTheme.themes){
+          let opt = gview.createHTML.general.option();
+          opt.html(gview.manageTheme.themes[th]);
+          opt.attr("value", gview.manageTheme.themes[th]);
+          theme_selector.append(opt);
         }
         let selected_theme = goptions.get().theme;
-        console.log("STORED THEME = ", selected_theme);
+
         for (i = 0; i < theme_selector.length; i++) {
           if(theme_selector[i].text == selected_theme){
             theme_selector.selectedIndex = i;
-            console.log("SETTING ", i,  " as selected theme!");
+
           }
         }
-        theme_selector.addEventListener(
-          'change',
+        theme_selector.change(
           function(){
-            let theme = theme_selector.options[theme_selector.selectedIndex].value;
-            gview.setTheme(theme);
+            let ts_dom  = theme_selector.get(0);
+            let theme = ts_dom.options[ts_dom.selectedIndex].value;
+            gview.manageTheme.set(theme);
             goptions.set({theme:theme})
           }
         );
     }
     else{
-        console.log("Waiting Storage!");
+
         setTimeout(waitForStorage, 5);
     }
 }

@@ -17,13 +17,13 @@
   <!--     _____________ SCRIPTS! ______________      -->
 
   <!--     _____________ LIBS! ______________      -->
+  <script  src="/libs/jquery-3.5.1.js" ></script>
   <script  src="libs/katex.js" ></script>
   <script  src="/libs/codemirror/codemirror.js" ></script>
   <script  src="/libs/codemirror/autorefresh.js" ></script>
   <script  src="/libs/codemirror/stex.js" ></script>
   <script  src="/libs/jszip.min.js" ></script>
   <script  src="/libs/FileSaver.js" ></script>
-
 
   <!--     _____________ MVC! ______________      -->
   <script  src="scripts/MVC/Model.js" ></script>
@@ -42,100 +42,73 @@
 
 
 
-<body class="color-theme">
-  <form >
-    <div class="container">
-      <ul class="shadowed">
-        <li>
-          <div class="grid-commands">
+<body class="theme-body">
+  <div >
+      <ul class="theme-container">
+        <li class="theme-container">
+          <div class="theme-grid-header">
+            <div></div>
             <div id="top_title_box_id">
               <h2> Notion Math : Advanced Editor Options </h2>
             </div>
-            <button type='button' class="btn-grid" id="btn_exportdb">
-              <span class="front"> <img class="small-icon" src="images/icons/downloads-multi-size.ico" alt="Create New Code Block">
-              </span>
-            </button>
-            <p>Theme</p>
-            <select class="stored-code-filtering-select" id="theme_selector">
-              <option value=""> Select the Tag Filter </option>
-            </select>
+            <div></div>
+
+            <div>
+              <p>Download Codes</p>
+              <button type='button' class="theme-small-btn" id="btn_exportdb">
+                <span class="front"> <img class="theme-small-icon" src="images/icons/downloads-multi-size.ico" alt="Create New Code Block">
+                </span>
+              </button>
+            </div>
+
+            <div>
+              <p>Theme</p>
+              <select  id="theme_selector">
+                <option value=""> Select the Theme </option>
+              </select>
+            </div>
+
+            <div></div>
+
           </div>
         </li>
 
-        <li style="display:none">
-          <div class="grid-commands">
-            <h3> Quick Codes </h3>
-            <button type='button' class="btn-grid" id="btn_add_quick_code">
-              <span class="front"> <img class="small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
-              </span>
-            </button>
-          </div>
-          <form class="color-theme">
-            <div class="container">
-              <ul id="quick_codes_box_id">
-                <li>
-                  <!-- PROTOTYPE OF NEW CODE BLOCK
-                            <li>
-                              <details>
-                                <summary>
-                                  <p id="custom_label_MathCodeId"> *** RENDERED FORMULA ***</p>
-                                </summary>
-                                <textarea id="custom_MathCodeId">
-                                  *** FORMULA CODE ***
-                                </textarea>
-                              </details>
-                            </li>
-                        -->
-                </li>
-              </ul>
+        <li class="theme-container">
+          <div class="theme-container">
+            <div class="theme-grid-header">
+              <div></div> <div><h2> Saved Codes </h2></div> <div></div>
+              <div>
+                <button type='button' class="theme-small-btn" id="btn_sync_stored_code">
+                  <span class="front"> <img class="theme-small-icon" src="images/icons/sinchronize-multi-size.ico" alt="Create New Code Block">
+                  </span>
+                </button>
+                <button type='button' class="theme-small-btn" id="btn_add_stored_code">
+                  <span class="front"> <img class="theme-small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
+                  </span>
+                </button>
+              </div>
+              <div>
+                <h3> Search by Name</h3>
+                <textarea type="text"  rows="1"  class="search-textarea" id="textarea_search_by_name" ></textarea>
+              </div>
+              <div>
+                <h3> Filter by Tag </h3>
+                <select class="stored-code-filtering-select" id="select_stored_codes_filter">
+                  <option value=""> Select the Tag Filter </option>
+                </select>
+              </div>
             </div>
-          </form>
-        </li>
-        <li>
-          <div class="grid-commands">
-            <h3> Saved Codes </h3>
-            <button type='button' class="btn-grid" id="btn_sync_stored_code">
-              <span class="front"> <img class="small-icon" src="images/icons/sinchronize-multi-size.ico" alt="Create New Code Block">
-              </span>
-            </button>
-            <button type='button' class="btn-grid" id="btn_add_stored_code">
-              <span class="front"> <img class="small-icon" src="images/icons/add-multi-size.ico" alt="Create New Code Block">
-              </span>
-            </button>
           </div>
-          <div class="grid-commands">
-            <h3> Search by Name</h3>
-            <input type="text"  class="search-textarea" id="textarea_search_by_name" ></input>
-          </div>
-          <div class="grid-commands">
-            <select class="stored-code-filtering-select" id="select_stored_codes_filter">
-              <option value="All"> Select the Filter </option>
-            </select>
-          </div>
-          <form class="color-theme">
-            <div class="container">
-              <ul id="stored_codes_box_id">
-                <li>
-                  <!-- PROTOTYPE OF SAVED CODE BLOCK
-                            <li>
-                              <details>
-                                <summary>
-                                  <p id="saved_label_random_seed"> *** RENDERED FORMULA ***</p>
-                                </summary>
-                                <textarea id="saved_random_seed">
-                                  *** FORMULA CODE ***
-                                </textarea>
-                              </details>
-                            </li>
-                        -->
-                </li>
-              </ul>
+          <div class="theme-container">
+            <ul id="stored_codes_box_id">
+            </ul>
             </div>
           </form>
         </li>
       </ul>
-    </div>
-  </form>
+  </div>
+
+
   <footer>
     <div class="container">
       <small> Extension Made by

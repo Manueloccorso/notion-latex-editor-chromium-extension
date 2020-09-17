@@ -1,4 +1,4 @@
-console.log("NM.Controller : Running");
+
 
 //MESSAGES
 //Request the math codes from the content
@@ -8,7 +8,7 @@ var CODES_FROM_PAGE_ANSWER = "store_codes";
 
 
 function Controller(content_page = true){
-  console.log("NM.Controller : Created");
+
   let controller = {
       // --------------------- VARS ----------------------------------------
         /**
@@ -94,7 +94,7 @@ function Controller(content_page = true){
           },
 
           addStoredCode : function(code) {
-            console.log(code);
+
             gmodel.addCode(gmodel.newCode(
                                           gmodel.newCodeId(),
                                           code.code,
@@ -164,7 +164,11 @@ function Controller(content_page = true){
                     );
                     filter_select.change(
                       function(){
-                        let filter = filter_select.get(0).options[filter_select.selectedIndex].value;
+
+                        let filter_select_dom = filter_select.get(0);
+
+                        let filter = filter_select_dom.options[filter_select_dom.selectedIndex].value;
+
                         gmodel.addTagFilter(filter);
                         gview.refresh.stored_codes_view();
                       }
@@ -195,7 +199,7 @@ function Controller(content_page = true){
                 // COMMIT CHANGES
                 codename_textarea.change(
                           (event) => {
-                            console.log("Title changed!");
+
                             let id = gview.manageId.clean(codename_textarea.attr("id"));
                             // TODO: refactor FORMATTING as object
                             let name = codename_textarea.get(0).value;
@@ -215,7 +219,7 @@ function Controller(content_page = true){
 
                 codetag_textarea.change(
                           (event) => {
-                            console.log("Title changed!");
+
                             let id = gview.manageId.clean(codetag_textarea.attr("id"));
                             // TODO: refactor FORMATTING as object
                             let tag = codetag_textarea.get(0).value;
@@ -235,6 +239,7 @@ function Controller(content_page = true){
               addListenersToCodeMirrorTextArea : function(code_mirror){
                 //INTERCEPT CODES names
                 code_mirror.on(
+                    "change",
                     (event, changeObj) => {
                       // ON SPACEC DETECTED
                       if (changeObj.origin == "+input" && changeObj.text == " "){
@@ -270,12 +275,16 @@ function Controller(content_page = true){
                 );
                 // REFRESH the PREVIEW
                 code_mirror.on(
+                  "change",
                   (event, changeObj) => {
                     let textarea = code_mirror.getTextArea();
+
                     let old_code = gmodel.getCode(
-                                                    gview.manageId.clean( textarea.attr("id") )
+                                                    gview.manageId.clean( textarea.id)
                                                   );
+
                     let new_code = auto_clean_code(code_mirror.getValue());
+
                     gcontroller.syncCodePreview(gmodel.newCode(
                                                                 old_code.id,
                                                                 new_code,
@@ -285,12 +294,16 @@ function Controller(content_page = true){
                   }
               );
                 // COMMIT CHANGES
-                code_mirror.blur(
+                code_mirror.on( "blur",
                   (event) => {
                     let textarea = code_mirror.getTextArea();
-                    let id = gview.manageId.clean(textarea.attr("id"));
+
+                    let id = gview.manageId.clean(textarea.id);
+
                     let cleaned_code = auto_clean_code(code_mirror.getValue());
+
                     let old_code = gmodel.getCode(id);
+
 
                     //COPY TO CLIPBOARD
                     /*
@@ -301,12 +314,13 @@ function Controller(content_page = true){
                     */
 
                     //COMMIT THE CHANGES TO THE MODEL
-                    gcontroller.commitCode(gmodel.newCode(
+                    let new_code = gmodel.newCode(
                                                               id,
                                                               cleaned_code,
                                                               old_code.name,
                                                               old_code.tag,
-                                                              old_code.type));
+                                                              old_code.type);
+                    gcontroller.commitCode(new_code);
                   }
                 );
 

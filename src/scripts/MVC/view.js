@@ -1,7 +1,7 @@
-  console.log("NM.View : Running");
+
 
   function View(){
-    console.log("NM.View : Created");
+
     let view = {
       //------------------------ STATIC STRINGS --------------------------------------------------
         resources : {
@@ -25,6 +25,7 @@
           },
         id_prefixes : {
           code_textarea   : "code_textarea_",
+          code_summary    : "code_summary_",
           code_preview    : "code_preview_",
           code_name       : "code_name_",
           code_tag        : "code_tag_",
@@ -33,21 +34,15 @@
           scrolltop_btn   : "scroll_top_btn_"
           },
         css_class_names : {
-          code_textarea                 : "code-textarea",
-          code_preview                  : "code-preview",
-          basic_code_editor_container   : "code-basic-editor-container",
-          code_name                     : "code-name",
-          code_tag                      : "code-tag",
-          code_tag_container            : "code-tag-container",
-          code_li                       : "code-li",
-          add_btn         : "small-icon",
-          delete_btn      : "small-icon",
-          save_btn        : "small-icon",
-          sync_btn        : "small-icon",
-          scrolltop_btn   : "small-icon",
-          search_textarea : "search-textarea",
-          small_icon      : "small-icon",
-          small_btn       : "btn-grid"
+          container       : "theme-container",
+            header_control   : "theme-grid-header",
+              search_textarea : "search-textarea",
+                code_block_grid : "theme-grid-code-block",
+                  code_textarea                       : "code-textarea",
+                  code_preview                  : "code-preview",
+
+          small_icon      : "theme-small-icon",
+          small_btn       : "theme-small-btn"
           },
       //------------------------ DYNAMIC STRINGS -------------------------------------------------
         manageId : {
@@ -64,6 +59,9 @@
             },
             tag : function(id){
               return gview.id_prefixes.code_tag + id;
+            },
+            summary : function(id){
+              return gview.id_prefixes.code_summary + id;
             },
             preview : function(id){
               return gview.id_prefixes.code_preview + id;
@@ -102,7 +100,9 @@
           },
           dynamic : {
             summary_from_code : function(code){
-              return  $("#"+gview.codePreviewId(code.id)).parentElement;
+
+
+              return $(document.getElementById(gview.manageId.code_block.summary(code.id)));
             },
           }
         },
@@ -113,23 +113,24 @@
       //---------------------- HTML CREATION ---------------------------------------------------
         createHTML : {
           general : {
+            div       : function(){
+              return div = $(document.createElement("DIV"));
+            },
             list_item : function(){
-              let list_item = $(document.createElement("LI"))
-              list_item.addClass(gview.css_class_names.code_li);
-              return list_item;
+              return $(document.createElement("LI"));
             },
-            form      : function(){
-              form = $(document.createElement("FORM"));
-              form.addClass(gview.css_class_names.basic_code_editor_container);
-              return form;
+            code_block_grid      : function(){
+              let div = this.div();
+              div.addClass(gview.css_class_names.code_block_grid);
+              return div;
             },
-            btn_small : function(id, class_name, icon, alt){
+            btn_small : function(id, icon, alt){
               let btn = $(document.createElement("BUTTON"));
               btn.attr("id", id);
               btn.attr("type", "button");
               btn.addClass(gview.css_class_names.small_btn);
               btn.html(' <span class="front" > ' +
-                                      '<img class="'  + class_name  + '" ' +
+                                      '<img class="'  + gview.css_class_names.small_icon + '" ' +
                                           ' src="'    + icon        + '" '+
                                           ' alt="'    + alt         + '"> ' +
                                 ' </span>');
@@ -155,34 +156,34 @@
           },
           code : {
             name : function(code){
-              let div = $(document.createElement("DIV"));
-              div.addClass(gview.css_class_names.code_tag_container);
-              let label = $(document.createElement("H3"));
-              label.html("Name");
-              div.append(label);
+              let div = gview.createHTML.general.div();
+              div.append(gview.createHTML.general.title(3,"Name"));
               let code_name = $(document.createElement("INPUT"));
               code_name.attr("type", "text");
+              code_name.addClass(gview.css_class_names.code_textarea);
               code_name.attr("id", gview.manageId.code_block.name(code.id));
-              code_name.addClass(gview.css_class_names.code_name);
               code_name.get(0).value = code.name;
               gcontroller.addListenersToCodeNameTextArea(code_name);
               div.append(code_name);
               return div;
             },
             tag : function(code){
-                let div = $(document.createElement("DIV"));
-                div.addClass(gview.css_class_names.code_tag_container);
-                let label = $(document.createElement("H3"));
-                label.html("Tags");
-                div.append(label);
-                let code_tag = $(document.createElement("INPUT"));
-                code_tag.attr("type", "text");
-                code_tag.attr("id",gview.manageId.code_block.tag(code.id));
-                code_tag.addClass(gview.css_class_names.code_tag);
-                code_tag.get(0).value = code.tag;
-                gcontroller.addListenersToCodeTagTextArea(code_tag);
-                div.append(code_tag);
-                return div;
+              let div = gview.createHTML.general.div();
+              div.append(gview.createHTML.general.title(3,"Tag"));
+              let code_tag = $(document.createElement("INPUT"));
+              code_tag.attr("type", "text");
+              code_tag.attr("id",gview.manageId.code_block.tag(code.id));
+              code_tag.addClass(gview.css_class_names.code_textarea);
+              code_tag.get(0).value = code.tag;
+              gcontroller.addListenersToCodeTagTextArea(code_tag);
+              div.append(code_tag);
+              return div;
+            },
+            summary : function(code){
+              let summary = gview.createHTML.general.summary();
+              summary.attr("id",gview.manageId.code_block.summary(code.id));
+
+              return summary;
             },
             preview : function(code){
               let label = $(document.createElement("p"));
@@ -198,7 +199,6 @@
             textarea : function(code){
               let textarea = $(document.createElement("TEXTAREA"));
               textarea.attr(gview.manageId.code_block.textarea(code.id));
-              textarea.addClass(gview.css_class_names.code_textarea);
               textarea.get(0).value = code.code;
 
               // TODO: Add Listeners IF code mirror is taken down
@@ -219,7 +219,6 @@
             },
             add_btn : function(code){
               let add_btn = gview.createHTML.general.btn_small(  gmodel.newCodeId(),
-                                              gview.css_class_names.add_btn,
                                               gview.resources.add_icon,
                                               "Add a new Code!");
               gcontroller.manageCodeBlock.setBtn(add_btn, gcontroller.manageCodeBlock.types.btn_add);
@@ -227,7 +226,6 @@
             },
             delete_btn : function(code){
               let del_btn = gview.createHTML.general.btn_small(  gview.manageId.code_block.delete_btn(code.id),
-                                              gview.css_class_names.delete_btn,
                                               gview.resources.delete_icon,
                                               "Delete this Code!");
               gcontroller.manageCodeBlock.setBtn(del_btn, gcontroller.manageCodeBlock.types.btn_delete);
@@ -235,7 +233,6 @@
             },
             save_btn : function(code){
                 let save_btn = gview.createHTML.general.btn_small(  gview.manageId.code_block.save_btn(code.id),
-                                                gview.css_class_names.save_btn,
                                                 gview.resources.save_icon,
                                                 "Store the Code!");
                 gcontroller.manageCodeBlock.setBtn(save_btn, gcontroller.manageCodeBlock.types.btn_save);
@@ -243,7 +240,6 @@
             },
             sync_btn : function(code){
               let sync_btn = gview.createHTML.general.btn_small(  gmodel.newCodeId(),
-                                              gview.css_class_names.sync_btn,
                                               gview.resources.sync_icon,
                                               "Sync with the page!");
               gcontroller.manageCodeBlock.setBtn(sync_btn, gcontroller.manageCodeBlock.types.btn_sync);
@@ -251,7 +247,6 @@
             },
             scroll_top_btn : function(code){
               let st_btn = gview.createHTML.general.btn_small(  gview.manageId.code_block.scroll_top_btn(code.id),
-                                              gview.css_class_names.scrolltop_btn,
                                               gview.resources.scrolltop_icon,
                                               "Scroll to top!");
               gcontroller.manageCodeBlock.setBtn(st_btn, gcontroller.manageCodeBlock.types.btn_scrollTop);
@@ -260,34 +255,40 @@
             }
           },
         compose : {
-          code_block : function (node, code, buttons ){
+          code_block : function (node, code, buttons){
             // Create all elements
             let li                    = gview.createHTML.general.list_item();
-              let basic_editor_div    = gview.createHTML.general.form();
+            li.addClass(gview.css_class_names.container);
+              let code_block_grid    = gview.createHTML.general.code_block_grid();
+                let btn_div           =  gview.createHTML.general.div();
                 let code_name         = gview.createHTML.code.name(code);
                 let code_tag          = gview.createHTML.code.tag(code);
-              let details           = gview.createHTML.general.details();
-                let summary         = gview.createHTML.general.summary();
-                  let code_preview  = gview.createHTML.code.preview(code);
-                let code_textarea   = gview.createHTML.code.textarea(code);
+
+                let details           = gview.createHTML.general.details();
+                //Add some logic
+                details.one(
+                  "click",
+                  function() {
+                    gview.createHTML.code.codemirror(code_textarea);
+                  });
+                  let summary         = gview.createHTML.code.summary(code);
+                    let code_preview  = gview.createHTML.code.preview(code);
+                  let code_textarea   = gview.createHTML.code.textarea(code);
+                  code_textarea.attr("id",code.id);
+
             //Compose
             node.append(li);
-              li.append(basic_editor_div);
-                basic_editor_div.append(code_name);
-                basic_editor_div.append(code_tag);
-                for(button of buttons){
-                  basic_editor_div.append(button(code));
-                }
-              li.append(details);
-                details.append(summary);
-                  summary.append(code_preview);
-                details.append(code_textarea);
-            //Add some logic
-            details.one(
-              "click",
-              function() {
-                gview.createHTML.code.codemirror(code_textarea);
-              });
+              li.append(code_block_grid);
+                code_block_grid.append(btn_div);
+                  for(button of buttons){
+                    btn_div.append(button(code));
+                  }
+                code_block_grid.append(code_name);
+                code_block_grid.append(code_tag);
+                li.append(details);
+                  details.append(summary);
+                    summary.append(code_preview);
+                  details.append(code_textarea);
 
             return node;
           },
@@ -303,6 +304,7 @@
           reset_append : function(parent, child){
             parent.html("");
             parent.append(child);
+
           },
           code_preview : function(code){
             this.reset_append(  gview.getElement.dynamic.summary_from_code(code),
@@ -310,7 +312,7 @@
           },
           codes_container : function(container, codes, buttons){
             container.html("");
-            console.log(codes);
+
             gview.compose.code_blocks(container, codes, buttons);
           },
           page_codes_view : function (){
@@ -333,7 +335,7 @@
             );
           },
           stored_codes_view : function (){
-            console.log(gmodel.getCodesByType(gmodel.code_stored_type));
+
             this.codes_container(
                 gview.getElement.stored_codes_container.container(),
                 gmodel.getCodesByType(gmodel.code_stored_type),
@@ -359,16 +361,16 @@
             let select = gview.getElement.stored_codes_container.filter_select();
             select.html("");
 
-            let base_opt = gview.createHTML.general.option();
-            base_opt.text = "All";
-            base_opt.value = "All";
-            select.add(base_opt);
+            let opt = gview.createHTML.general.option();
+            opt.html("All");
+            opt.attr("value", "All");
+            select.append(opt);
 
             for(tag in filters){
               let opt = gview.createHTML.general.option();
-              opt.text = filters[tag];
-              opt.value = filters[tag];
-              select.add(opt);
+              opt.html(filters[tag]);
+              opt.attr("value", filters[tag]);
+              select.append(opt);
             }
 
             return select;
@@ -406,10 +408,11 @@
       //---------------------------THEME MANAGEMENT ---------------------------------------------
         manageTheme : {
           theme : 'dark',
-          themes : ['dark', 'light'],
+          themes : ['dark', 'light', 'notion'],
           cmThemeByTheme : {
             'dark' : "material-darker",
-            'light' : 'base16-light'
+            'light' : 'base16-light',
+            'notion' : 'material-darker'
           },
           set : function (theme){
             gview.manageTheme.theme = theme;

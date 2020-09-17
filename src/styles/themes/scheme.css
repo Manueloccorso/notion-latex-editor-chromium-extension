@@ -1,0 +1,148 @@
+
+/* MAIN THEME ELEMENTS
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+
+    body {
+        width: 800px;
+        height: 600px;
+    }
+
+  /* ------------------------------- BOXING AND STRUCTURING ---------------------------*/
+    .theme-container {
+      line-height: 1.5;
+      padding: 0.3rem 0.3rem;
+      margin: 0.3rem 0.3rem;
+      border: 0.15rem solid var(--borderFormEls);
+      box-shadow: 0 0 0.6rem rgba(0,0,0, 0.75);
+      color: var(--white);
+    }
+
+    .theme-grid-header{
+      display : grid;
+      grid-template-columns: 33% 33% 33%;
+      grid-template-rows:   auto auto;
+      justify-content: space-evenly;
+      grid-gap : 1rem;
+      margin-top: 0.20rem;
+      margin-bottom: 0.2rem;
+      position: relative;
+    }
+
+    .theme-grid-code-block{
+      display : grid;
+      grid-template-columns: 33% 33% 33%;
+      grid-template-rows:   auto;
+      justify-content: space-evenly;
+      grid-gap : 2rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+
+
+  /* --------------------------- TITLES ---------------------------------------*/
+    .theme-container h1 {
+      margin-bottom: 0.2rem;
+      margin-top: 0.2rem;
+      font-size: 1.3rem;
+    }
+    .theme-container h2 {
+      margin-bottom: 0.1rem;
+      margin-top: 0.1rem;
+      font-size: 1.1rem;
+    }
+    .theme-container h3 {
+      margin-bottom: 0.025rem;
+      margin-top: 0.025rem;
+      font-size: 1rem;
+    }
+
+  /* -------------------------------- ICONS ------------------------------------*/
+    .theme-small-icon{
+      height : 1.3rem !important;
+      width : 1.3rem !important;
+    }
+
+    .theme-small-btn{
+      width: fit-content;
+      height: fit-content;
+    }
+
+  /* --------------------------------- INPUTS -----------------------------------*/
+
+
+    .theme-container select,
+    .theme-container textarea,
+    .theme-container button,
+    .theme-container input[type="checkbox"]:focus + label{
+      line-height: 1.5;
+      padding: 0.4rem 0.4rem;
+      margin : 0.2rem 0.2rem;
+      border: 0.15rem solid var(--borderFormEls);
+      box-shadow: 0 0 0.1rem rgba(0,0,0, 0.75);
+      color: var(--white);
+      background: var(--bgFormEls);
+      transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
+        transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+    }
+
+    .theme-container select:focus,
+    .theme-container input:focus,
+    .theme-container textarea:focus,
+    .theme-container button:focus,
+    .theme-container input[type="checkbox"]:focus + label {
+      background: var(--bgFormElsFocus);
+    }
+
+    .theme-container select {
+      background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/down.svg);
+      background-repeat: no-repeat;
+      background-position: center right 0.2rem;
+      width : 80%;
+    }
+
+    .theme-container *:required,
+    .theme-container *:disabled {
+      cursor: default;
+      filter: blur(2px);
+    }
+
+    /* ------------------------ CODE BLOCKS SPECIFIC ---------------------------*/
+
+
+    .theme-container .search-textarea{
+      resize : none;
+      display : inline-block;
+      line-height: 1.1;
+      padding: 0.15rem 0.15rem;
+      margin-top: 0.05rem;
+      margin-bottom: 0.2rem;
+      border: 0.15rem solid var(--borderFormEls);
+      box-shadow: 0 0 0.1rem rgba(0,0,0, 0.75);
+      color: var(--white);
+      background: var(--bgFormEls);
+      transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
+        transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+    }
+
+    .theme-container .code-textarea {
+        display : inline-block;
+        line-height: 1.1;
+        padding: 0.15rem 0.15rem;
+        margin-top: 0.05rem;
+        margin-bottom: 0.2rem;
+        border: 0.15rem solid var(--borderFormEls);
+        box-shadow: 0 0 0.1rem rgba(0,0,0, 0.75);
+        color: var(--white);
+        background: var(--bgFormEls);
+        transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
+          transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+    }
+
+    .theme-container .code-preview{
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9rem;
+      line-height: 1.1;
+    }

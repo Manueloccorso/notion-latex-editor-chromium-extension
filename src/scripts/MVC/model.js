@@ -1,4 +1,4 @@
-console.log("NM.Model : Running");
+
 
   /**
    * Model - Manage all the data needed for code blocks
@@ -16,7 +16,7 @@ function Model() {
       //----------------------------- LOGGING  -------------------------------------
         prefix : "Model : ",
         log_obj : function(obj){
-          //console.log(gmodel.prefix, JSON.stringify(obj, function replacer(key, value) { return value}));
+          //
         },
       //----------------------------- TYPES  -------------------------------------
 
@@ -244,7 +244,7 @@ function Model() {
        */
       getAllTags : function(){
         let tags = {};
-        console.log("GETTING ALL TAGS");
+
         let codes = gmodel.getCodesByType_internal(gmodel.code_stored_type).getAll();
         for(let i = 0; i < codes.length; i++){
           let code = codes[i];
@@ -256,7 +256,7 @@ function Model() {
             }
           }
         }
-        console.log(tags);
+
         return tags;
       },
 
@@ -284,7 +284,7 @@ function Model() {
         for (let i = 0; i < stored_codes.length; i++ ){
           let stored_code_coding = "\\" +  stored_codes[i].name;
           let stored_code_code = stored_codes[i].code;
-          //console.log("CHECKING FOR STORED CODE NAME REPLACEMENT OF " + stored_code.name);
+          //
           if(str === stored_code_coding ){
             return stored_code_code;
           }

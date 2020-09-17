@@ -26,7 +26,7 @@ function StorageManager(){
                   if(result.encoded_saved_codes_id){
                     gstorage.stored_codes =
                         result.encoded_saved_codes_id.saved_codes;
-                    console.log("LOAD STORAGE COMPLETED!");
+
                   }
                   gstorage.synced = true;
               }

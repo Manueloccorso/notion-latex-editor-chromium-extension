@@ -1,7 +1,7 @@
-console.log("NM.View : Running");
+
 
 function View(){
-  console.log("NM.View : Created");
+
   let view1 = {
       //---------------------- FIXED ID ------------------------------
       id_html_fixed : {
