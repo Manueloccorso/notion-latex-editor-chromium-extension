@@ -84,24 +84,22 @@
         getElement : {
           static : {},
           page_codes_container : {
-            container               : function(){return $("#"+gview.id_html_fixed.page_codes_box_id); },
-            sync_btn                : function(){ return $("#"+gview.id_html_fixed.btn_sync_page_codes); }
+            container               : function(){return $(document.getElementById(gview.id_html_fixed.page_codes_box_id)); },
+            sync_btn                : function(){ return $(document.getElementById(gview.id_html_fixed.btn_sync_page_codes)); }
           },
           quick_codes_container : {
-            container               : function(){ return $("#"+gview.id_html_fixed.quick_codes_box_id);},
-            add_btn                  : function(){ return $("#"+gview.id_html_fixed.btn_add_quick_code); },
+            container               : function(){ return $(document.getElementById(gview.id_html_fixed.quick_codes_box_id));},
+            add_btn                  : function(){ return $(document.getElementById(gview.id_html_fixed.btn_add_quick_code)); },
           },
           stored_codes_container : {
-            container                : function(){ return $("#"+gview.id_html_fixed.stored_codes_box_id); },
-            add_btn                  : function(){ return $("#"+gview.id_html_fixed.btn_add_stored_code); },
-            sync_btn                 : function(){ return $("#"+gview.id_html_fixed.btn_sync_stored_code); },
-            filter_select            : function(){ return $("#"+gview.id_html_fixed.select_stored_codes_filter)},
-            search_textarea          : function(){ return $("#"+gview.id_html_fixed.textarea_search_by_name)},
+            container                : function(){ return $(document.getElementById(gview.id_html_fixed.stored_codes_box_id)); },
+            add_btn                  : function(){ return $(document.getElementById(gview.id_html_fixed.btn_add_stored_code)); },
+            sync_btn                 : function(){ return $(document.getElementById(gview.id_html_fixed.btn_sync_stored_code)); },
+            filter_select            : function(){ return $(document.getElementById(gview.id_html_fixed.select_stored_codes_filter))},
+            search_textarea          : function(){ return $(document.getElementById(gview.id_html_fixed.textarea_search_by_name))},
           },
           dynamic : {
             summary_from_code : function(code){
-
-
               return $(document.getElementById(gview.manageId.code_block.summary(code.id)));
             },
           }
@@ -163,7 +161,7 @@
               code_name.addClass(gview.css_class_names.code_textarea);
               code_name.attr("id", gview.manageId.code_block.name(code.id));
               code_name.get(0).value = code.name;
-              gcontroller.addListenersToCodeNameTextArea(code_name);
+              gcontroller.setViewLogic.code_block.name_textarea(code_name);
               div.append(code_name);
               return div;
             },
@@ -175,7 +173,7 @@
               code_tag.attr("id",gview.manageId.code_block.tag(code.id));
               code_tag.addClass(gview.css_class_names.code_textarea);
               code_tag.get(0).value = code.tag;
-              gcontroller.addListenersToCodeTagTextArea(code_tag);
+              gcontroller.setViewLogic.code_block.tag_textarea(code_tag);
               div.append(code_tag);
               return div;
             },
@@ -215,41 +213,41 @@
               mirror_textarea.getDoc().setValue(textarea.get(0).value);
               mirror_textarea.setSize("100%", "20rem");
               mirror_textarea.refresh();
-              gcontroller.addListenersToCodeMirrorTextArea(mirror_textarea);
+              gcontroller.setViewLogic.code_block.codemirror(mirror_textarea);
             },
             add_btn : function(code){
               let add_btn = gview.createHTML.general.btn_small(  gmodel.newCodeId(),
                                               gview.resources.add_icon,
                                               "Add a new Code!");
-              gcontroller.manageCodeBlock.setBtn(add_btn, gcontroller.manageCodeBlock.types.btn_add);
+              gcontroller.setViewLogic.code_block.buttons.set(add_btn, gcontroller.setViewLogic.code_block.buttons.types.btn_add);
               return add_btn;
             },
             delete_btn : function(code){
               let del_btn = gview.createHTML.general.btn_small(  gview.manageId.code_block.delete_btn(code.id),
                                               gview.resources.delete_icon,
                                               "Delete this Code!");
-              gcontroller.manageCodeBlock.setBtn(del_btn, gcontroller.manageCodeBlock.types.btn_delete);
+              gcontroller.setViewLogic.code_block.buttons.set(del_btn, gcontroller.setViewLogic.code_block.buttons.types.btn_delete);
               return del_btn;
             },
             save_btn : function(code){
                 let save_btn = gview.createHTML.general.btn_small(  gview.manageId.code_block.save_btn(code.id),
                                                 gview.resources.save_icon,
                                                 "Store the Code!");
-                gcontroller.manageCodeBlock.setBtn(save_btn, gcontroller.manageCodeBlock.types.btn_save);
+                gcontroller.setViewLogic.code_block.buttons.set(save_btn, gcontroller.setViewLogic.code_block.buttons.types.btn_save);
                 return save_btn;
             },
             sync_btn : function(code){
               let sync_btn = gview.createHTML.general.btn_small(  gmodel.newCodeId(),
                                               gview.resources.sync_icon,
                                               "Sync with the page!");
-              gcontroller.manageCodeBlock.setBtn(sync_btn, gcontroller.manageCodeBlock.types.btn_sync);
+              gcontroller.setViewLogic.code_block.buttons.set(sync_btn, gcontroller.setViewLogic.code_block.buttons.types.btn_sync);
               return sync_btn;
             },
             scroll_top_btn : function(code){
               let st_btn = gview.createHTML.general.btn_small(  gview.manageId.code_block.scroll_top_btn(code.id),
                                               gview.resources.scrolltop_icon,
                                               "Scroll to top!");
-              gcontroller.manageCodeBlock.setBtn(st_btn, gcontroller.manageCodeBlock.types.btn_scrollTop);
+              gcontroller.setViewLogic.code_block.buttons.set(st_btn, gcontroller.setViewLogic.code_block.buttons.types.btn_scrollTop);
               return st_btn;
             },
             }
@@ -312,11 +310,10 @@
           },
           codes_container : function(container, codes, buttons){
             container.html("");
-
             gview.compose.code_blocks(container, codes, buttons);
           },
           page_codes_view : function (){
-            if(gcontroller.content){
+            if(gcontroller.contentInteraction.active){
               this.codes_container(
                   gview.getElement.page_codes_container.container(),
                   gmodel.getCodesByType(gmodel.code_page_type),
@@ -335,7 +332,6 @@
             );
           },
           stored_codes_view : function (){
-
             this.codes_container(
                 gview.getElement.stored_codes_container.container(),
                 gmodel.getCodesByType(gmodel.code_stored_type),
@@ -389,7 +385,7 @@
             }
           },
           scroll_to_element_by_id : function (id){
-            window.scroll(0, this.find_element_position($("#"+id)));
+            window.scroll(0, this.find_element_position(document.getElementById(id)));
           },
           scroll_to_top : function(){
             this.scroll_to_element_by_id(gview.id_html_fixed.top_title_box_id);

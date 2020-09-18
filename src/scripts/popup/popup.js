@@ -10,10 +10,9 @@ function waitForStorage(){
       gview.init();
       gcontroller.init();
 
-      gcontroller.requestCodesToContent();
+      gcontroller.contentInteraction.request_codes();
     }
     else{
-
         setTimeout(waitForStorage, 5);
     }
 }
@@ -30,5 +29,5 @@ function restart_popup(){
   gview.init();
   gcontroller.init();
 
-  gcontroller.requestCodesToContent();
+  gcontroller.contentInteraction.request_codes();
 }
