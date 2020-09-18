@@ -1,0 +1,58 @@
+/* The side navigation menu */
+
+body {
+  font-size: 12px;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align : center;
+  width: 800px;
+  height: 600px;
+  background-color: var(--bodyColor);
+  max-width: 100%;
+    overflow-x: hidden;
+}
+
+.nav-btn{
+  width : 100%;
+  line-height: 1.5;
+  padding: 0.4rem 0.4rem;
+  margin : 0.2rem 0.2rem;
+  border: 0.15rem solid var(--borderFormEls);
+  box-shadow: 0 0 0.1rem rgba(0,0,0, 0.75);
+  color: var(--white);
+  background: var(--bgFormEls);
+  transition: background-color 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25),
+    transform 0.3s cubic-bezier(0.57, 0.21, 0.69, 1.25);
+}
+
+.nav-btn : focus{
+
+    background: var(--bgFormElsFocus);
+}
+
+.sidenav {
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: var(--bodyColor);
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+  transition: margin-left .5s;
+  width : 100%;
+  height : 100%;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}

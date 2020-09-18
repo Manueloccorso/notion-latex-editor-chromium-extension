@@ -1,13 +1,6 @@
 
 /* MAIN THEME ELEMENTS
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-
-
-    body {
-        width: 800px;
-        height: 600px;
-    }
-
   /* ------------------------------- BOXING AND STRUCTURING ---------------------------*/
     .theme-container {
       line-height: 1.5;
@@ -20,7 +13,7 @@
 
     .theme-grid-header{
       display : grid;
-      grid-template-columns: 33% 33% 33%;
+      grid-template-columns: auto auto auto;
       grid-template-rows:   auto auto;
       justify-content: space-evenly;
       grid-gap : 1rem;
@@ -31,7 +24,7 @@
 
     .theme-grid-code-block{
       display : grid;
-      grid-template-columns: 33% 33% 33%;
+      grid-template-columns: auto auto auto;
       grid-template-rows:   auto;
       justify-content: space-evenly;
       grid-gap : 2rem;

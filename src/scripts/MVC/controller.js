@@ -6,7 +6,10 @@ var CODES_FROM_PAGE_REQUEST = "find_maths";
 //Request to store the codes in background
 var CODES_FROM_PAGE_ANSWER = "store_codes";
 
-function Controller(content_page = true){
+function Controller(content_interaction = true,
+                    stored_interaction = true,
+                    quick_interaction = true
+                  ){
 
   let controller = {
       // --------------------- INIT ----------------------------------------
@@ -19,13 +22,17 @@ function Controller(content_page = true){
           gcontroller.setViewLogic.static_elements.init();
         },
 
+
+        options : {
+          page : content_interaction,
+          stored  : stored_interaction,
+          quick   : quick_interaction
+        },
+
       // --------------------- content page interaction ----------------------------
 
         contentInteraction : {
-          /**
-           * @todo : add variables in which to load the REQUEST identifiers via json file
-           */
-          active : content_page,
+
           /**
           * on_receive_codes -
           *        manage the reply from the content.js with the codes
@@ -38,7 +45,6 @@ function Controller(content_page = true){
             if(response && response.type === CODES_FROM_PAGE_ANSWER){
                 console.log("CODE RECEIVED");
                 for(let i = 0; i < response.codes.length; i++){
-                  console.log(response.codes[i]);
                   gcontroller.add_page_code(gmodel.newCode(
                                               response.codes[i].id,
                                               response.codes[i].code,
@@ -50,7 +56,7 @@ function Controller(content_page = true){
             }
           },
           request_codes : function(){
-            if (this.active){
+            if (gcontroller.options.page){
               let msg = {
                 type : CODES_FROM_PAGE_REQUEST
               };
@@ -64,16 +70,15 @@ function Controller(content_page = true){
           }
         },
 
+
       //------------------------ VIEW LOGIC ------------------------------------
         setViewLogic : {
           static_elements : {
             page_block : function(){
-              if(gcontroller.content === true){
-                gview.getElement.page_codes_container.sync_btn().click(
-                          function() {
-                            gcontroller.contentInteraction.request_codes(); }
-                          );
-              }
+              gview.getElement.page_codes_container.sync_btn().click(
+                        function() {
+                          gcontroller.contentInteraction.request_codes();
+                        } );
             },
             quick_block : function(){
               gview.getElement.quick_codes_container.add_btn().click(
@@ -134,14 +139,14 @@ function Controller(content_page = true){
 
             init: function(){
               let self = this;
-              window.addEventListener(
-                'load',
-                function load(event){
-                  self.page_block();
-                  self.quick_block();
-                  self.stored_block();
-                }
-              );
+              gview.hide.unhide_all();
+              console.log();
+              gcontroller.options.page === true ?
+                self.page_block() : gview.hide.page_block();
+              gcontroller.options.quick === true ?
+                self.quick_block() : gview.hide.quick_block();
+              gcontroller.options.stored === true ?
+                self.stored_block() : gview.hide.stored_block();
             }
           },
           code_block : {
@@ -336,10 +341,7 @@ function Controller(content_page = true){
           gmodel.setCode(code);
         },
     };
-
-
-
-    return controller;
+  return controller;
 }
 
 

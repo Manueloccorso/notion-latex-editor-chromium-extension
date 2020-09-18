@@ -1,12 +1,12 @@
+function MainOptions () {
 
 
+gcontroller = Controller(content_page = false);
+gstorage = StorageManager();
+gview = View();
+gmodel = Model();
+goptions = OptionsManager();
 
-
-var gcontroller = Controller(content_page = false);
-var gstorage = StorageManager();
-var gview = View();
-var gmodel = Model();
-var goptions = OptionsManager();
 
 function waitForStorage(){
     if(goptions.synced && gstorage.synced){
@@ -78,4 +78,6 @@ function restart_options(){
   gcontroller.requestCodesToContent();
 
   gview.refreshStoredCodesView();
+}
+
 }

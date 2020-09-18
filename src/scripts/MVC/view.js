@@ -84,14 +84,17 @@
         getElement : {
           static : {},
           page_codes_container : {
+            main_container          : function(){return $(document.getElementById("page_codes_main_box_id"));},
             container               : function(){return $(document.getElementById(gview.id_html_fixed.page_codes_box_id)); },
             sync_btn                : function(){ return $(document.getElementById(gview.id_html_fixed.btn_sync_page_codes)); }
           },
           quick_codes_container : {
+            main_container          : function(){return $(document.getElementById("quick_codes_main_box_id"));},
             container               : function(){ return $(document.getElementById(gview.id_html_fixed.quick_codes_box_id));},
             add_btn                  : function(){ return $(document.getElementById(gview.id_html_fixed.btn_add_quick_code)); },
           },
           stored_codes_container : {
+            main_container          : function(){return $(document.getElementById("stored_codes_main_box_id"));},
             container                : function(){ return $(document.getElementById(gview.id_html_fixed.stored_codes_box_id)); },
             add_btn                  : function(){ return $(document.getElementById(gview.id_html_fixed.btn_add_stored_code)); },
             sync_btn                 : function(){ return $(document.getElementById(gview.id_html_fixed.btn_sync_stored_code)); },
@@ -106,8 +109,9 @@
         },
       // ---------------------- INIT --------------------------------
         init : function(){
+          if(gview.manageTheme.get() === goptions.options.theme ) return;
           gview.manageTheme.set(goptions.options.theme);
-          },
+        },
       //---------------------- HTML CREATION ---------------------------------------------------
         createHTML : {
           general : {
@@ -313,15 +317,13 @@
             gview.compose.code_blocks(container, codes, buttons);
           },
           page_codes_view : function (){
-            if(gcontroller.contentInteraction.active){
-              this.codes_container(
-                  gview.getElement.page_codes_container.container(),
-                  gmodel.getCodesByType(gmodel.code_page_type),
-                  [ gview.createHTML.code.scroll_top_btn,
-                    gview.createHTML.code.sync_btn,
-                    gview.createHTML.code.save_btn ]
-              );
-            }
+            this.codes_container(
+                gview.getElement.page_codes_container.container(),
+                gmodel.getCodesByType(gmodel.code_page_type),
+                [ gview.createHTML.code.scroll_top_btn,
+                  gview.createHTML.code.sync_btn,
+                  gview.createHTML.code.save_btn ]
+            );
           },
           quick_codes_view : function (){
             this.codes_container(
@@ -372,7 +374,22 @@
             return select;
           }
         },
-
+        hide    : {
+          page_block : function(){
+            gview.getElement.page_codes_container.main_container().hide();
+          },
+          quick_block : function(){
+            gview.getElement.quick_codes_container.main_container().hide();
+          },
+          stored_block : function(){
+            gview.getElement.stored_codes_container.main_container().hide();
+          },
+          unhide_all : function(){
+            gview.getElement.page_codes_container.main_container().show();
+            gview.getElement.quick_codes_container.main_container().show();
+            gview.getElement.stored_codes_container.main_container().show();
+          }
+        },
       //-------------- INTERACTIVE -------------------------------------------------------------
         interact : {
           find_element_position : function (obj) {
@@ -415,6 +432,10 @@
             $("#"+'theme').attr(
                                                 "href",
                                                 "styles/themes/" + gview.manageTheme.theme +".css");
+          },
+          get : function(){
+            let theme_css = $("#"+'theme').attr("href");
+            return theme_css.replace(".css", "").replace("styles/themes/", "");
           }
         }
     }

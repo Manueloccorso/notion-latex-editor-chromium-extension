@@ -21,7 +21,7 @@
 
   "browser_action": {
     "default_icon": "images/action_icon1.png",
-    "default_popup": "popup.html",
+    "default_popup": "app.html",
     "default_title": "Edit Notion Math Blocks!"
   },
 
