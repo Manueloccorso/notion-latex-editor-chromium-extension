@@ -5,6 +5,41 @@
     let view = {
       //------------------------ STATIC STRINGS --------------------------------------------------
         resources : {
+          icons : {
+            all       : '<span class="material-icons"> subject </span>',
+
+            page      : '<span class="material-icons"> find_in_page </span>',
+
+            storage   : '<span class="material-icons"> sd_storage </span>',
+
+            quick     : '<span class="material-icons"> alarm </span>',
+
+            tags      : '<span class="material-icons"> more </span>',
+
+            options   : '<span class="material-icons"> settings </span>', 
+
+            add       : '<span class="material-icons"> add_box </span>',
+
+            sync      : '<span class="material-icons"> sync </span>',
+
+            save      : '<span class="material-icons"> save </span>',
+
+            delete    : '<span class="material-icons"> delete </span>',
+
+            up        : '<span class="material-icons"> arrow_circle_up </span>',
+
+            expand    : '<span class="material-icons"> expand_more </span>',
+
+
+
+
+
+            download : '<span class="material-icons"> get_app </span>'
+
+
+
+          },
+
           add_icon        : "images/icons/add-multi-size.ico",
           delete_icon     : "images/icons/delete-multi-size.ico",
           save_icon       : "images/icons/save-multi-size.ico",
@@ -131,11 +166,7 @@
               btn.attr("id", id);
               btn.attr("type", "button");
               btn.addClass(gview.css_class_names.small_btn);
-              btn.html(' <span class="front" > ' +
-                                      '<img class="'  + gview.css_class_names.small_icon + '" ' +
-                                          ' src="'    + icon        + '" '+
-                                          ' alt="'    + alt         + '"> ' +
-                                ' </span>');
+              btn.html(icon);
               return btn;
             },
             title     : function(level, title) {
@@ -221,35 +252,35 @@
             },
             add_btn : function(code){
               let add_btn = gview.createHTML.general.btn_small(  gmodel.newCodeId(),
-                                              gview.resources.add_icon,
+                                              gview.resources.icons.add,
                                               "Add a new Code!");
               gcontroller.setViewLogic.code_block.buttons.set(add_btn, gcontroller.setViewLogic.code_block.buttons.types.btn_add);
               return add_btn;
             },
             delete_btn : function(code){
               let del_btn = gview.createHTML.general.btn_small(  gview.manageId.code_block.delete_btn(code.id),
-                                              gview.resources.delete_icon,
+                                              gview.resources.icons.delete,
                                               "Delete this Code!");
               gcontroller.setViewLogic.code_block.buttons.set(del_btn, gcontroller.setViewLogic.code_block.buttons.types.btn_delete);
               return del_btn;
             },
             save_btn : function(code){
                 let save_btn = gview.createHTML.general.btn_small(  gview.manageId.code_block.save_btn(code.id),
-                                                gview.resources.save_icon,
+                                                gview.resources.icons.save,
                                                 "Store the Code!");
                 gcontroller.setViewLogic.code_block.buttons.set(save_btn, gcontroller.setViewLogic.code_block.buttons.types.btn_save);
                 return save_btn;
             },
             sync_btn : function(code){
               let sync_btn = gview.createHTML.general.btn_small(  gmodel.newCodeId(),
-                                              gview.resources.sync_icon,
+                                              gview.resources.icons.sync,
                                               "Sync with the page!");
               gcontroller.setViewLogic.code_block.buttons.set(sync_btn, gcontroller.setViewLogic.code_block.buttons.types.btn_sync);
               return sync_btn;
             },
             scroll_top_btn : function(code){
               let st_btn = gview.createHTML.general.btn_small(  gview.manageId.code_block.scroll_top_btn(code.id),
-                                              gview.resources.scrolltop_icon,
+                                              gview.resources.icons.up,
                                               "Scroll to top!");
               gcontroller.setViewLogic.code_block.buttons.set(st_btn, gcontroller.setViewLogic.code_block.buttons.types.btn_scrollTop);
               return st_btn;

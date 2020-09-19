@@ -151,12 +151,12 @@ function Controller(content_interaction = true,
           },
           code_block : {
             //addListenersToCodeNameTextArea
-            name_textarea : function(textarea){
+            name_textarea : function(textarea, id){
               textarea.change(
                         (event) => {
-                          let old_code = gmodel.getCode(id);
+                          let old_code = gmodel.getCode(gview.manageId.clean(textarea.attr("id")));
                           gcontroller.commit_code(gmodel.newCode(
-                                                                gview.manageId.clean(codename_textarea.attr("id")),
+                                                                gview.manageId.clean(textarea.attr("id")),
                                                                 old_code.code,
                                                                 textarea.get(0).value,
                                                                 old_code.tag,
@@ -168,9 +168,9 @@ function Controller(content_interaction = true,
             tag_textarea : function(textarea){
               textarea.change(
                 (event) => {
-                  let old_code = gmodel.getCode(id);
+                  let old_code = gmodel.getCode(gview.manageId.clean( textarea.attr("id")));
                   gcontroller.commit_code(gmodel.newCode(
-                                                        gview.manageId.clean(codetag_textarea.attr("id")),
+                                                        gview.manageId.clean(textarea.attr("id")),
                                                         old_code.code,
                                                         old_code.name,
                                                         textarea.get(0).value,

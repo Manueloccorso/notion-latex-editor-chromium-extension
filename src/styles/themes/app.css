@@ -13,6 +13,8 @@ body {
 }
 
 .nav-btn{
+  display: flex;
+  flex-direction: row;
   width : 100%;
   line-height: 1.5;
   padding: 0.4rem 0.4rem;
@@ -26,8 +28,11 @@ body {
 }
 
 .nav-btn : focus{
-
     background: var(--bgFormElsFocus);
+}
+.nav-btn span,
+.nav-btn h2 {
+  display: inline;
 }
 
 .sidenav {

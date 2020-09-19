@@ -8,13 +8,14 @@ var goptions = OptionsManager();
 function openNav() {
   $(document.getElementById("mySidenav")).css("width", "20%");
   $(document.getElementById("main")).css("marginLeft", "20%");
-  $(document.getElementById("main")).css("marginLeft", "20%");
+  $(document.getElementsByClassName("nav-title")).show();
 }
 
 /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
 function closeNav() {
-  $(document.getElementById("mySidenav")).css("width", "5%");
-  $(document.getElementById("main")).css("marginLeft", "5%");
+  $(document.getElementById("mySidenav")).css("width", "6%");
+  $(document.getElementById("main")).css("marginLeft", "6%");
+  $(document.getElementsByClassName("nav-title")).hide();
 }
 
 $(document).ready(function(){
