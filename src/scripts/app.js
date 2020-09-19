@@ -18,6 +18,36 @@ function closeNav() {
   $(document.getElementsByClassName("nav-title")).hide();
 }
 
+function refreshTags(){
+  $(".nav-tag-btn").remove();
+  if(gstorage.synced && gmodel.getAllTags()){
+    console.log("ADDING TAGS");
+    let tags = gmodel.getAllTags();
+    for(tagg in tags){
+      let tag = tags[tagg];
+      console.log(tag);
+      let button = $(document.createElement("BUTTON"));
+      button.attr("id", "nav-btn-tag-"+tag);
+      button.attr("class", "nav-btn");
+      button.addClass("nav-tag-btn");
+      let label = $("<h3>"+tag+"</h3>");
+      label.attr("class","nav-title");
+      let icon = $(gview.resources.icons.tags);
+      button.append(icon);
+      button.append(label);
+      button.click(function(){
+          $(document.getElementById("main")).load(chrome.extension.getURL("all.html"), function(){ MainTag(tag)});
+          refreshTags();
+      });
+      $(document.getElementById("mySidenav")).append(button);
+    }
+  }else{
+    setTimeout(refreshTags, 1000);
+    console.log("waiting");
+  }
+}
+
+
 $(document).ready(function(){
   closeNav();
   $(document.getElementById("mySidenav")).hover( openNav ,closeNav);
@@ -28,28 +58,35 @@ $(document).ready(function(){
   $(document.getElementById("nav-btn-all")).click(
     function(){
       $(document.getElementById("main")).load(chrome.extension.getURL("all.html"), MainAll);
+      refreshTags();
     }
   );
   $(document.getElementById("nav-btn-page")).click(
     function(){
       $(document.getElementById("main")).load(chrome.extension.getURL("all.html"), MainPage);
+      refreshTags();
     }
   );
   $(document.getElementById("nav-btn-stored")).click(
     function(){
         $(document.getElementById("main")).load(chrome.extension.getURL("all.html"), MainStored);
+        refreshTags();
     }
   );
   $(document.getElementById("nav-btn-quick")).click(
     function(){
         $(document.getElementById("main")).load(chrome.extension.getURL("all.html"), MainQuick);
+        refreshTags();
     }
   );
   $(document.getElementById("nav-btn-options")).click(
     function(){
       $(document.getElementById("main")).load(chrome.extension.getURL("options.html"), MainOptions);
-      MainOptions();
+      refreshTags();
     }
   );
+
+
+  refreshTags();
 
 });

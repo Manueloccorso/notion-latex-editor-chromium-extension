@@ -50,19 +50,15 @@ function AdvancedArray(store){
       },
 
       getAllByFilter : function(filter){
-
-
         let cc = [];
         for(code_id in this.codes){
           let code = this.codes[code_id];
-
-
           if(code.tag.indexOf(filter.tag) >= 0){
-
             if(code.name.indexOf(filter.name) >= 0){
-
               cc.push(code);
             }
+          }else{
+            if (filter == "All") cc.push(code);
           }
         }
         return cc;

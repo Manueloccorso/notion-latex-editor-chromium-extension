@@ -15,10 +15,10 @@ body {
 .nav-btn{
   display: flex;
   flex-direction: row;
-  width : 100%;
+  width : 98%;
   line-height: 1.5;
-  padding: 0.4rem 0.4rem;
-  margin : 0.2rem 0.2rem;
+  padding: 0.4rem 0.4rem 0.4rem 0.4rem;
+  margin : 0.2rem 0.2rem 0.2rem 0.2rem;
   border: 0.15rem solid var(--borderFormEls);
   box-shadow: 0 0 0.1rem rgba(0,0,0, 0.75);
   color: var(--white);
@@ -32,7 +32,11 @@ body {
 }
 .nav-btn span,
 .nav-btn h2 {
-  display: inline;
+  display: inline-block;
+}
+
+.material-icons{
+  margin : 0.3rem 0.3rem 0.3rem 0.3rem;
 }
 
 .sidenav {
@@ -46,6 +50,12 @@ body {
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 60px; /* Place content 60px from the top */
   transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+
+  overflow: hidden;
+
+}
+.sidenav:hover {
+  overflow-y: scroll;
 }
 
 

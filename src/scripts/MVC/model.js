@@ -41,7 +41,7 @@ function Model() {
 
     //----------------------------- INTERNALS -------------------------------------
       getCodesByType_internal : function(type){
-        if(type !== null && gmodel.codes[type] !== gmodel.codes["NOT_A_TYPE"])
+        if(type !== null )
           return gmodel.codes[type];
         return false;
       },
@@ -243,21 +243,26 @@ function Model() {
        * @returns {Dict of Tags}  description
        */
       getAllTags : function(){
-        let tags = {};
+        try {
+          let tags = {};
 
-        let codes = gmodel.getCodesByType_internal(gmodel.code_stored_type).getAll();
-        for(let i = 0; i < codes.length; i++){
-          let code = codes[i];
-          if(code.tag){
-            tags[code.tag] = code.tag;
-            let splitted_tags = code.tag.split(" ");
-            for(let j = 0; j < splitted_tags.length; j++){
-              tags[splitted_tags[j]] = splitted_tags[j];
+          let codes = gmodel.getCodesByType_internal(gmodel.code_stored_type).getAll();
+          for(let i = 0; i < codes.length; i++){
+            let code = codes[i];
+            if(code.tag){
+              tags[code.tag] = code.tag;
+              let splitted_tags = code.tag.split(" ");
+              for(let j = 0; j < splitted_tags.length; j++){
+                tags[splitted_tags[j]] = splitted_tags[j];
+              }
             }
           }
+          return tags;
+        }
+        catch(err) {
+          return false;
         }
 
-        return tags;
       },
 
       addNameFilter : function(filter){
