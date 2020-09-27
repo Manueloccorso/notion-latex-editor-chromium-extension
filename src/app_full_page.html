@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <!--     _____________ META! ______________      -->
+    <meta charset="utf-8">
+    <meta name="author" content="Manuel Occorso">
+    <title> Notion Math : Advanced Editor </title>
+
+    <!--     _____________ STYLES! ______________      -->
+    <link rel="stylesheet" href="styles/katex.css">
+    <link rel="stylesheet" href="styles/codemirror/codemirror.css">
+    <link rel="stylesheet" href="styles/codemirror/material-darker.css">
+    <link rel="stylesheet" href="styles/codemirror/elegant.css">
+
+    <link rel="stylesheet" id="theme" href="styles/themes/dark.css">
+
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+    <!--     _____________ SCRIPTS! ______________      -->
+
+    <!--     _____________ LIBS! ______________      -->
+    <script  src="/libs/jquery-3.5.1.js" ></script>
+    <script  src="libs/katex.js" ></script>
+    <script  src="/libs/codemirror/codemirror.js" ></script>
+    <script  src="/libs/codemirror/autorefresh.js" ></script>
+    <script  src="/libs/codemirror/stex.js" ></script>
+    <script  src="/libs/jszip.min.js" ></script>
+    <script  src="/libs/FileSaver.js" ></script>
+
+
+    <!--     _____________ MVC! ______________      -->
+    <script  src="scripts/MVC/Model.js" ></script>
+    <script  src="scripts/MVC/Controller.js" ></script>
+    <script  src="scripts/MVC/View.js" ></script>
+      <!--     _____________ UTILITIES! ______________      -->
+      <script  src="scripts/MVC/utils/StorageManager.js" ></script>
+      <script  src="scripts/MVC/utils/OptionsManager.js" ></script>
+      <script  src="scripts/MVC/utils/AdvancedArray.js" ></script>
+      <script  src="scripts/MVC/utils/Autoformatter.js" ></script>
+      <script  src="scripts/MVC/utils/BackupManager.js" ></script>
+
+
+    <!--     _____________ POPUP! ______________      -->
+    <script defer src="scripts/editors/all.js" ></script>
+    <script defer src="scripts/editors/page.js" ></script>
+    <script defer src="scripts/editors/stored.js" ></script>
+    <script defer src="scripts/editors/quick.js" ></script>
+    <script defer src="scripts/options/options.js" ></script>
+    <script defer src="scripts/editors/tag.js" ></script>
+
+    <!--     _____________ SCRIPTS! ______________      -->
+    <script defer src="scripts/app.js" ></script>
+
+
+
+
+  </head>
+  <body>
+    <div id="mySidenav" class="sidenav">
+      <button id="nav-btn-all" class="nav-btn"      >
+        <span class="material-icons"> subject </span>
+        <h3 class="nav-title"> All</h3>     </button>
+      <button id="nav-btn-page" class="nav-btn"     >
+        <span class="material-icons"> find_in_page </span>
+        <h3 class="nav-title" >Page</h3>    </button>
+      <button id="nav-btn-stored" class="nav-btn"   >
+        <span class="material-icons"> sd_storage </span>
+        <h3 class="nav-title" >Stored</h3>  </button>
+      <button id="nav-btn-quick" class="nav-btn"    >
+        <span class="material-icons"> alarm </span>
+        <h3 class="nav-title" >Quick</h3>   </button>
+      <button id="nav-btn-options" class="nav-btn"  >
+        <span class="material-icons"> settings </span>
+        <h3 class="nav-title">Options</h3> </button>
+    </div>
+
+    <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+    <div id="main"  ></div>
+
+
+  </body>
+</html>

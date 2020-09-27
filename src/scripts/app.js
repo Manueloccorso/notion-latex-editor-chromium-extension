@@ -20,9 +20,9 @@ function closeNav() {
 
 function refreshTags(){
   $(".nav-tag-btn").remove();
-  if(gstorage.synced && gmodel.getAllTags()){
+  if(gstorage.synced && gmodel.get.codes.tags()){
     console.log("ADDING TAGS");
-    let tags = gmodel.getAllTags();
+    let tags = gmodel.get.codes.tags();
     for(tagg in tags){
       let tag = tags[tagg];
       console.log(tag);
@@ -45,6 +45,10 @@ function refreshTags(){
     setTimeout(refreshTags, 1000);
     console.log("waiting");
   }
+}
+
+function refresh(){
+  refreshTags();
 }
 
 
@@ -87,6 +91,6 @@ $(document).ready(function(){
   );
 
 
-  refreshTags();
+  refresh();
 
 });

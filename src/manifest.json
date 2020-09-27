@@ -10,13 +10,13 @@
   },
 
   "options_ui": {
-    "page": "options.html",
+    "page": "app_full_page.html",
     "open_in_tab": true
   },
 
   "content_scripts": [{
     "matches": ["http://*.notion.so/*", "https://*.notion.so/*"],
-    "js": ["scripts/content/content.js"]
+    "js": ["libs/jquery-3.5.1.js","scripts/content/content.js"]
   }],
 
   "browser_action": {
@@ -41,6 +41,10 @@
       }
     }
   },
+
+  "web_accessible_resources": [
+    "jsons/*.json"
+  ],
 
 
   "permissions": [

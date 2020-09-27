@@ -10,10 +10,8 @@
 function AdvancedArray(store){
 
   return {
-
       codes : {},
       store : store,
-
       /**
        * syncWithStorage - load the codes from the StorageManager into the array
        */

@@ -2,13 +2,20 @@
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
   /* ------------------------- BODY -----------------------------------------*/
+
+
     #main {
       font-size: 12px;
       background: var(--bodyColor);
       color: var(--white);
       text-align : center;
+      align-content: center;
       width : auto;
       height : auto;
+    }
+
+    .blurred {
+		    filter: blur(10px);
     }
 
   /* ---------------------------------------------------------------------------*/

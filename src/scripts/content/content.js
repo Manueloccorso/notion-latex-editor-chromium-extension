@@ -1,5 +1,3 @@
-
-
 //MESSAGES
 //Request the math codes from the content
 var CODES_FROM_PAGE_REQUEST = "find_maths";
@@ -8,80 +6,66 @@ var CODES_FROM_PAGE_ANSWER = "store_codes";
 
 // --------------------- UTILITIES -----------------------------
 
-function getEquationBlocks(node){
-  return node.getElementsByClassName("notion-equation-block");
-}
-function getAnnotations(node){
-  return node.getElementsByTagName('annotation');
-}
-
-function cleanCode(code) {
-  let cleaned = code.replace(/amp;/g, "");
-  return cleaned;
-}
-
-function getCodeFromAnnotation(annotation) {
-  return cleanCode(annotation.innerHTML);;
-}
-
-function getCodesFromAnnotations(annotations){
-  let codes = [];
-  for (let i = 0; i < annotations.length; i++)
-    codes.push(getCodeFromAnnotation(annotations[i]));
-  return codes;
-}
-
-function getCodeFromEqBlock(eq_block) {
-  let id = eq_block.dataset.blockId;
-  let code = getCodesFromAnnotations(getAnnotations(eq_block))[0];
-  return {
-    id: id,
-    code: code
+let htmlManager = {
+  get : {
+    equation_blocks : function(node){
+      return node.getElementsByClassName("notion-equation-block");
+    },
+    annotations : function(node){
+      return node.getElementsByTagName('annotation');
+    }
   }
 }
 
-function getCodesFromEqBlocks(eq_blocks){
-  let codes = [];
-  for(let i = 0; i < eq_blocks.length; i++)
-    codes.push(getCodeFromEqBlock(eq_blocks[i]));
-  return codes;
-}
+let codesManager = {
+  utils : {
+    clean_code : function(code){
+      return code.replace(/amp;/g, "");
+    }
+  },
+  get : {
+     code_from_annotation : function(annotation) {
+      return codesManager.utils.clean_code(annotation.innerHTML);;
+    },
+     code_from_equation_block : function(eq_block) {
+      let id = eq_block.dataset.blockId;
+      let code = codesManager.get.code_from_annotation(htmlManager.get.annotations(eq_block)[0]);
+      return {
+        id: id,
+        code: code
+      }
+    },
+    codes_from_equation_blocks : function(eq_blocks){
+      let codes = [];
+      for(let i = 0; i < eq_blocks.length; i++)
+        codes.push(codesManager.get.code_from_equation_block(eq_blocks[i]));
+      return codes;
+    },
 
-function getCodesFromPage() {
-  let codes = getCodesFromEqBlocks(getEquationBlocks(document));
-  return codes;
-}
-
-function encodeCodesFromPage(){
-  let codes = getCodesFromPage();
-  return  msg = {
-    type: CODES_FROM_PAGE_ANSWER,
-    codes: codes
-  };
-}
-
-function printCodesMsg(msg){
-
-
-
-
-  for (let i = 0; i < msg.codes.length; i++) {
-    code = msg.codes[i];
-
-
+    codes_from_page : function(){
+      return this.codes_from_equation_blocks(htmlManager.get.equation_blocks(document));
+    }
   }
 }
+
+let encoder = {
+  codes : function(codes){
+    return  msg = {
+      type: CODES_FROM_PAGE_ANSWER,
+      codes: codes
+    };
+  }
+}
+
+
+
 
 //------------------------- LOGIC -------------------------------------
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-
-
     if(request.type === CODES_FROM_PAGE_REQUEST){
-      let msg = encodeCodesFromPage();
-
-      printCodesMsg(msg);
+      let msg = encoder.codes(codesManager.get.codes_from_page());
       sendResponse(msg);
       return true;
     }

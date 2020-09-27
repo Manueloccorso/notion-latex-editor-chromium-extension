@@ -1,5 +1,3 @@
-
-
   function View(){
 
     let view = {
@@ -16,7 +14,7 @@
 
             tags      : '<span class="material-icons"> more </span>',
 
-            options   : '<span class="material-icons"> settings </span>', 
+            options   : '<span class="material-icons"> settings </span>',
 
             add       : '<span class="material-icons"> add_box </span>',
 
@@ -39,13 +37,7 @@
 
 
           },
-
-          add_icon        : "images/icons/add-multi-size.ico",
-          delete_icon     : "images/icons/delete-multi-size.ico",
-          save_icon       : "images/icons/save-multi-size.ico",
-          sync_icon       : "images/icons/sinchronize-multi-size.ico",
-          scrolltop_icon  : "images/icons/up-multi-size.ico",
-          },
+        },
         id_html_fixed : {
           top_title_box_id      : "top_title_box_id",
           page_codes_box_id     : "page_codes_box_id",
@@ -251,7 +243,7 @@
               gcontroller.setViewLogic.code_block.codemirror(mirror_textarea);
             },
             add_btn : function(code){
-              let add_btn = gview.createHTML.general.btn_small(  gmodel.newCodeId(),
+              let add_btn = gview.createHTML.general.btn_small(  gmodel.create.id(),
                                               gview.resources.icons.add,
                                               "Add a new Code!");
               gcontroller.setViewLogic.code_block.buttons.set(add_btn, gcontroller.setViewLogic.code_block.buttons.types.btn_add);
@@ -272,7 +264,7 @@
                 return save_btn;
             },
             sync_btn : function(code){
-              let sync_btn = gview.createHTML.general.btn_small(  gmodel.newCodeId(),
+              let sync_btn = gview.createHTML.general.btn_small(  gmodel.create.id(),
                                               gview.resources.icons.sync,
                                               "Sync with the page!");
               gcontroller.setViewLogic.code_block.buttons.set(sync_btn, gcontroller.setViewLogic.code_block.buttons.types.btn_sync);
@@ -310,19 +302,33 @@
                   code_textarea.attr("id",code.id);
 
             //Compose
-            node.append(li);
-              li.append(code_block_grid);
-                code_block_grid.append(btn_div);
-                  for(button of buttons){
-                    btn_div.append(button(code));
-                  }
-                code_block_grid.append(code_name);
-                code_block_grid.append(code_tag);
+            if(goptions.get().compact){
+              node.append(li);
                 li.append(details);
                   details.append(summary);
-                    summary.append(code_preview);
+                    summary.append(code_block_grid);
+                      code_block_grid.append(btn_div);
+                      for(button of buttons){
+                        btn_div.append(button(code));
+                      }
+                      code_block_grid.append(code_name);
+                      code_block_grid.append(code_tag);
+                  details.append(code_preview);
                   details.append(code_textarea);
-
+            }else{
+              node.append(li);
+                li.append(code_block_grid);
+                  code_block_grid.append(btn_div);
+                    for(button of buttons){
+                      btn_div.append(button(code));
+                    }
+                  code_block_grid.append(code_name);
+                  code_block_grid.append(code_tag);
+                  li.append(details);
+                    details.append(summary);
+                      summary.append(code_preview);
+                    details.append(code_textarea);
+            }
             return node;
           },
           code_blocks : function(node, codes, buttons){
@@ -350,7 +356,7 @@
           page_codes_view : function (){
             this.codes_container(
                 gview.getElement.page_codes_container.container(),
-                gmodel.getCodesByType(gmodel.code_page_type),
+                gmodel.get.codes.by_types(gmodel.types.codes.page),
                 [ gview.createHTML.code.scroll_top_btn,
                   gview.createHTML.code.sync_btn,
                   gview.createHTML.code.save_btn ]
@@ -359,7 +365,7 @@
           quick_codes_view : function (){
             this.codes_container(
                 gview.getElement.quick_codes_container.container(),
-                gmodel.getCodesByType(gmodel.code_quick_type),
+                gmodel.get.codes.by_types(gmodel.types.codes.quick),
                 [ gview.createHTML.code.scroll_top_btn,
                   gview.createHTML.code.save_btn ]
             );
@@ -367,7 +373,7 @@
           stored_codes_view : function (){
             this.codes_container(
                 gview.getElement.stored_codes_container.container(),
-                gmodel.getCodesByType(gmodel.code_stored_type),
+                gmodel.get.codes.by_types(gmodel.types.codes.stored),
                 [ gview.createHTML.code.scroll_top_btn,
                   gview.createHTML.code.save_btn,
                   gview.createHTML.code.delete_btn]
@@ -379,11 +385,11 @@
             this.stored_codes_view();
           },
           view_by_code : function(code){
-            if(code.type === gmodel.code_page_type)
+            if(code.type === gmodel.types.codes.page)
               this.page_codes_view();
-            if(code.type == gmodel.code_quick_type)
+            if(code.type == gmodel.types.codes.quick)
               this.quick_codes_view();
-            if(code.type == gmodel.code_stored_type)
+            if(code.type == gmodel.types.codes.stored)
               this.stored_codes_view();
           },
           stored_codes_tags : function (filters){
@@ -421,6 +427,23 @@
             gview.getElement.stored_codes_container.main_container().show();
           }
         },
+
+        utils : {
+          blur : function(hover, blurreds){
+            if(goptions.get().blur){
+              $(hover).mouseenter(function(){
+                for (i = 0; i < blurreds.length; i++){
+                  $(blurreds[i]).addClass('blurred');
+                }
+              });
+              $(hover).mouseleave(function(){
+                for (i = 0; i < blurreds.length; i++){
+                  $(blurreds[i]).removeClass('blurred');
+                }
+              });
+            }
+          }
+        },
       //-------------- INTERACTIVE -------------------------------------------------------------
         interact : {
           find_element_position : function (obj) {
@@ -447,7 +470,6 @@
           scroll_to_stored_codes : function(){
             this.scroll_to_element_by_id(gview.id_html_fixed.stored_codes_box_id);
           }
-
         },
       //---------------------------THEME MANAGEMENT ---------------------------------------------
         manageTheme : {

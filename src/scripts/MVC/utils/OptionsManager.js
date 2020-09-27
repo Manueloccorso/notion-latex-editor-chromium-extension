@@ -1,6 +1,4 @@
-
-
-
+ // outputs a javascript object from the parsed json
 function OptionsManager(){
 
   let om = {
@@ -21,14 +19,13 @@ function OptionsManager(){
                     goptions.options =
                         result.encoded_saved_options_id;
                     goptions.synced = true;
-                    
-
                   }
                   else {
                     goptions.options = {
-                      theme: "dark",
-                      mode: "",
-                    }
+                      theme : "dark",
+                      blur : true,
+                      compact : false
+                    };
                   }
                   goptions.synced = true;
               }
@@ -41,7 +38,6 @@ function OptionsManager(){
                 }
 
     },
-
 
     get : function(){
       return this.options;
@@ -61,7 +57,9 @@ function OptionsManager(){
     set : function(opts){
       this.synced = false;
       for(let opt in opts){
+        console.log(this.options);
         this.options[opt] = opts[opt];
+        console.log(this.options);
       }
       this.internal_storeInChrome();
     }
