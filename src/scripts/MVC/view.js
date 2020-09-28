@@ -398,7 +398,7 @@
 
             let opt = gview.createHTML.general.option();
             opt.html("All");
-            opt.attr("value", "All");
+            opt.attr("value", "");
             select.append(opt);
 
             for(tag in filters){

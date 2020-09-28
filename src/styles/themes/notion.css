@@ -9,7 +9,7 @@
   --white: #afafaf;
   --red: #e31b23;
   --bodyColor: #303437;
-  --borderFormEls: #323437;
+  --borderFormEls: hsl(0, 0%, 10%);
   --bgFormEls: #373B3E;
   --bgFormElsFocus: #3B515F;
   --bgSelection : #425663;
