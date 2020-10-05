@@ -1,0 +1,153 @@
+/* BASIC ELEMENTS
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+  /* ------------------------- BODY -----------------------------------------*/
+
+
+    #main {
+      font-size: 12px;
+      background: var(--bodyColor);
+      color: var(--white);
+      text-align : center;
+      align-content: center;
+      width : auto;
+      height : auto;
+    }
+
+    .blurred {
+		    filter: blur(10px);
+    }
+
+  /* ---------------------------------------------------------------------------*/
+
+  /* ----------------------------- GENERAL -------------------------------------*/
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      outline: none;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+      font-family: inherit;
+      font-size: 100%;
+    }
+
+    button{
+      cursor: pointer;
+    }
+
+    textarea {
+      font-size: 1rem;
+      width : inherit;
+    }
+
+    p {
+      font-size: 1rem;
+      margin-top: ;
+      margin-bottom: 10px;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+
+    select {
+      appearance: none;
+    }
+
+    /* Remove native arrow on IE */
+    select::-ms-expand {
+      display: none;
+    }
+
+    /*Remove dotted outline from selected option on Firefox*/
+    select:-moz-focusring {
+      color: transparent !important;
+      text-shadow: 0 0 0 var(--white);
+    }
+
+  /* --------------------------------------------------------------------------*/
+
+  /* --------------------------- DETAILS FOR CODES ---------------------------- */
+
+    details{
+      width : 100%;
+      cursor: pointer;
+      padding: 10px;
+    }
+
+    details:hover{
+      box-shadow: 0 0 0.6rem rgba(0,0,0, 0.75);
+    }
+
+    /* Remove Arrow*/
+    details > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details[open] summary ~ * {
+      animation: sweep 0.5s ease-in-out;
+    }
+
+    @keyframes sweep {
+      0%    {opacity: 0; margin-left: -0.6rem}
+      100%  {opacity: 1; margin-left: 0px}
+    }
+
+  /* ---------------------------------------------------------------------------*/
+
+  /* ------------------------- SCROLLBAR DARK THEME ----------------------------*/
+
+      html {
+        scroll-behavior: smooth;
+        scrollbar-face-color: #646464;
+        scrollbar-base-color: #646464;
+        scrollbar-3dlight-color: #646464;
+        scrollbar-highlight-color: #646464;
+        scrollbar-track-color: #000;
+        scrollbar-arrow-color: #000;
+        scrollbar-shadow-color: #646464;
+        scrollbar-dark-shadow-color: #646464;
+      }
+      ::-webkit-scrollbar { width: 0.4rem; height: 0.4rem;}
+      ::-webkit-scrollbar-button {  background-color: #666; }
+      ::-webkit-scrollbar-track {  background-color: #646464;}
+      ::-webkit-scrollbar-track-piece { background-color: #000;}
+      ::-webkit-scrollbar-thumb { height: 3rem; background-color: #666; border-radius: 0.2rem;}
+      ::-webkit-scrollbar-corner { background-color: #646464;}}
+      ::-webkit-resizer { background-color: #666;}
+
+  /* ---------------------------------------------------------------------------*/
+
+  /* -------------------------------SELECTION----------------------------------*/
+
+      ::selection {
+        background-color:  var(--bgSelection);
+        color: white;
+      }
+
+
+  /* FOOTER
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+  footer {
+    margin : 0.5rem 0.5rem;
+    font-size: 1rem;
+    backface-visibility: hidden;
+  }
+
+  footer a {
+    text-decoration: none;
+  }
+
+  footer span {
+    color: var(--red);
+  }

@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Notion Math : Advanced Editor",
-  "version": "0.1",
+  "version": "0.0.1",
 
 
   "background": {
@@ -10,25 +10,25 @@
   },
 
   "options_ui": {
-    "page": "options.html",
+    "page": "app_full_page.html",
     "open_in_tab": true
   },
 
   "content_scripts": [{
     "matches": ["http://*.notion.so/*", "https://*.notion.so/*"],
-    "js": ["scripts/content/content.js"]
+    "js": ["libs/jquery-3.5.1.js","scripts/content/content.js"]
   }],
 
   "browser_action": {
-    "default_icon": "images/action_icon1.png",
-    "default_popup": "popup.html",
+    "default_icon": "images/action_icon.png",
+    "default_popup": "app.html",
     "default_title": "Edit Notion Math Blocks!"
   },
 
   "icons": {
-    "16": "images/action_icon1.png",
-    "48": "images/action_icon1.png",
-    "128": "images/action_icon1.png"
+    "16": "images/action_icon.png",
+    "48": "images/action_icon.png",
+    "128": "images/action_icon.png"
   },
 
 
@@ -41,6 +41,10 @@
       }
     }
   },
+
+  "web_accessible_resources": [
+    "jsons/*.json"
+  ],
 
 
   "permissions": [

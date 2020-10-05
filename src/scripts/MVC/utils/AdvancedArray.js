@@ -6,12 +6,12 @@
  * @param  {type} store description
  * @returns {type}       description
  */
+
 function AdvancedArray(store){
+
   return {
       codes : {},
-
       store : store,
-
       /**
        * syncWithStorage - load the codes from the StorageManager into the array
        */
@@ -48,19 +48,15 @@ function AdvancedArray(store){
       },
 
       getAllByFilter : function(filter){
-        console.log("Getting filtered codes");
-        console.log(filter);
         let cc = [];
         for(code_id in this.codes){
           let code = this.codes[code_id];
-          console.log("Checking code");
-          console.log(code);
           if(code.tag.indexOf(filter.tag) >= 0){
-            console.log(":"+filter.tag + ": is not in :" + code.tag + ":");
             if(code.name.indexOf(filter.name) >= 0){
-              console.log(":"+filter.name + ": is not in :" + code.name + ":");
               cc.push(code);
             }
+          }else{
+            if (filter == "All") cc.push(code);
           }
         }
         return cc;
