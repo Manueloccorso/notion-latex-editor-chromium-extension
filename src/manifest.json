@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Notion Math : Advanced Editor",
-  "version": "0.1",
+  "version": "0.0.1",
 
 
   "background": {
@@ -20,15 +20,15 @@
   }],
 
   "browser_action": {
-    "default_icon": "images/action_icon1.png",
+    "default_icon": "images/action_icon.png",
     "default_popup": "app.html",
     "default_title": "Edit Notion Math Blocks!"
   },
 
   "icons": {
-    "16": "images/action_icon1.png",
-    "48": "images/action_icon1.png",
-    "128": "images/action_icon1.png"
+    "16": "images/action_icon.png",
+    "48": "images/action_icon.png",
+    "128": "images/action_icon.png"
   },
 
 
