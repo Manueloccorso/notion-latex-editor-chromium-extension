@@ -1,3 +1,8 @@
+
+> **Warning**
+> The project is not maintend anymore. 
+
+
 # NotionMathEditor_BrowserExtension
 
 A chromium (tested on Chrome and the new Edge) extension for advanced Notion Math Blocks editing.
